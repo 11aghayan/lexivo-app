@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Lexivo</string>
+    <string name="login_signup">Login / Sign up</string>
+    <string name="description_account_icon_placeholder">Account Icon Placeholder</string>
+    <string name="daily_average">Your daily average is</string>
+    <string name="minutes">minutes</string>
+    <string name="my_dictionaries">My Dictionaries</string>
+    <string name="import_dictionary">Import Dictionary</string>
+    <string name="btn_from_memory">From Memory</string>
+    <string name="btn_by_id">By ID</string>
+    <string name="btn_add_dictionary_description">Opens add dictionary modal</string>
+    <string name="my_dictionaries_rec_view_description">Dictionary List</string>
+    <string name="dictionary_item_description">Dictionary Item</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="create">Create</string>
+    <string name="languages_dropdown_description">Pick the Language</string>
+    <string name="language_dropdown_item_placeholder">Language</string>
+    <string name="language_spinner_item_placeholder">Selected Language</string>
+    <string name="language_spinner_label">Language</string>
+    <string name="word_count_label">Words:</string>
+    <string name="expression_count_label">Expressions:</string>
+    <string name="count_placeholder">0</string>
+    <string name="no_dictionaries">No Dictionaries</string>
+    <string name="import_dictionary_btn">Import</string>
+    <string name="enter_dictionary_id">Enter Dictionary ID</string>
+    <string name="toast_dictionary_already_exists">Dictionary already exists</string>
+</resources>

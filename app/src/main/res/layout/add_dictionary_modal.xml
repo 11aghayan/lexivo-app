@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#88000000"
+    android:id="@+id/languageModal"
+    android:translationZ="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/createEditDictionaryModal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/layoutMargin"
+        android:background="@color/background"
+        app:cardCornerRadius="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:id="@+id/modalButtonsLayout">
+
+            <TextView
+                android:id="@+id/addLanguageSpinnerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/language_spinner_label"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/languageSelectorWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLanguageSpinnerLabel"
+                app:strokeColor="@color/lightest_gray"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="24dp">
+
+                <Spinner
+                    android:id="@+id/languageSelector"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:padding="16dp"
+                    android:spinnerMode="dropdown"
+                    android:theme="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <Button
+                android:id="@+id/dismissLanguageModalBtn"
+                android:layout_width="130dp"
+                android:layout_height="75dp"
+                android:backgroundTint="@color/accent"
+                android:text="@string/dismiss"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="24dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/languageSelectorWrapper" />
+
+            <Button
+                android:id="@+id/saveLanguageBtn"
+                android:layout_width="130dp"
+                android:layout_height="75dp"
+                android:backgroundTint="@color/primary"
+                android:text="@string/create"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="24dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/dismissLanguageModalBtn"
+                app:layout_constraintTop_toBottomOf="@id/languageSelectorWrapper" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
