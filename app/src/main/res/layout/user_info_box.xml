@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/accountRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/accountPhotoBtn"
+        android:layout_width="64dp"
+        android:layout_height="74dp"
+        android:backgroundTint="@color/primary"
+        android:contentDescription="@string/description_account_icon_placeholder"
+        android:foreground="@drawable/account_icon"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        android:layout_centerVertical="true"
+        android:translationZ="1dp"
+        app:cornerRadius="24dp"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        tools:ignore="RelativeOverlap">
+
+        <TextView
+            android:id="@+id/text_login_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/login_signup"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:id="@+id/dailyAverage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:breakStrategy="simple"
+                android:text="@string/daily_average"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/textDailyAverageValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_light"
+                android:text="@string/minutes"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

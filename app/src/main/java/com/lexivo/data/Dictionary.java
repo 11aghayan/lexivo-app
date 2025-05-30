@@ -3,7 +3,7 @@ package com.lexivo.data;
 import androidx.annotation.NonNull;
 
 import com.lexivo.exception.DuplicateValueException;
-import com.lexivo.exception.HashAlreadyExistsException;
+import com.lexivo.exception.DuplicateHashException;
 import com.lexivo.util.HashUtil;
 import com.lexivo.util.ListUtil;
 
@@ -15,26 +15,27 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class Dictionary implements ObjectContainingId {
+    private static final List<Dictionary> dictionaries = new ArrayList<>();
     private final List<Word> words = new ArrayList<>();
     private final List<Expression> expressions = new ArrayList<>();
     private final String id;
-    private String language;
+    private Language language;
 
     public Dictionary(Language language) {
         UUID uuid = UUID.randomUUID();
         this.id = uuid.toString();
-        this.language = language.getLabel();
+        this.language = language;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 
@@ -54,9 +55,9 @@ public final class Dictionary implements ObjectContainingId {
         return getAlWords().stream().filter(w -> w.getId().equals(id)).collect(Collectors.toList()).get(0);
     }
 
-    public void addWord(Word w) throws HashAlreadyExistsException {
+    public void addWord(Word w) throws DuplicateHashException {
         if (HashUtil.isHashInList(words, w.getHash())) {
-            throw new HashAlreadyExistsException();
+            throw new DuplicateHashException();
         }
         words.add(w);
     }
@@ -91,8 +92,29 @@ public final class Dictionary implements ObjectContainingId {
         expressions.set(index, e);
     }
 
-    public void changeLanguage(String languageId) {
-        language = languageId;
+    public static void addDictionary(Dictionary dictionary) throws DuplicateValueException {
+        boolean isDuplicate = false;
+        for (var d : dictionaries) {
+            isDuplicate = Objects.equals(dictionary, d);
+        }
+        if (isDuplicate) {
+            throw new DuplicateValueException();
+        }
+        dictionaries.add(dictionary);
+    }
+
+    public static List<Dictionary> getDictionaries() {
+        return dictionaries;
+    }
+
+    public static Dictionary getDictionaryById(String id) {
+        for (Dictionary d : dictionaries) {
+            if (d.getId().equals(id)) {
+                return d;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -112,7 +134,7 @@ public final class Dictionary implements ObjectContainingId {
     public String toString() {
         return "Dictionary{" +
                 "id='" + id + '\'' +
-                ", language='" + language + '\'' +
+                ", language='" + language.getLabel() + '\'' +
                 '}';
     }
 }

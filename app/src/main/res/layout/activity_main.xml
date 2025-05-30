@@ -13,21 +13,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="32dp" />
+        app:layout_constraintGuide_begin="@dimen/layoutMargin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="32dp" />
+        app:layout_constraintGuide_begin="@dimen/layoutMargin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="32dp" />
+        app:layout_constraintGuide_end="@dimen/layoutMargin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -36,77 +36,19 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="32dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/accountRow"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/accountBox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/layoutMargin"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:paddingHorizontal="@dimen/layoutMargin">
 
-        <TextView
-            android:id="@+id/text_login_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/login_signup"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/accountPhotoBtn"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <include layout="@layout/user_info_box" />
 
-        <Button
-            android:id="@+id/accountPhotoBtn"
-            android:layout_width="64dp"
-            android:layout_height="74dp"
-            android:backgroundTint="@color/primary"
-            android:contentDescription="@string/description_account_icon_placeholder"
-            android:foreground="@drawable/account_icon"
-            android:foregroundGravity="center_vertical|center_horizontal"
-            android:translationZ="1dp"
-            app:cardElevation="1dp"
-            app:cornerRadius="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textDailyAverage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_light"
-            android:text="@string/daily_average"
-            android:textColor="@color/secondary_text"
-            android:textSize="11sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_login_signup"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/textDailyAverageValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/poppins_light"
-            android:text="@string/minutes"
-            android:textColor="@color/secondary_text"
-            android:textSize="11sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/accountPhotoBtn"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textDailyAverage"
-            app:layout_constraintTop_toBottomOf="@+id/text_login_signup"
-            app:layout_constraintVertical_bias="0.0" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
@@ -115,19 +57,8 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="106dp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/secondary_text"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/accountRow" />
-
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/myDictionariesHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -140,7 +71,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/accountRow" />
+        app:layout_constraintTop_toBottomOf="@+id/accountBox" />
 
     <TextView
         android:id="@+id/noDictionariesText"
@@ -155,7 +86,7 @@
         app:layout_constraintBottom_toTopOf="@+id/addDictionaryBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/myDictionariesHeader"
         app:layout_constraintVertical_bias="0.0" />
 
 
@@ -168,7 +99,7 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/my_dictionaries_rec_view_description"
         app:layout_constraintBottom_toTopOf="@+id/addDictionaryBtn"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/myDictionariesHeader"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="32dp" />
 

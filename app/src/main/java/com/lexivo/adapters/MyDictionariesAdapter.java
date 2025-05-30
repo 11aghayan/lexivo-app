@@ -1,5 +1,7 @@
 package com.lexivo.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lexivo.DictionaryActivity;
 import com.lexivo.R;
 import com.lexivo.data.Dictionary;
 import com.lexivo.data.Language;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public class MyDictionariesAdapter extends RecyclerView.Adapter<MyDictionariesAdapter.ViewHolder> {
-    private final List<Dictionary> dictionaries;
     private final View view;
+    private final Context mainContext;
 
-    public MyDictionariesAdapter(View view) {
+    public MyDictionariesAdapter(View view, Context mainContext) {
         this.view = view;
-        this.dictionaries = new ArrayList<>();
+        this.mainContext = mainContext;
         toggleNoItemsText();
     }
 
@@ -44,34 +43,32 @@ public class MyDictionariesAdapter extends RecyclerView.Adapter<MyDictionariesAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Dictionary dictionary = dictionaries.get(position);
-        Language language = Language.get(dictionary.getLanguage());
+        Dictionary dictionary = Dictionary.getDictionaries().get(position);
+        Language language = dictionary.getLanguage();
         holder.dictionaryButton.setForeground(ResourcesCompat.getDrawable(view.getResources(), language.getFlag(), null));
         holder.expressionCount.setText(String.valueOf(dictionary.getExpressionCount()));
         holder.wordCount.setText(String.valueOf(dictionary.getWordCount()));
         holder.language.setText(StringUtil.capitalize(language.getLabel()));
+        holder.dictionaryButton.setOnClickListener(v -> {
+            Intent intent = new Intent(mainContext, DictionaryActivity.class);
+            intent.putExtra("dictionary_id", dictionary.getId());
+            mainContext.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return dictionaries.size();
+        return Dictionary.getDictionaries().size();
     }
 
     public void addDictionary(Dictionary dictionary) throws DuplicateValueException {
-        boolean isDuplicate = false;
-        for (var d : dictionaries) {
-            isDuplicate = Objects.equals(dictionary, d);
-        }
-        if (isDuplicate) {
-            throw new DuplicateValueException();
-        }
-        dictionaries.add(dictionary);
-        notifyItemInserted(dictionaries.size() - 1);
+        Dictionary.addDictionary(dictionary);
+        notifyItemInserted(Dictionary.getDictionaries().size() - 1);
     }
 
     private void toggleNoItemsText() {
         view.findViewById(R.id.noDictionariesText).setVisibility(
-                dictionaries.isEmpty() ? View.VISIBLE : View.GONE
+            Dictionary.getDictionaries().isEmpty() ? View.VISIBLE : View.GONE
         );
     }
 

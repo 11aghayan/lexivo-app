@@ -11,4 +11,8 @@
     <color name="light_gray_medium">#A5A5A5</color>
     <color name="light_gray_low">#E2E2E2</color>
     <color name="language_element_count_bg_color">#77000000</color>
+    <color name="accent_35">#35F95738</color>
+    <color name="main_text_70">#B32E2E2E</color>
+    <color name="primary_35">#353DA9FC</color>
+    <color name="rules_btn_bg">#F7C800</color>
 </resources>

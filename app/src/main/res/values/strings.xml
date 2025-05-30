@@ -24,4 +24,15 @@
     <string name="import_dictionary_btn">Import</string>
     <string name="enter_dictionary_id">Enter Dictionary ID</string>
     <string name="toast_dictionary_already_exists">Dictionary already exists</string>
+    <string name="btn_export_dictionary_description">opens the export dictionary modal</string>
+    <string name="btn_practice_text">Practice</string>
+    <string name="btn_quiz_text">Quiz</string>
+    <string name="btn_words_text">Words</string>
+    <string name="btn_expressions_text">Expressions</string>
+    <string name="rules_btn_text">Rules</string>
+    <string name="save">Save</string>
+    <string name="textview_dictionary_text">Export dictionary</string>
+    <string name="btn_copyid_text">Copy ID</string>
+    <string name="btn_export_json_text">Export JSON</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

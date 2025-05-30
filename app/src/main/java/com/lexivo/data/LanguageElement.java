@@ -93,7 +93,7 @@ public abstract class LanguageElement implements ObjectContainingId {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LanguageElement that = (LanguageElement) o;
-        return lastGuessDate == that.lastGuessDate && Objects.equals(id, that.id) && Objects.equals(dictionaryId, that.dictionaryId) && Objects.equals(hash, that.hash) && Objects.equals(original, that.original) && Objects.equals(translation, that.translation) && Objects.equals(pictureId, that.pictureId) && Objects.equals(soundId, that.soundId);
+        return Objects.equals(dictionaryId, that.dictionaryId) && Objects.equals(hash, that.hash);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.lexivo;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -19,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lexivo.adapters.LanguagesArrayAdapter;
 import com.lexivo.adapters.MyDictionariesAdapter;
 import com.lexivo.data.Dictionary;
 import com.lexivo.data.Language;
@@ -26,10 +28,10 @@ import com.lexivo.exception.DuplicateValueException;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Button importDictionaryBtn, addDictionaryBtn, dismissLanguageModalBtn, saveLanguageBtn, importDictionaryByIdBtn, dismissDictionaryModalBtn;
+    private Button importDictionaryBtn, addDictionaryBtn, dismissLanguageModalBtn, saveLanguageBtn, importDictionaryByIdBtn, dismissDictionaryModalBtn, importDictionaryModalBtn, importDictionaryFromMemoryBtn;
     private LinearLayout importDictionaryBtnExpanded;
     private RecyclerView myDictionariesRecView;
-    private Spinner languageDropdownMenu;
+    private Spinner languageSelector;
     private ConstraintLayout languageModal, importEditDictionaryModalBg;
     private String selectedLanguageInModal;
     private MyDictionariesAdapter myDictionariesAdapter;
@@ -52,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleAddDictionaryModal() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.language_spinner_item);
+        var adapter = new LanguagesArrayAdapter(MainActivity.this).adapter;
         adapter.setDropDownViewResource(R.layout.language_dropdown_item);
-        languageDropdownMenu.setAdapter(adapter);
+        languageSelector.setAdapter(adapter);
 
         addDictionaryBtn.setOnClickListener(v -> {
             languageModal.setVisibility(View.VISIBLE);
@@ -71,13 +73,12 @@ public class MainActivity extends AppCompatActivity {
                     myDictionariesAdapter.addDictionary(dict);
                 } catch (DuplicateValueException dve) {
                     Toast.makeText(MainActivity.this, getResources().getText(R.string.toast_dictionary_already_exists), Toast.LENGTH_SHORT).show();
-
                 }
             }
             languageModal.setVisibility(View.GONE);
         });
 
-        languageDropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedLanguageInModal = ((String)parent.getItemAtPosition(position)).toLowerCase();
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         importDictionaryBtn = findViewById(R.id.importDictionaryBtn);
         importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
         myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
-        languageDropdownMenu = findViewById(R.id.languageSelector);
+        languageSelector = findViewById(R.id.languageSelector);
         languageModal = findViewById(R.id.languageModal);
         importEditDictionaryModalBg = findViewById(R.id.importEditDictionaryModalBg);
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
         importDictionaryByIdBtn = findViewById(R.id.importDictionaryByIdBtn);
         dismissDictionaryModalBtn = findViewById(R.id.dismissDictionaryModalBtn);
+        importDictionaryModalBtn = findViewById(R.id.importDictionaryModalBtn);
+        importDictionaryFromMemoryBtn = findViewById(R.id.importDictionaryFromMemoryBtn);
     }
 
     private void handleImportDictionary() {
@@ -116,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
             importEditDictionaryModalBg.setVisibility(View.GONE);
         });
 
+        importDictionaryModalBtn.setOnClickListener(v -> {
+            //TODO
+        });
+
+        importDictionaryFromMemoryBtn.setOnClickListener(v -> {
+            //TODO
+        });
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -130,8 +141,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleMyDictionaries() {
-        myDictionariesAdapter = new MyDictionariesAdapter(findViewById(R.id.main));
+        myDictionariesAdapter = new MyDictionariesAdapter(findViewById(R.id.main), MainActivity.this);
         myDictionariesRecView.setAdapter(myDictionariesAdapter);
         myDictionariesRecView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        myDictionariesAdapter.notifyDataSetChanged();
     }
 }

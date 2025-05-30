@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#88000000"
+    android:id="@+id/exportDictionaryModal"
+    android:translationZ="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="24dp">
+
+        <LinearLayout
+            android:id="@+id/exportDictionaryModalContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:textColor="@color/main_text"
+                android:textSize="14sp"
+                android:text="@string/textview_dictionary_text"/>
+
+            <Button
+                android:id="@+id/btnCopyId"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:backgroundTint="@color/accent"
+                android:elevation="0.3dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:letterSpacing="0.02"
+                android:text="@string/btn_copyid_text"
+                android:textAllCaps="false"
+                android:textColor="@color/background"
+                android:textSize="14sp"
+                app:cornerRadius="24dp" />
+
+            <Button
+                android:id="@+id/btnExportJson"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:backgroundTint="@color/primary"
+                android:elevation="0.3dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:letterSpacing="0.02"
+                android:text="@string/btn_export_json_text"
+                android:textAllCaps="false"
+                android:textColor="@color/background"
+                android:textSize="14sp"
+                app:cornerRadius="24dp" />
+            
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
