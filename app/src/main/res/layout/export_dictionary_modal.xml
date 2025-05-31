@@ -11,7 +11,8 @@
     android:focusableInTouchMode="true">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/layoutMargin"
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:layout_centerInParent="true"
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="@dimen/layoutMargin">
 
             <TextView
                 android:layout_width="wrap_content"

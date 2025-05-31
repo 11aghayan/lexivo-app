@@ -35,4 +35,7 @@
     <string name="btn_copyid_text">Copy ID</string>
     <string name="btn_export_json_text">Export JSON</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="delete_modal_header">Are you sure you want to delete?</string>
+    <string name="btn_yes_delete_modal">Yes</string>
+    <string name="btn_no_delete_modal">No</string>
 </resources>

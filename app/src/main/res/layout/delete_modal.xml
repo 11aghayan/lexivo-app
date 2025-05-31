@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#88000000"
-    android:id="@+id/importEditDictionaryModalBg"
+    android:id="@+id/languageModal"
     android:translationZ="10dp"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/importEditDictionaryModal"
+        android:id="@+id/createEditDictionaryModal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/layoutMargin"
@@ -22,76 +22,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/layoutMargin"
-            android:id="@+id/importDictionaryModalButtonsLayout">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/dictionaryIdInput"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@drawable/input_outline_box"
-                android:hint="@string/enter_dictionary_id"
-                android:importantForAutofill="no"
-                android:fontFamily="@font/poppins_light"
-                android:inputType="text"
-                android:padding="16dp"
-                android:spinnerMode="dialog"
-                android:textColor="@color/main_text"
-                android:textColorHint="@color/secondary_text"
-                android:textSize="14sp"
-                android:textCursorDrawable="@drawable/lexivo_cursor_main"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dictionaryIdInput">
+                android:text="@string/delete_modal_header"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textAlignment="center"
+                android:textColor="@color/main_text"/>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/dismissDictionaryModalBtn"
+                    android:id="@+id/btnDelete"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="80dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/accent"
                     android:elevation="0.2dp"
-                    android:textColor="@color/background"
-                    android:text="@string/dismiss"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:letterSpacing="0.02"
+                    android:text="@string/btn_yes_delete_modal"
                     android:textAllCaps="false"
+                    android:textColor="@color/background"
                     android:textSize="16sp"
-                    app:cornerRadius="24dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dictionaryIdInput" />
+                    app:cornerRadius="24dp" />
 
                 <Button
-                    android:id="@+id/importDictionaryModalBtn"
+                    android:id="@+id/btnCancel"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="80dp"
                     android:layout_weight="1"
+                    android:layout_marginStart="8dp"
                     android:backgroundTint="@color/primary"
                     android:elevation="0.2dp"
-                    android:textColor="@color/background"
                     android:fontFamily="@font/poppins_semibold"
                     android:letterSpacing="0.02"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/import_dictionary_btn"
+                    android:text="@string/btn_no_delete_modal"
                     android:textAllCaps="false"
+                    android:textColor="@color/background"
                     android:textSize="16sp"
-                    app:cornerRadius="24dp"
-                    android:layout_marginTop="8dp" />
+                    app:cornerRadius="24dp" />
+
 
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
