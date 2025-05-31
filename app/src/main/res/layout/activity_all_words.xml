@@ -8,6 +8,8 @@
     android:background="@color/background"
     tools:context=".AllWordsActivity">
 
+    <include layout="@layout/delete_modal" android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/accountBox"
         android:layout_width="wrap_content"
@@ -80,6 +82,7 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/layoutMargin"
         android:background="@color/background"
+        android:contentDescription="@string/words_rec_view_description"
         app:layout_constraintTop_toBottomOf="@id/searchBox"
         app:layout_constraintBottom_toTopOf="@id/btnAddWord"
         android:layout_marginTop="16dp"/>
@@ -90,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:backgroundTint="@color/primary"
+        android:contentDescription="@string/btn_add_word_description"
         android:elevation="0.3dp"
         app:cornerRadius="24dp"
         android:layout_marginTop="14dp"
@@ -98,6 +102,7 @@
         android:foregroundGravity="center"
         android:foregroundTint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="@dimen/layoutMargin"/>
+        android:layout_marginHorizontal="@dimen/layoutMargin"
+        tools:ignore="VisualLintButtonSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

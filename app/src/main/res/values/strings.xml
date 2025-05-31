@@ -40,4 +40,6 @@
     <string name="btn_no_delete_modal">No</string>
     <string name="hint_input_search">Search...</string>
     <string name="description_icon_search">Search icon; magnifier</string>
+    <string name="btn_add_word_description">Forwards to add word activity</string>
+    <string name="words_rec_view_description">All words list in dictionary</string>
 </resources>
