@@ -32,7 +32,7 @@
                 android:id="@+id/dictionaryIdInput"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/input_outline_box"
+                android:background="@drawable/outline_box"
                 android:hint="@string/enter_dictionary_id"
                 android:importantForAutofill="no"
                 android:fontFamily="@font/poppins_light"
