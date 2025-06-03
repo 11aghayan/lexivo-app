@@ -9,38 +9,61 @@ import java.util.UUID;
 
 public abstract class LanguageElement implements ObjectContainingId {
     private final String id;
-    private final String dictionaryId;
+    private final String dictionary;
     private String hash;
     private Text original;
     private Text translation;
-    private String pictureId;
-    private String soundId;
+    private String photo;
+    private String sound;
+    private String comment;
     private int lastGuessDate;
 
-    public LanguageElement(String dictionaryId, Text original, Text translation, String pictureId, String soundId) {
+    public LanguageElement(String dictionaryId, Text original, Text translation, String photo, String sound, String comment) {
         this.id = UUID.randomUUID().toString();
-        this.dictionaryId = dictionaryId;
+        this.dictionary = dictionaryId;
         this.original = original;
         this.translation = translation;
-        this.pictureId = pictureId;
-        this.soundId = soundId;
+        this.photo = photo;
+        this.sound = sound;
         this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+        this.comment = comment;
+    }
+
+    public LanguageElement(String dictionaryId, Text original, Text translation, String comment) {
+        this.id = UUID.randomUUID().toString();
+        this.dictionary = dictionaryId;
+        this.original = original;
+        this.translation = translation;
+        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+        this.comment = comment;
     }
 
     public LanguageElement(String dictionaryId, Text original, Text translation) {
         this.id = UUID.randomUUID().toString();
-        this.dictionaryId = dictionaryId;
+        this.dictionary = dictionaryId;
         this.original = original;
         this.translation = translation;
         this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getDictionaryId() {
-        return dictionaryId;
+    public String getDictionary() {
+        return dictionary;
     }
 
     public String getHash() {
@@ -55,12 +78,12 @@ public abstract class LanguageElement implements ObjectContainingId {
         return translation;
     }
 
-    public String getPictureId() {
-        return pictureId;
+    public String getPhoto() {
+        return photo;
     }
 
-    public String getSoundId() {
-        return soundId;
+    public String getSound() {
+        return sound;
     }
 
     public int getLastGuessDate() {
@@ -77,12 +100,12 @@ public abstract class LanguageElement implements ObjectContainingId {
         this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
     }
 
-    public void setPictureId(String pictureId) {
-        this.pictureId = pictureId;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    public void setSoundId(String soundId) {
-        this.soundId = soundId;
+    public void setSound(String sound) {
+        this.sound = sound;
     }
 
     public void setLastGuessDate(int lastGuessDate) {
@@ -93,12 +116,12 @@ public abstract class LanguageElement implements ObjectContainingId {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LanguageElement that = (LanguageElement) o;
-        return Objects.equals(dictionaryId, that.dictionaryId) && Objects.equals(hash, that.hash);
+        return Objects.equals(dictionary, that.dictionary) && Objects.equals(hash, that.hash) && Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dictionaryId, hash, original, translation, pictureId, soundId, lastGuessDate);
+        return Objects.hash(id, dictionary, hash, original, translation, photo, sound, lastGuessDate);
     }
 
     @NonNull
@@ -106,12 +129,13 @@ public abstract class LanguageElement implements ObjectContainingId {
     public String toString() {
         return "LanguageElement{" +
                 "id='" + id + '\'' +
-                ", dictionaryId='" + dictionaryId + '\'' +
+                ", dictionary='" + dictionary + '\'' +
                 ", hash='" + hash + '\'' +
-                ", original='" + original + '\'' +
-                ", translation='" + translation + '\'' +
-                ", pictureId='" + pictureId + '\'' +
-                ", soundId='" + soundId + '\'' +
+                ", original=" + original +
+                ", translation=" + translation +
+                ", photo='" + photo + '\'' +
+                ", sound='" + sound + '\'' +
+                ", comment='" + comment + '\'' +
                 ", lastGuessDate=" + lastGuessDate +
                 '}';
     }

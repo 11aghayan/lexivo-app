@@ -2,6 +2,7 @@ package com.lexivo.data;
 
 import androidx.annotation.NonNull;
 
+import com.lexivo.AllWordsActivity;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.exception.DuplicateHashException;
 import com.lexivo.util.HashUtil;
@@ -39,11 +40,11 @@ public final class Dictionary implements ObjectContainingId {
         this.language = language;
     }
 
-    public long getWordCount() {
+    public int getWordCount() {
         return words.size();
     }
 
-    public long getExpressionCount() {
+    public int getExpressionCount() {
         return expressions.size();
     }
 
@@ -53,6 +54,23 @@ public final class Dictionary implements ObjectContainingId {
 
     public Word getWordById(String id) {
         return getAlWords().stream().filter(w -> w.getId().equals(id)).collect(Collectors.toList()).get(0);
+    }
+
+    public List<Word> searchWords(CharSequence s) {
+        String searchWord = s.toString().toLowerCase();
+        List<Word> result = new ArrayList<>();
+        for (Word word : words) {
+            if (
+                    (word.getOriginal().getValue() != null && word.getOriginal().getValue().toLowerCase().contains(searchWord))
+                    || (word.getTranslation().getValue() != null && word.getTranslation().getValue().toLowerCase().contains(searchWord))
+                    || (word.getPlural() != null && word.getPlural().toLowerCase().contains(searchWord))
+                    || (word.getPast1() != null && word.getPast1().toLowerCase().contains(searchWord))
+                    || (word.getPast2() != null && word.getPast2().toLowerCase().contains(searchWord))
+            ) {
+                result.add(word);
+            }
+        }
+        return result;
     }
 
     public void addWord(Word w) throws DuplicateHashException {
@@ -69,6 +87,10 @@ public final class Dictionary implements ObjectContainingId {
 
     public void deleteWord(Word w) {
         words.remove(w);
+    }
+
+    public void deleteWord(int pos) {
+        words.remove(pos);
     }
 
     public List<Expression> getAllExpressions() {

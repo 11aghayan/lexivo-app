@@ -30,7 +30,7 @@ import com.lexivo.util.StringUtil;
 
 public class DictionaryActivity extends AppCompatActivity {
     private Dictionary dictionary;
-    Intent intent;
+    private Intent intent;
     private Language currentLanguage, selectedLanguage;
     private CardView languageFlag;
     private TextView textLanguage;
@@ -54,6 +54,7 @@ public class DictionaryActivity extends AppCompatActivity {
         handleContent();
         handleLanguageChange();
         handleExportDictionary();
+        handleNavigation();
 
     }
 
@@ -62,7 +63,7 @@ public class DictionaryActivity extends AppCompatActivity {
         textLanguage = findViewById(R.id.textLanguage);
         btnExportDictionary = findViewById(R.id.btnExportDictionary);
         language = findViewById(R.id.language);
-        languageModal = findViewById(R.id.languageModal);
+        languageModal = findViewById(R.id.deleteModal);
         languageSelector = findViewById(R.id.languageSelector);
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
         saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
@@ -105,7 +106,9 @@ public class DictionaryActivity extends AppCompatActivity {
 
     private void handleNavigation() {
         btnWords.setOnClickListener(v -> {
-            //TODO
+            intent = new Intent(this, AllWordsActivity.class);
+            intent.putExtra("dictionary_id", dictionary.getId());
+            this.startActivity(intent);
         });
         btnExpressions.setOnClickListener(v -> {
             //TODO

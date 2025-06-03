@@ -8,8 +8,8 @@ public class Expression extends LanguageElement {
     private Tense tense;
     private boolean isQuestion;
 
-    public Expression(String dictionaryId, Text original, Text translation, String pictureId, String soundId, List<Integer> nounIndexes, Tense tense, boolean isQuestion) {
-        super(dictionaryId, original, translation, pictureId, soundId);
+    public Expression(String dictionaryId, Text original, Text translation, String pictureId, String soundId, List<Integer> nounIndexes, Tense tense, boolean isQuestion, String comment) {
+        super(dictionaryId, original, translation, pictureId, soundId, comment);
         this.nounIndexes = nounIndexes;
         this.tense = tense;
         this.isQuestion = isQuestion;

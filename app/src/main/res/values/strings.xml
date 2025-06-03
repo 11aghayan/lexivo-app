@@ -38,8 +38,24 @@
     <string name="delete_modal_header">Are you sure you want to delete?</string>
     <string name="btn_yes_delete_modal">Yes</string>
     <string name="btn_no_delete_modal">No</string>
-    <string name="hint_input_search">Search...</string>
+    <string name="hint_input_search">Search…</string>
     <string name="description_icon_search">Search icon; magnifier</string>
     <string name="btn_add_word_description">Forwards to add word activity</string>
     <string name="words_rec_view_description">All words list in dictionary</string>
+    <string name="word_type_placeholder">noun</string>
+    <string name="text_btn_delete_word">Delete</string>
+    <string name="content_description_icon_sound">Play sound</string>
+    <string name="text_word_singular">Der Zug</string>
+    <string name="content_description_word_plural">plural</string>
+    <string name="abbrv_plural">pl.</string>
+    <string name="text_word_plural">die Züge</string>
+    <string name="text_word_addition">(Addition)</string>
+    <string name="text_word_comment">This is a super extra very long comment that need to be broken</string>
+    <string name="text_word_translation">Train</string>
+    <string name="text_gender_masculine">masculine</string>
+    <string name="text_gender_feminine">feminine</string>
+    <string name="text_gender_neutral">neutral</string>
+    <string name="text_gender_personal">personal</string>
+    <string name="text_gender_plural">plural</string>
+    <string name="text_no_words">No Words</string>
 </resources>

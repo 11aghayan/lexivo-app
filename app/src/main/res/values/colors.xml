@@ -15,4 +15,10 @@
     <color name="main_text_70">#B32E2E2E</color>
     <color name="primary_35">#353DA9FC</color>
     <color name="rules_btn_bg">#F7C800</color>
+    <color name="gender_female">#FC3DA9</color>
+    <color name="gender_male">#3DA9FC</color>
+    <color name="btn_delete_word">#D60000</color>
+    <color name="gender_neutral">#3A7</color>
+    <color name="gender_personal">#6000AA</color>
+    <color name="gender_plural">#AA9600</color>
 </resources>

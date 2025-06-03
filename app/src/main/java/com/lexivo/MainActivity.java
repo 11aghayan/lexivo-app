@@ -1,7 +1,6 @@
 package com.lexivo;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
         myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
         languageSelector = findViewById(R.id.languageSelector);
-        languageModal = findViewById(R.id.languageModal);
+        languageModal = findViewById(R.id.deleteModal);
         importEditDictionaryModalBg = findViewById(R.id.importEditDictionaryModalBg);
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
         addDictionaryBtn = findViewById(R.id.addDictionaryBtn);

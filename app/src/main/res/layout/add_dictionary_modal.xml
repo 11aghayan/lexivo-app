@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#88000000"
-    android:id="@+id/languageModal"
+    android:id="@+id/deleteModal"
     android:translationZ="10dp"
     android:clickable="true"
     android:focusable="true"
