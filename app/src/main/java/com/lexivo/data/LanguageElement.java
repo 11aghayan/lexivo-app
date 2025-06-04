@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public abstract class LanguageElement implements ObjectContainingId {
     private final String id;
-    private final String dictionary;
+    private final Dictionary dictionary;
     private String hash;
     private Text original;
     private Text translation;
@@ -18,32 +18,15 @@ public abstract class LanguageElement implements ObjectContainingId {
     private String comment;
     private int lastGuessDate;
 
-    public LanguageElement(String dictionaryId, Text original, Text translation, String photo, String sound, String comment) {
+    public LanguageElement(Dictionary dictionary, Text original, Text translation, String photo, String sound, String comment) {
         this.id = UUID.randomUUID().toString();
-        this.dictionary = dictionaryId;
+        this.dictionary = dictionary;
         this.original = original;
         this.translation = translation;
         this.photo = photo;
         this.sound = sound;
         this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
         this.comment = comment;
-    }
-
-    public LanguageElement(String dictionaryId, Text original, Text translation, String comment) {
-        this.id = UUID.randomUUID().toString();
-        this.dictionary = dictionaryId;
-        this.original = original;
-        this.translation = translation;
-        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
-        this.comment = comment;
-    }
-
-    public LanguageElement(String dictionaryId, Text original, Text translation) {
-        this.id = UUID.randomUUID().toString();
-        this.dictionary = dictionaryId;
-        this.original = original;
-        this.translation = translation;
-        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
     }
 
     public void setHash(String hash) {
@@ -62,7 +45,7 @@ public abstract class LanguageElement implements ObjectContainingId {
         return id;
     }
 
-    public String getDictionary() {
+    public Dictionary getDictionary() {
         return dictionary;
     }
 

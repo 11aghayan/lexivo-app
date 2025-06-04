@@ -5,5 +5,5 @@ public enum Gender {
     FEMININE,
     NEUTRAL,
     PERSONAL,
-    PLURAL
+    PLURAL;
 }

@@ -18,6 +18,7 @@ import com.lexivo.R;
 import com.lexivo.data.Dictionary;
 import com.lexivo.data.Gender;
 import com.lexivo.data.Word;
+import com.lexivo.data.WordType;
 import com.lexivo.util.ListUtil;
 
 import java.util.List;
@@ -57,15 +58,27 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
         Word word = words.get(position);
         holder.type.setText(
                 ListUtil.joinElementsIntoString(
-                        word.getType().stream().map(elm -> elm.toString().toLowerCase()).collect(Collectors.toList()),
+                        word.getType().stream().map(WordType::getString).collect(Collectors.toList()),
                         ",")
         );
-        String[] genderData = getGender(word.getGender());
-        holder.gender.setText(String.valueOf(genderData[0]));
-        holder.gender.setTextColor(Integer.parseInt(genderData[1]));
         holder.photo.setImageDrawable(getPhoto(word.getPhoto()));
         holder.sound.setImageDrawable(getSoundIcon(word.getSound()));
         holder.translation.setText(word.getTranslation().getValue());
+        if (word.getGender() != null) {
+            String[] genderData = getGender(word.getGender());
+            holder.gender.setVisibility(View.VISIBLE);
+            holder.gender.setText(String.valueOf(genderData[0]));
+            holder.gender.setTextColor(Integer.parseInt(genderData[1]));
+        } else {
+            holder.gender.setVisibility(View.GONE);
+        }
+        if (word.getTranslation().getDetails() != null) {
+            holder.additionTranslation.setVisibility(View.VISIBLE);
+            holder.additionTranslation.setText("(" + word.getTranslation().getDetails() + ")");
+
+        } else {
+            holder.additionTranslation.setVisibility(View.GONE);
+        }
         if (word.getOriginal().getValue() != null) {
             holder.singular.setText(word.getOriginal().getValue());
         } else {
@@ -74,10 +87,10 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
             holder.singular.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.secondary_text, null));
         }
         if (word.getOriginal().getDetails() != null) {
-            holder.addition.setVisibility(View.VISIBLE);
-            holder.addition.setText("(" + word.getOriginal().getDetails() + ")");
+            holder.additionOriginal.setVisibility(View.VISIBLE);
+            holder.additionOriginal.setText("(" + word.getOriginal().getDetails() + ")");
         } else {
-            holder.addition.setVisibility(View.GONE);
+            holder.additionOriginal.setVisibility(View.GONE);
         }
         if (word.getPlural() != null) {
             holder.plural.setVisibility(View.VISIBLE);
@@ -158,14 +171,15 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView
-            type, singular, addition, plural, comment, translation, btnDelete, gender, pluralHeader;
+            type, singular, additionOriginal, additionTranslation, plural, comment, translation, btnDelete, gender, pluralHeader;
         private final ImageView photo, sound;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             type = itemView.findViewById(R.id.type);
             singular = itemView.findViewById(R.id.singular);
-            addition = itemView.findViewById(R.id.addition);
+            additionOriginal = itemView.findViewById(R.id.additionOriginal);
+            additionTranslation = itemView.findViewById(R.id.additionTranslation);
             plural = itemView.findViewById(R.id.plural);
             comment = itemView.findViewById(R.id.comment);
             translation = itemView.findViewById(R.id.translation);

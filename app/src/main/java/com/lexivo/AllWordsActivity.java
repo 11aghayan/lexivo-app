@@ -93,47 +93,60 @@ public class AllWordsActivity extends AppCompatActivity {
         try {
             //TODO: remove the fake population
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text("der Zug", null),
                     new Text("Train", null),
+                    null,
+                    null,
+                    null,
                     new ArrayList<>(List.of(WordType.NOUN)),
                     Gender.MASCULINE,
                     "die Züge"
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
-                    new Text("die Frau", null),
-                    new Text("Woman", null),
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.FEMININE,
-                    "die Frauen"
+                    dictionary,
+                    new Text("Um", "Akkusativ"),
+                    new Text("At", null),
+                    null,
+                    null,
+                    null,
+                    new ArrayList<>(List.of(WordType.PRON_PREP))
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text("die Frau", null),
                     new Text("Wife", null),
+                    null,
+                    null,
+                    null,
                     new ArrayList<>(List.of(WordType.NOUN)),
                     Gender.FEMININE,
                     "die Frauen"
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text("das Buch", null),
                     new Text("Book", null),
+                    null,
+                    null,
+                    null,
                     new ArrayList<>(List.of(WordType.NOUN)),
                     Gender.NEUTRAL,
                     "die Bücher"
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text("Frankreich", null),
                     new Text("France", null),
+                    null,
+                    null,
+                    null,
                     new ArrayList<>(List.of(WordType.NOUN)),
                     Gender.PERSONAL,
                     null
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text(null, null),
                     new Text("Furniture", null),
                     null,
@@ -144,9 +157,12 @@ public class AllWordsActivity extends AppCompatActivity {
                     "die Möbel"
             ));
             dictionary.addWord(new Word(
-                    dictionary.getId(),
+                    dictionary,
                     new Text("das Fitnessstudio", null),
                     new Text("Fitness Center", null),
+                    null,
+                    null,
+                    null,
                     new ArrayList<>(List.of(WordType.NOUN)),
                     Gender.NEUTRAL,
                     "die Fitnessstudios"

@@ -9,29 +9,32 @@ public class Word extends LanguageElement {
     private String past2;
     private String plural;
 
-    public Word(String dictionaryId, Text original, Text translation, String picture, String soundId, String comment, List<WordType> type, Gender gender, String plural) {
-        super(dictionaryId, original, translation, picture, soundId, comment);
+    public Word(
+            Dictionary dictionary,
+            Text original,
+            Text translation,
+            String picture,
+            String sound,
+            String comment,
+            List<WordType> type,
+            Gender gender,
+            String plural
+    ) {
+        super(dictionary, original, translation, picture, sound, comment);
         this.type = type;
         this.gender = gender;
         this.plural = plural;
     }
 
-    public Word(String dictionaryId, Text original, Text translation, List<WordType> type, Gender gender, String plural) {
-        super(dictionaryId, original, translation);
-        this.type = type;
-        this.gender = gender;
-        this.plural = plural;
-    }
-
-    public Word(String dictionaryId, Text original, Text translation, String picture, String soundId, String comment, List<WordType> type, String past1, String past2) {
-        super(dictionaryId, original, translation, picture, soundId, comment);
+    public Word(Dictionary dictionary, Text original, Text translation, String photo, String sound, String comment, List<WordType> type, String past1, String past2) {
+        super(dictionary, original, translation, photo, sound, comment);
         this.type = type;
         this.past1 = past1;
         this.past2 = past2;
     }
 
-    public Word(String dictionaryId, Text original, Text translation, String picture, String soundId, String comment, List<WordType> type) {
-        super(dictionaryId, original, translation, picture, soundId, comment);
+    public Word(Dictionary dictionary, Text original, Text translation, String photo, String sound, String comment, List<WordType> type) {
+        super(dictionary, original, translation, photo, sound, comment);
         this.type = type;
     }
 
