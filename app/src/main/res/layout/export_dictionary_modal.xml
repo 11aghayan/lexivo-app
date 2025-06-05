@@ -12,7 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/layoutMargin"
+        android:layout_marginHorizontal="@dimen/layout_margin"
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:layout_centerInParent="true"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/layoutMargin">
+            android:padding="@dimen/layout_margin">
 
             <TextView
                 android:layout_width="wrap_content"

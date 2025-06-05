@@ -9,5 +9,6 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:padding="14dp"
+    android:fontFamily="@font/poppins_light"
     android:textColor="@color/main_text"
     android:textAlignment="center"/>

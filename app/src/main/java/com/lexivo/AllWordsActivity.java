@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +50,7 @@ public class AllWordsActivity extends AppCompatActivity {
             return insets;
         });
         initViews();
-        initContent();
+        initData();
         handleAllWordsRecView();
         handleTextNoWords(dictionary.getWordCount());
         handleAddWord();
@@ -67,10 +66,9 @@ public class AllWordsActivity extends AppCompatActivity {
         languageFlag = findViewById(R.id.languageFlag);
     }
 
-    private void initContent() {
+    private void initData() {
         intent = getIntent();
-        String dictionaryId = intent.getStringExtra("dictionary_id");
-        dictionary = Dictionary.getDictionaryById(dictionaryId);
+        dictionary = Dictionary.getDictionaryById(intent.getStringExtra("dictionary_id"));
         assert dictionary != null;
         textLanguage.setText(StringUtil.capitalize(dictionary.getLanguage().getLabel()));
         languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), dictionary.getLanguage().getFlag(), null));
@@ -117,14 +115,16 @@ public class AllWordsActivity extends AppCompatActivity {
     private void handleAddWord() {
         btnAddWord.setOnClickListener(v -> {
             intent = new Intent(this, AddEditWordActivity.class);
+            intent.putExtra("dictionary_id", dictionary.getId());
             startActivity(intent);
         });
     }
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        allWordsAdapter.notifyDataSetChanged();
-//    }
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        allWordsAdapter.notifyDataSetChanged();
+        handleTextNoWords(dictionary.getWordCount());
+    }
 }

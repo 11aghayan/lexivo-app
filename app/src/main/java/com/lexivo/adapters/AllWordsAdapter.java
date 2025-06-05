@@ -2,6 +2,7 @@ package com.lexivo.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +16,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lexivo.AddEditWordActivity;
 import com.lexivo.R;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
-import com.lexivo.schema.WordType;
-import com.lexivo.util.ListUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHolder> {
     private static boolean isSoundPlaying = false;
@@ -56,6 +55,13 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Word word = words.get(position);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddEditWordActivity.class);
+            intent.putExtra("word_id", word.getId());
+            intent.putExtra("dictionary_id", dictionary.getId());
+            context.startActivity(intent);
+        });
 
         handleType(holder, word);
         handlePhoto(holder, word);
@@ -92,7 +98,7 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
 
     private Drawable getPhoto(String photo) {
         if (photo == null) {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null);
+            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder_photo, null);
         }
         //TODO: create a drawable from photo
         return null;
@@ -106,11 +112,7 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
     }
 
     private void handleType(@NonNull ViewHolder holder, Word word) {
-        holder.type.setText(
-                ListUtil.joinElementsIntoString(
-                        word.getType().stream().map(WordType::toString).collect(Collectors.toList()),
-                        ",")
-        );
+        holder.type.setText(word.getType().toString());
     }
 
     private void handlePhoto(@NonNull ViewHolder holder, Word word) {
@@ -195,10 +197,10 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
     }
 
     private void handleSound(@NonNull ViewHolder holder, Word word) {
-        holder.sound.setImageDrawable(getSoundIcon(word.getSound()));
+        holder.sound.setImageDrawable(getSoundIcon(word.getAudio()));
 
         holder.sound.setOnClickListener(v -> {
-            if (isSoundPlaying || word.getSound() == null) return;
+            if (isSoundPlaying || word.getAudio() == null) return;
             isSoundPlaying = true;
             notifyItemChanged(holder.getAdapterPosition());
 //          TODO: implement actual sound playing

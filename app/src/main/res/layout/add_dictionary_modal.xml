@@ -14,7 +14,7 @@
         android:id="@+id/createEditDictionaryModal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/layoutMargin"
+        android:layout_marginHorizontal="@dimen/layout_margin"
         android:background="@color/background"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,13 +26,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/modalButtonsLayout"
-            android:padding="@dimen/layoutMargin">
+            android:padding="@dimen/layout_margin">
 
             <TextView
                 android:id="@+id/addLanguageSpinnerLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/language_spinner_label"
+                android:text="@string/placeholder_text_language"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"

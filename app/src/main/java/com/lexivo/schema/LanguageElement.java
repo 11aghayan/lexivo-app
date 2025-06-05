@@ -14,23 +14,19 @@ public abstract class LanguageElement implements ObjectContainingId {
     private Text original;
     private Text translation;
     private String photo;
-    private String sound;
+    private String audio;
     private String comment;
     private int lastGuessDate;
 
-    public LanguageElement(Dictionary dictionary, Text original, Text translation, String photo, String sound, String comment) {
+    public LanguageElement(Dictionary dictionary, Text original, Text translation, String photo, String audio, String comment) {
         this.id = UUID.randomUUID().toString();
         this.dictionary = dictionary;
         this.original = original;
         this.translation = translation;
         this.photo = photo;
-        this.sound = sound;
-        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+        this.audio = audio;
         this.comment = comment;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
+        updateHash();
     }
 
     public String getComment() {
@@ -65,8 +61,8 @@ public abstract class LanguageElement implements ObjectContainingId {
         return photo;
     }
 
-    public String getSound() {
-        return sound;
+    public String getAudio() {
+        return audio;
     }
 
     public int getLastGuessDate() {
@@ -75,20 +71,24 @@ public abstract class LanguageElement implements ObjectContainingId {
 
     public void setOriginal(Text original) {
         this.original = original;
-        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+        updateHash();
     }
 
     public void setTranslation(Text translation) {
         this.translation = translation;
-        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + translation.getValue());
+        updateHash();
+    }
+
+    private void updateHash() {
+        this.hash = HashUtil.generateMd5HashFromString(original.getValue() + original.getDetails() + translation.getValue() + original.getDetails());
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
     }
 
-    public void setSound(String sound) {
-        this.sound = sound;
+    public void setAudio(String audio) {
+        this.audio = audio;
     }
 
     public void setLastGuessDate(int lastGuessDate) {
@@ -104,7 +104,7 @@ public abstract class LanguageElement implements ObjectContainingId {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dictionary, hash, original, translation, photo, sound, lastGuessDate);
+        return Objects.hash(id, dictionary, hash, original, translation, photo, audio, lastGuessDate);
     }
 
     @NonNull
@@ -117,7 +117,7 @@ public abstract class LanguageElement implements ObjectContainingId {
                 ", original=" + original +
                 ", translation=" + translation +
                 ", photo='" + photo + '\'' +
-                ", sound='" + sound + '\'' +
+                ", audio='" + audio + '\'' +
                 ", comment='" + comment + '\'' +
                 ", lastGuessDate=" + lastGuessDate +
                 '}';

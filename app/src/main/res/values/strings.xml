@@ -16,7 +16,7 @@
     <string name="languages_dropdown_description">Pick the Language</string>
     <string name="spinner_dropdown_item_placeholder">Item</string>
     <string name="spinner_selected_item_placeholder">Selected Item</string>
-    <string name="language_spinner_label">Language</string>
+    <string name="placeholder_text_language">Language</string>
     <string name="word_count_label">Words:</string>
     <string name="expression_count_label">Expressions:</string>
     <string name="count_placeholder">0</string>
@@ -58,7 +58,7 @@
     <string name="text_gender_personal">personal</string>
     <string name="text_gender_plural">plural</string>
     <string name="text_no_words">No Words</string>
-    <string name="text_header_add_a_word_left_part">Add a</string>
+    <string name="text_header_add_word">Add Word</string>
     <string name="text_word">Word</string>
     <string name="content_description_btn_save_add_edit_word">Save the added or edited word</string>
     <string name="text_btn_save_add_edit_word">Save</string>
@@ -67,4 +67,25 @@
     <string name="text_word_past_2_header">past 2</string>
     <string name="text_word_past_2">NULL</string>
     <string name="content_description_word_past">verb in one form of past tense</string>
+    <string name="text_label_spinner_word_type">Type</string>
+    <string name="text_label_spinner_word_gender">Gender</string>
+    <string name="hint_text_input">Type here…</string>
+    <string name="text_label_static_input_word_original">Word in</string>
+    <string name="text_label_static_input_word_native">Word in Native</string>
+    <string name="text_label_static_input_word_original_addition">Details - Word in</string>
+    <string name="text_label_static_input_word_native_addition">Details - Word in Native</string>
+    <string name="text_label_dynamic_input_word_original">Language</string>
+    <string name="placeholder_label">Label</string>
+    <string name="text_label_input_word_plural_static_left">Word in</string>
+    <string name="text_label_input_word_plural_static_right">- Plural</string>
+    <string name="text_label_input_word_past_static_left">Word in</string>
+    <string name="text_label_input_word_past1_static_right">- Past 1</string>
+    <string name="text_label_input_word_past2_static_right">- Past 2</string>
+    <string name="text_label_input_word_comment">Comment</string>
+    <string name="text_label_section_add_photo">Photo</string>
+    <string name="content_description_button_add_photo">add photo</string>
+    <string name="text_label_section_add_audio">Audio</string>
+    <string name="text_btn_upload_audio">Upload</string>
+    <string name="text_btn_record_audio">Record</string>
+    <string name="text_header_edit_word">Edit Word</string>
 </resources>

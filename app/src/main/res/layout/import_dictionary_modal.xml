@@ -14,7 +14,7 @@
         android:id="@+id/importEditDictionaryModal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/layoutMargin"
+        android:layout_marginHorizontal="@dimen/layout_margin"
         android:background="@color/background"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/layoutMargin"
+            android:padding="@dimen/layout_margin"
             android:id="@+id/importDictionaryModalButtonsLayout">
 
             <EditText

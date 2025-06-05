@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedLanguageInModal = ((String)parent.getItemAtPosition(position)).toLowerCase();
+                selectedLanguageInModal = ((String)parent.getSelectedItem()).toLowerCase();
             }
 
             @Override
