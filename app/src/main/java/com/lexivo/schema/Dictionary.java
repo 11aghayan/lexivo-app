@@ -1,8 +1,7 @@
-package com.lexivo.data;
+package com.lexivo.schema;
 
 import androidx.annotation.NonNull;
 
-import com.lexivo.AllWordsActivity;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.exception.DuplicateHashException;
 import com.lexivo.util.HashUtil;

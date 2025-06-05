@@ -1,6 +1,5 @@
-package com.lexivo.data;
+package com.lexivo.schema;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Expression extends LanguageElement {

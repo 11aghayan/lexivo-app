@@ -1,4 +1,4 @@
-package com.lexivo.data;
+package com.lexivo.schema;
 
 import androidx.annotation.NonNull;
 

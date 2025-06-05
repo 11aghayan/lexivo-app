@@ -1,6 +1,6 @@
 package com.lexivo.util;
 
-import com.lexivo.data.ObjectContainingId;
+import com.lexivo.schema.ObjectContainingId;
 
 import java.util.List;
 import java.util.NoSuchElementException;

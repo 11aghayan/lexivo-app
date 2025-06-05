@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/languageFlag"
-                android:text="@string/language_dropdown_item_placeholder"
+                android:text="@string/spinner_dropdown_item_placeholder"
                 android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_medium"

@@ -1,4 +1,4 @@
-package com.lexivo.data;
+package com.lexivo.schema;
 
 public enum WordType {
     NOUN,
@@ -10,7 +10,8 @@ public enum WordType {
     QUESTION_WORD,
     NUMERAL;
 
-    public String getString() {
+    @Override
+    public String toString() {
         switch (this) {
             case NOUN:
                 return "noun";

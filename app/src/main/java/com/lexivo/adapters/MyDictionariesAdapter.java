@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.DictionaryActivity;
 import com.lexivo.R;
-import com.lexivo.data.Dictionary;
-import com.lexivo.data.Language;
+import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.util.StringUtil;
 

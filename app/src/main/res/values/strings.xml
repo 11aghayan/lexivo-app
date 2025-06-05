@@ -14,8 +14,8 @@
     <string name="dismiss">Dismiss</string>
     <string name="create">Create</string>
     <string name="languages_dropdown_description">Pick the Language</string>
-    <string name="language_dropdown_item_placeholder">Language</string>
-    <string name="language_spinner_item_placeholder">Selected Language</string>
+    <string name="spinner_dropdown_item_placeholder">Item</string>
+    <string name="spinner_selected_item_placeholder">Selected Item</string>
     <string name="language_spinner_label">Language</string>
     <string name="word_count_label">Words:</string>
     <string name="expression_count_label">Expressions:</string>
@@ -58,4 +58,13 @@
     <string name="text_gender_personal">personal</string>
     <string name="text_gender_plural">plural</string>
     <string name="text_no_words">No Words</string>
+    <string name="text_header_add_a_word_left_part">Add a</string>
+    <string name="text_word">Word</string>
+    <string name="content_description_btn_save_add_edit_word">Save the added or edited word</string>
+    <string name="text_btn_save_add_edit_word">Save</string>
+    <string name="text_past_1_header">past 1</string>
+    <string name="text_word_past_1">NULL</string>
+    <string name="text_word_past_2_header">past 2</string>
+    <string name="text_word_past_2">NULL</string>
+    <string name="content_description_word_past">verb in one form of past tense</string>
 </resources>

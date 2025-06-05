@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +23,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.adapters.AllWordsAdapter;
-import com.lexivo.data.Dictionary;
-import com.lexivo.data.Gender;
-import com.lexivo.data.Text;
-import com.lexivo.data.Word;
-import com.lexivo.data.WordType;
-import com.lexivo.exception.DuplicateHashException;
+import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Word;
 import com.lexivo.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllWordsActivity extends AppCompatActivity {
@@ -60,6 +54,7 @@ public class AllWordsActivity extends AppCompatActivity {
         initContent();
         handleAllWordsRecView();
         handleTextNoWords(dictionary.getWordCount());
+        handleAddWord();
     }
 
     private void initViews() {
@@ -90,88 +85,6 @@ public class AllWordsActivity extends AppCompatActivity {
     }
 
     private void handleAllWordsRecView() {
-        try {
-            //TODO: remove the fake population
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("der Zug", null),
-                    new Text("Train", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.MASCULINE,
-                    "die Züge"
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("Um", "Akkusativ"),
-                    new Text("At", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.PRON_PREP))
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("die Frau", null),
-                    new Text("Wife", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.FEMININE,
-                    "die Frauen"
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("das Buch", null),
-                    new Text("Book", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.NEUTRAL,
-                    "die Bücher"
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("Frankreich", null),
-                    new Text("France", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.PERSONAL,
-                    null
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text(null, null),
-                    new Text("Furniture", null),
-                    null,
-                    null,
-                    "In german the word furniture is only plural",
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.PLURAL,
-                    "die Möbel"
-            ));
-            dictionary.addWord(new Word(
-                    dictionary,
-                    new Text("das Fitnessstudio", null),
-                    new Text("Fitness Center", null),
-                    null,
-                    null,
-                    null,
-                    new ArrayList<>(List.of(WordType.NOUN)),
-                    Gender.NEUTRAL,
-                    "die Fitnessstudios"
-            ));
-
-        } catch (DuplicateHashException dhe) {
-            Toast.makeText(this, "The word already exists", Toast.LENGTH_SHORT).show();
-            throw new RuntimeException(dhe);
-        }
         allWordsAdapter = new AllWordsAdapter(dictionary, this, deleteModal, textNoWords);
         allWordsRecView.setAdapter(allWordsAdapter);
         allWordsRecView.setLayoutManager(new LinearLayoutManager(this));
@@ -198,6 +111,13 @@ public class AllWordsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
             }
+        });
+    }
+
+    private void handleAddWord() {
+        btnAddWord.setOnClickListener(v -> {
+            intent = new Intent(this, AddEditWordActivity.class);
+            startActivity(intent);
         });
     }
 

@@ -19,11 +19,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lexivo.adapters.LanguagesArrayAdapter;
+import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.adapters.MyDictionariesAdapter;
-import com.lexivo.data.Dictionary;
-import com.lexivo.data.Language;
+import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
+import com.lexivo.util.ViewUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleAddDictionaryModal() {
-        var adapter = new LanguagesArrayAdapter(MainActivity.this).adapter;
-        adapter.setDropDownViewResource(R.layout.language_dropdown_item);
+        var adapter = ArrayAdapters.languagesAdapter(MainActivity.this);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         languageSelector.setAdapter(adapter);
 
         addDictionaryBtn.setOnClickListener(v -> {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         importDictionaryBtn = findViewById(R.id.importDictionaryBtn);
         importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
         myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
-        languageSelector = findViewById(R.id.languageSelector);
+        languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
         languageModal = findViewById(R.id.deleteModal);
         importEditDictionaryModalBg = findViewById(R.id.importEditDictionaryModalBg);
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);

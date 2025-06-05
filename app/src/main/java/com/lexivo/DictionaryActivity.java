@@ -23,10 +23,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.lexivo.adapters.LanguagesArrayAdapter;
-import com.lexivo.data.Dictionary;
-import com.lexivo.data.Language;
+import com.lexivo.adapters.ArrayAdapters;
+import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Language;
 import com.lexivo.util.StringUtil;
+import com.lexivo.util.ViewUtil;
 
 public class DictionaryActivity extends AppCompatActivity {
     private Dictionary dictionary;
@@ -64,7 +65,7 @@ public class DictionaryActivity extends AppCompatActivity {
         btnExportDictionary = findViewById(R.id.btnExportDictionary);
         language = findViewById(R.id.language);
         languageModal = findViewById(R.id.deleteModal);
-        languageSelector = findViewById(R.id.languageSelector);
+        languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
         saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
         btnCopyId = findViewById(R.id.btnCopyId);
@@ -120,8 +121,8 @@ public class DictionaryActivity extends AppCompatActivity {
 
     private void handleLanguageChange() {
         saveLanguageBtn.setText(R.string.save);
-        var adapter = new LanguagesArrayAdapter(DictionaryActivity.this).adapter;
-        adapter.setDropDownViewResource(R.layout.language_dropdown_item);
+        var adapter = ArrayAdapters.languagesAdapter(this);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         languageSelector.setAdapter(adapter);
         languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

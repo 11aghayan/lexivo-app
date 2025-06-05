@@ -1,6 +1,6 @@
 package com.lexivo.util;
 
-import com.lexivo.data.LanguageElement;
+import com.lexivo.schema.LanguageElement;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

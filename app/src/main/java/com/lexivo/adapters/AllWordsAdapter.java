@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,10 +16,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.R;
-import com.lexivo.data.Dictionary;
-import com.lexivo.data.Gender;
-import com.lexivo.data.Word;
-import com.lexivo.data.WordType;
+import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Gender;
+import com.lexivo.schema.Word;
+import com.lexivo.schema.WordType;
 import com.lexivo.util.ListUtil;
 
 import java.util.List;
@@ -52,82 +53,21 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Word word = words.get(position);
-        holder.type.setText(
-                ListUtil.joinElementsIntoString(
-                        word.getType().stream().map(WordType::getString).collect(Collectors.toList()),
-                        ",")
-        );
-        holder.photo.setImageDrawable(getPhoto(word.getPhoto()));
-        holder.sound.setImageDrawable(getSoundIcon(word.getSound()));
-        holder.translation.setText(word.getTranslation().getValue());
-        if (word.getGender() != null) {
-            String[] genderData = getGender(word.getGender());
-            holder.gender.setVisibility(View.VISIBLE);
-            holder.gender.setText(String.valueOf(genderData[0]));
-            holder.gender.setTextColor(Integer.parseInt(genderData[1]));
-        } else {
-            holder.gender.setVisibility(View.GONE);
-        }
-        if (word.getTranslation().getDetails() != null) {
-            holder.additionTranslation.setVisibility(View.VISIBLE);
-            holder.additionTranslation.setText("(" + word.getTranslation().getDetails() + ")");
 
-        } else {
-            holder.additionTranslation.setVisibility(View.GONE);
-        }
-        if (word.getOriginal().getValue() != null) {
-            holder.singular.setText(word.getOriginal().getValue());
-        } else {
-            holder.singular.setTextSize(12);
-            holder.singular.setText("Only plural");
-            holder.singular.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.secondary_text, null));
-        }
-        if (word.getOriginal().getDetails() != null) {
-            holder.additionOriginal.setVisibility(View.VISIBLE);
-            holder.additionOriginal.setText("(" + word.getOriginal().getDetails() + ")");
-        } else {
-            holder.additionOriginal.setVisibility(View.GONE);
-        }
-        if (word.getPlural() != null) {
-            holder.plural.setVisibility(View.VISIBLE);
-            holder.pluralHeader.setVisibility(View.VISIBLE);
-            holder.plural.setText(word.getPlural());
-        } else {
-            holder.pluralHeader.setVisibility(View.GONE);
-            holder.plural.setVisibility(View.GONE);
-        }
-        if (word.getComment() != null) {
-            holder.comment.setVisibility(View.VISIBLE);
-            holder.comment.setText(word.getComment());
-        } else {
-            holder.comment.setVisibility(View.GONE);
-        }
-        holder.sound.setOnClickListener(v -> {
-            if (isSoundPlaying || word.getSound() == null) return;
-            isSoundPlaying = true;
-            notifyItemChanged(holder.getAdapterPosition());
-//          TODO: implement actual sound playing
-            isSoundPlaying = false;
-            notifyItemChanged(holder.getAdapterPosition());
-        });
-        holder.btnDelete.setOnClickListener(v -> {
-            deleteModal.setVisibility(View.VISIBLE);
-            deleteModal.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
-                dictionary.deleteWord(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-                deleteModal.setVisibility(View.GONE);
-                if (words.isEmpty()) {
-                    textNoWords.setVisibility(View.VISIBLE);
-                }
-            });
-            deleteModal.findViewById(R.id.btnCancel).setOnClickListener(_v -> {
-                deleteModal.setVisibility(View.GONE);
-            });
-        });
+        handleType(holder, word);
+        handlePhoto(holder, word);
+        handleGender(holder, word);
+        handleTranslation(holder, word);
+        handleOriginal(holder, word);
+        handlePlural(holder, word);
+        handlePast1(holder, word);
+        handlePast2(holder, word);
+        handleComment(holder, word);
+        handleSound(holder, word);
+        handleDelete(holder);
     }
 
     @Override
@@ -165,14 +105,135 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
         return ResourcesCompat.getDrawable(context.getResources(), R.drawable.icon_sound, null);
     }
 
+    private void handleType(@NonNull ViewHolder holder, Word word) {
+        holder.type.setText(
+                ListUtil.joinElementsIntoString(
+                        word.getType().stream().map(WordType::toString).collect(Collectors.toList()),
+                        ",")
+        );
+    }
+
+    private void handlePhoto(@NonNull ViewHolder holder, Word word) {
+        holder.photo.setImageDrawable(getPhoto(word.getPhoto()));
+    }
+
+    private void handleGender(@NonNull ViewHolder holder, Word word) {
+        if (word.getGender() != null) {
+            String[] genderData = getGender(word.getGender());
+            holder.gender.setVisibility(View.VISIBLE);
+            holder.gender.setText(String.valueOf(genderData[0]));
+            holder.gender.setTextColor(Integer.parseInt(genderData[1]));
+        } else {
+            holder.gender.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void handleTranslation(@NonNull ViewHolder holder, Word word) {
+        holder.translation.setText(word.getTranslation().getValue());
+        if (word.getTranslation().getDetails() != null) {
+            holder.additionTranslation.setVisibility(View.VISIBLE);
+            holder.additionTranslation.setText("(" + word.getTranslation().getDetails() + ")");
+
+        } else {
+            holder.additionTranslation.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void handleOriginal(@NonNull ViewHolder holder, Word word) {
+        if (word.getOriginal().getValue() != null) {
+            holder.singular.setText(word.getOriginal().getValue());
+        } else {
+            holder.singular.setTextSize(12);
+            holder.singular.setText("Only plural");
+            holder.singular.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.secondary_text, null));
+        }
+
+        if (word.getOriginal().getDetails() != null) {
+            holder.additionOriginal.setVisibility(View.VISIBLE);
+            holder.additionOriginal.setText("(" + word.getOriginal().getDetails() + ")");
+        } else {
+            holder.additionOriginal.setVisibility(View.GONE);
+        }
+    }
+
+    private void handlePlural(@NonNull ViewHolder holder, Word word) {
+        if (word.getPlural() != null) {
+            holder.pluralContainer.setVisibility(View.VISIBLE);
+            holder.plural.setText(word.getPlural());
+        } else {
+            holder.pluralContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void handlePast1(@NonNull ViewHolder holder, Word word) {
+        if (word.getPast1() != null) {
+            holder.past1Container.setVisibility(View.VISIBLE);
+            holder.past1.setText(word.getPast1());
+        } else {
+            holder.past1Container.setVisibility(View.GONE);
+        }
+    }
+
+    private void handlePast2(@NonNull ViewHolder holder, Word word) {
+        if (word.getPast2() != null) {
+            holder.past2Container.setVisibility(View.VISIBLE);
+            holder.past2.setText(word.getPast2());
+        } else {
+            holder.past2Container.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleComment(@NonNull ViewHolder holder, Word word) {
+        if (word.getComment() != null) {
+            holder.comment.setVisibility(View.VISIBLE);
+            holder.comment.setText(word.getComment());
+        } else {
+            holder.comment.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleSound(@NonNull ViewHolder holder, Word word) {
+        holder.sound.setImageDrawable(getSoundIcon(word.getSound()));
+
+        holder.sound.setOnClickListener(v -> {
+            if (isSoundPlaying || word.getSound() == null) return;
+            isSoundPlaying = true;
+            notifyItemChanged(holder.getAdapterPosition());
+//          TODO: implement actual sound playing
+            isSoundPlaying = false;
+            notifyItemChanged(holder.getAdapterPosition());
+        });
+    }
+
+    private void handleDelete(@NonNull ViewHolder holder) {
+        holder.btnDelete.setOnClickListener(v -> {
+            deleteModal.setVisibility(View.VISIBLE);
+            deleteModal.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
+                dictionary.deleteWord(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                deleteModal.setVisibility(View.GONE);
+                if (words.isEmpty()) {
+                    textNoWords.setVisibility(View.VISIBLE);
+                }
+            });
+            deleteModal.findViewById(R.id.btnCancel).setOnClickListener(_v -> {
+                deleteModal.setVisibility(View.GONE);
+            });
+        });
+    }
+
     public void setWords(List<Word> words) {
+
         this.words = words;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView
-            type, singular, additionOriginal, additionTranslation, plural, comment, translation, btnDelete, gender, pluralHeader;
+            type, singular, additionOriginal, additionTranslation, plural, past1, past2, comment, translation, btnDelete, gender;
         private final ImageView photo, sound;
+        private final LinearLayout pluralContainer, past1Container, past2Container;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -181,11 +242,15 @@ public class AllWordsAdapter extends RecyclerView.Adapter<AllWordsAdapter.ViewHo
             additionOriginal = itemView.findViewById(R.id.additionOriginal);
             additionTranslation = itemView.findViewById(R.id.additionTranslation);
             plural = itemView.findViewById(R.id.plural);
+            past1 = itemView.findViewById(R.id.past1);
+            past2 = itemView.findViewById(R.id.past2);
             comment = itemView.findViewById(R.id.comment);
             translation = itemView.findViewById(R.id.translation);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             gender = itemView.findViewById(R.id.gender);
-            pluralHeader = itemView.findViewById(R.id.pluralHeader);
+            pluralContainer = itemView.findViewById(R.id.pluralContainer);
+            past1Container = itemView.findViewById(R.id.past1Container);
+            past2Container = itemView.findViewById(R.id.past2Container);
             photo = itemView.findViewById(R.id.photo);
             sound = itemView.findViewById(R.id.sound);
         }

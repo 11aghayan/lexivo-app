@@ -30,7 +30,7 @@
         android:id="@+id/languageOnDictionaryCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/language_dropdown_item_placeholder"
+        android:text="@string/spinner_dropdown_item_placeholder"
         android:fontFamily="@font/poppins_semibold"
         android:textSize="32sp"
         android:textAlignment="center"
