@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lexivo.adapters.AllWordsAdapter;
+import com.lexivo.adapters.WordAdapter;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Word;
 import com.lexivo.util.StringUtil;
@@ -36,7 +36,7 @@ public class AllWordsActivity extends AppCompatActivity {
     private Button btnAddWord;
     private Intent intent;
     private Dictionary dictionary;
-    private AllWordsAdapter allWordsAdapter;
+    private WordAdapter wordAdapter;
     private ConstraintLayout deleteModal;
 
     @Override
@@ -83,13 +83,13 @@ public class AllWordsActivity extends AppCompatActivity {
     }
 
     private void handleAllWordsRecView() {
-        allWordsAdapter = new AllWordsAdapter(dictionary, this, deleteModal, textNoWords);
-        allWordsRecView.setAdapter(allWordsAdapter);
+        wordAdapter = new WordAdapter(dictionary, this, deleteModal, textNoWords);
+        allWordsRecView.setAdapter(wordAdapter);
         allWordsRecView.setLayoutManager(new LinearLayoutManager(this));
-        handleInputSearch(allWordsAdapter);
+        handleInputSearch(wordAdapter);
     }
 
-    private void handleInputSearch(AllWordsAdapter allWordsAdapter) {
+    private void handleInputSearch(WordAdapter allWordsAdapter) {
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -124,7 +124,7 @@ public class AllWordsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        allWordsAdapter.notifyDataSetChanged();
+        wordAdapter.notifyDataSetChanged();
         handleTextNoWords(dictionary.getWordCount());
     }
 }

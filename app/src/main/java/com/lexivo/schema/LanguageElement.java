@@ -13,18 +13,14 @@ public abstract class LanguageElement implements ObjectContainingId {
     private String hash;
     private Text original;
     private Text translation;
-    private String photo;
-    private String audio;
     private String comment;
     private int lastGuessDate;
 
-    public LanguageElement(Dictionary dictionary, Text original, Text translation, String photo, String audio, String comment) {
+    public LanguageElement(Dictionary dictionary, Text original, Text translation, String comment) {
         this.id = UUID.randomUUID().toString();
         this.dictionary = dictionary;
         this.original = original;
         this.translation = translation;
-        this.photo = photo;
-        this.audio = audio;
         this.comment = comment;
         updateHash();
     }
@@ -56,15 +52,6 @@ public abstract class LanguageElement implements ObjectContainingId {
     public Text getTranslation() {
         return translation;
     }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public String getAudio() {
-        return audio;
-    }
-
     public int getLastGuessDate() {
         return lastGuessDate;
     }
@@ -83,14 +70,6 @@ public abstract class LanguageElement implements ObjectContainingId {
         this.hash = HashUtil.generateMd5HashFromString(original.getValue() + original.getDetails() + translation.getValue() + original.getDetails());
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public void setAudio(String audio) {
-        this.audio = audio;
-    }
-
     public void setLastGuessDate(int lastGuessDate) {
         this.lastGuessDate = lastGuessDate;
     }
@@ -104,7 +83,7 @@ public abstract class LanguageElement implements ObjectContainingId {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dictionary, hash, original, translation, photo, audio, lastGuessDate);
+        return Objects.hash(id, dictionary, hash, original, translation, lastGuessDate);
     }
 
     @NonNull
@@ -116,8 +95,6 @@ public abstract class LanguageElement implements ObjectContainingId {
                 ", hash='" + hash + '\'' +
                 ", original=" + original +
                 ", translation=" + translation +
-                ", photo='" + photo + '\'' +
-                ", audio='" + audio + '\'' +
                 ", comment='" + comment + '\'' +
                 ", lastGuessDate=" + lastGuessDate +
                 '}';

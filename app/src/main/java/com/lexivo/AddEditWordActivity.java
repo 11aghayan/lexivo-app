@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -37,13 +38,17 @@ import com.lexivo.databinding.ActivityAddEditWordBinding;
 public class AddEditWordActivity extends AppCompatActivity {
     private Word word;
     private ActivityAddEditWordBinding binding;
+    private ArrayAdapter<String> adapterWordType;
+    private ArrayAdapter<String> adapterWordGender;
     private CardView languageFlag;
     private Spinner spinnerWordType, spinnerWordGender;
     private EditText inputWordOriginal, inputWordOriginalDetails, inputWordPlural, inputWordPast1, inputWordPast2, inputWordNative, inputWordNativeDetails, inputWordComment;
-    private TextView headerText;
+    private TextView headerText, btnOpenDeleteModal;
     private WordType selectedWordType;
     private Gender selectedGender;
     private Button btnSave;
+    private ConstraintLayout modalDelete;
+
     private final StringBuilder
             wordOriginal = new StringBuilder(),
             wordOriginalDetails = new StringBuilder(),
@@ -53,12 +58,8 @@ public class AddEditWordActivity extends AppCompatActivity {
             wordNative = new StringBuilder(),
             wordNativeDetails = new StringBuilder(),
             wordComment = new StringBuilder();
-    private String photo, audio;
     private LinearLayout spinnerWordGenderSection, inputWordPluralSection, pastTenseSection;
     private Dictionary dictionary;
-
-    //        TODO: Add button delete in the header
-    //        TODO: LATER: import, init and handle photo and audio
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +74,14 @@ public class AddEditWordActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_edit_word);
 
         initViews();
-        populateStartingContent();
         handleSpinnerWordType();
         handleSpinnerWordGender();
+        populateStartingContent();
         manageFieldsDependingOnWordType();
         handleGender();
         handleInputsChanges();
         handleSave();
+        handleDelete();
     }
 
     private void initViews() {
@@ -99,6 +101,8 @@ public class AddEditWordActivity extends AppCompatActivity {
         inputWordComment = findViewById(R.id.inputWordComment);
         btnSave = findViewById(R.id.btnSave);
         headerText = findViewById(R.id.headerText);
+        btnOpenDeleteModal = findViewById(R.id.btnOpenDeleteModal);
+        modalDelete = findViewById(R.id.deleteModal);
     }
 
     private void populateStartingContent() {
@@ -111,8 +115,10 @@ public class AddEditWordActivity extends AppCompatActivity {
             word = dictionary.getWordById(wordId);
             dictionary = word.getDictionary();
             initFieldsWithWordData(word);
+            btnOpenDeleteModal.setVisibility(View.VISIBLE);
         } else {
             headerText.setText(getResources().getString(R.string.text_header_add_word));
+            btnOpenDeleteModal.setVisibility(View.GONE);
         }
         assert dictionary != null;
         binding.setLanguage(StringUtil.capitalize(dictionary.getLanguage().getLabel()));
@@ -120,15 +126,15 @@ public class AddEditWordActivity extends AppCompatActivity {
     }
 
     private void handleSpinnerWordType() {
-        var adapter = ArrayAdapters.wordTypeAdapter(this);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinnerWordType.setAdapter(adapter);
+        adapterWordType = ArrayAdapters.wordTypeAdapter(this);
+        adapterWordType.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerWordType.setAdapter(adapterWordType);
     }
 
     private void handleSpinnerWordGender() {
-        var adapter = ArrayAdapters.wordGenderAdapter(this);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinnerWordGender.setAdapter(adapter);
+        adapterWordGender = ArrayAdapters.wordGenderAdapter(this);
+        adapterWordGender.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerWordGender.setAdapter(adapterWordGender);
     }
 
     private void manageFieldsDependingOnWordType() {
@@ -206,7 +212,7 @@ public class AddEditWordActivity extends AppCompatActivity {
 
                 if (word == null) {
                     try {
-                        dictionary.addWord(new Word(dictionary, selectedWordType, selectedGender,original,plural,past1,past2,translation,photo,audio,comment));
+                        dictionary.addWord(new Word(dictionary, selectedWordType, selectedGender, original, plural, past1, past2, translation, comment));
                     }
                     catch (DuplicateHashException e) {
                         Toast.makeText(this, "The word already is in the dictionary", Toast.LENGTH_SHORT).show();
@@ -220,8 +226,6 @@ public class AddEditWordActivity extends AppCompatActivity {
                     word.setPast1(past1);
                     word.setPast2(past2);
                     word.setTranslation(translation);
-                    word.setPhoto(photo);
-                    word.setAudio(audio);
                     word.setComment(comment);
                 }
                 getOnBackPressedDispatcher().onBackPressed();
@@ -229,7 +233,27 @@ public class AddEditWordActivity extends AppCompatActivity {
         });
     }
 
+    private void handleDelete() {
+        btnOpenDeleteModal.setOnClickListener(v -> {
+            modalDelete.setVisibility(View.VISIBLE);
+            findViewById(R.id.btnDelete).setOnClickListener(_v -> {
+                dictionary.deleteWord(word);
+                getOnBackPressedDispatcher().onBackPressed();
+                modalDelete.setVisibility(View.GONE);
+            });
+            findViewById(R.id.btnCancel).setOnClickListener(_v -> modalDelete.setVisibility(View.GONE));
+        });
+    }
+
     private void initFieldsWithWordData(Word word) {
+        selectedWordType = word.getType();
+        spinnerWordType.setSelection(adapterWordType.getPosition(StringUtil.capitalize(selectedWordType.toString())));
+
+        selectedGender = word.getGender();
+        if (selectedGender != null) {
+            spinnerWordGender.setSelection(adapterWordGender.getPosition(StringUtil.capitalize(selectedGender.toString().toLowerCase())));
+        }
+
         StringUtil.setStringBuilderValue(wordOriginal, word.getOriginal().getValue());
         inputWordOriginal.setText(StringUtil.getValueFromStringBuilder(wordOriginal));
 
@@ -250,9 +274,6 @@ public class AddEditWordActivity extends AppCompatActivity {
 
         StringUtil.setStringBuilderValue(wordNativeDetails, word.getTranslation().getDetails());
         inputWordNativeDetails.setText(StringUtil.getValueFromStringBuilder(wordNativeDetails));
-
-        photo = word.getPhoto();
-        audio = word.getAudio();
 
         StringUtil.setStringBuilderValue(wordComment, word.getComment());
         inputWordComment.setText(StringUtil.getValueFromStringBuilder(wordComment));

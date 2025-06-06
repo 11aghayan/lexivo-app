@@ -58,13 +58,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         languageSelector.setAdapter(adapter);
 
-        addDictionaryBtn.setOnClickListener(v -> {
-            languageModal.setVisibility(View.VISIBLE);
-        });
+        addDictionaryBtn.setOnClickListener(v -> languageModal.setVisibility(View.VISIBLE));
 
-        dismissLanguageModalBtn.setOnClickListener(v -> {
-            languageModal.setVisibility(View.GONE);
-        });
+        dismissLanguageModalBtn.setOnClickListener(v -> languageModal.setVisibility(View.GONE));
 
         saveLanguageBtn.setOnClickListener(v -> {
             if (selectedLanguageInModal != null) {
@@ -111,20 +107,16 @@ public class MainActivity extends AppCompatActivity {
             importDictionaryBtnExpanded.setVisibility(View.VISIBLE);
         });
 
-        importDictionaryByIdBtn.setOnClickListener(v -> {
-            importEditDictionaryModalBg.setVisibility(View.VISIBLE);
-        });
+        importDictionaryByIdBtn.setOnClickListener(v -> importEditDictionaryModalBg.setVisibility(View.VISIBLE));
 
-        dismissDictionaryModalBtn.setOnClickListener(v -> {
-            importEditDictionaryModalBg.setVisibility(View.GONE);
-        });
+        dismissDictionaryModalBtn.setOnClickListener(v -> importEditDictionaryModalBg.setVisibility(View.GONE));
 
         importDictionaryModalBtn.setOnClickListener(v -> {
-            //TODO
+            //TODO: implement import by id
         });
 
         importDictionaryFromMemoryBtn.setOnClickListener(v -> {
-            //TODO
+            //TODO: implement import from memory
         });
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {

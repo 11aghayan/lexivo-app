@@ -7,6 +7,7 @@
     android:layout_marginTop="8dp"
     android:padding="16dp">
 
+<!--    Type  -->
     <TextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
@@ -19,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+<!--    Gender  -->
     <TextView
         android:id="@+id/gender"
         android:layout_width="wrap_content"
@@ -31,66 +33,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <RelativeLayout
-        android:id="@+id/media"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/word_inner_grid_margin"
-        app:layout_constraintTop_toBottomOf="@+id/type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/photoContainer"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            android:backgroundTint="@color/lightest_gray">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/photo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/placeholder_photo"
-                    android:layout_centerInParent="true"/>
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <ImageView
-            android:id="@+id/sound"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/icon_sound"
-            android:contentDescription="@string/content_description_icon_sound"
-            android:layout_marginTop="@dimen/word_inner_grid_margin"
-            android:layout_below="@+id/photoContainer"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-
+<!--    Content wrapper  -->
     <LinearLayout
         android:id="@+id/wordContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintStart_toEndOf="@+id/media"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/word_inner_grid_margin"
         android:layout_marginTop="@dimen/word_inner_grid_margin">
 
+<!--        Singular Container  -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+<!--            Singular  -->
             <TextView
                 android:id="@+id/singular"
                 android:layout_width="wrap_content"
@@ -101,6 +60,7 @@
                 android:breakStrategy="simple"
                 android:textSize="16sp"/>
 
+<!--            Singular - details  -->
             <TextView
                 android:id="@+id/additionOriginal"
                 android:layout_width="wrap_content"
@@ -114,110 +74,51 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/pluralContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/pluralHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description_word_plural"
-                android:text="@string/abbrv_plural"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="12sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/secondary_text"/>
-
-            <TextView
-                android:id="@+id/plural"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_word_plural"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="16sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/main_text"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/past1Container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/past1Header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description_word_past"
-                android:text="@string/text_past_1_header"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="12sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/secondary_text"/>
-
-            <TextView
-                android:id="@+id/past1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_word_past_1"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="16sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/main_text"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/past2Container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/past2Header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_description_word_past"
-                android:text="@string/text_word_past_2_header"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="12sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/secondary_text"/>
-
-            <TextView
-                android:id="@+id/past2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_word_past_2"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="16sp"
-                android:breakStrategy="simple"
-                android:textColor="@color/main_text"/>
-
-        </LinearLayout>
-
+<!--        Plural  -->
         <TextView
-            android:id="@+id/comment"
+            android:id="@+id/plural"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/text_word_comment"
-            android:breakStrategy="simple"
+            android:text="@string/text_word_plural"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="13sp"
-            android:textColor="@color/secondary_text"
-            android:visibility="visible"/>
+            android:textSize="16sp"
+            android:breakStrategy="simple"
+            android:textColor="@color/main_text"/>
 
+<!--        Past 1  -->
+        <TextView
+            android:id="@+id/past1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_word_past_1"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="16sp"
+            android:breakStrategy="simple"
+            android:textColor="@color/main_text"/>
+
+<!--        Past 2  -->
+        <TextView
+            android:id="@+id/past2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_word_past_2"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="16sp"
+            android:breakStrategy="simple"
+            android:textColor="@color/main_text"/>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginVertical="@dimen/word_inner_grid_margin"
+            layout="@layout/separator" />
+
+<!--        Translation section -->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/word_inner_grid_margin">
+            android:layout_height="wrap_content">
 
+<!--            Translation  -->
             <TextView
                 android:id="@+id/translation"
                 android:layout_width="wrap_content"
@@ -228,6 +129,7 @@
                 android:breakStrategy="simple"
                 android:textColor="@color/main_text"/>
 
+<!--            Translation - details  -->
             <TextView
                 android:id="@+id/additionTranslation"
                 android:layout_width="wrap_content"
@@ -241,10 +143,30 @@
 
         </LinearLayout>
 
+        <include
+            android:id="@+id/separatorLower"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginVertical="@dimen/word_inner_grid_margin"
+            layout="@layout/separator" />
+
+<!--        Comment  -->
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_word_comment"
+            android:breakStrategy="simple"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            android:visibility="visible"/>
+
     </LinearLayout>
 
+<!--     Button Delete -->
     <TextView
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnOpenDeleteModal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/word_inner_grid_margin"

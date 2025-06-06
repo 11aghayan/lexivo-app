@@ -8,12 +8,18 @@
             name="language"
             type="String" />
     </data>
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".AddEditWordActivity">
+
+        <include layout="@layout/delete_modal" android:visibility="gone" />
+
+        <include
+            layout="@layout/delete_modal"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/accountBox"
@@ -51,10 +57,25 @@
                 android:layout_toEndOf="@+id/languageFlag"
                 android:text="@string/text_header_add_word"
                 android:layout_marginStart="16dp"
+                android:layout_toStartOf="@+id/btnOpenDeleteModal"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="16sp"
                 android:textColor="@color/main_text" />
+
+<!--            Button delete  -->
+            <TextView
+                android:id="@+id/btnOpenDeleteModal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/word_inner_grid_margin"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/text_btn_delete_word"
+                android:textColor="@color/btn_delete_word"
+                android:textSize="16sp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:textAlignment="textEnd"/>
 
         </RelativeLayout>
 
@@ -429,6 +450,7 @@
 
         </ScrollView>
 
+<!--        Button save  -->
         <Button
             android:id="@+id/btnSave"
             style="?android:attr/buttonBarButtonStyle"

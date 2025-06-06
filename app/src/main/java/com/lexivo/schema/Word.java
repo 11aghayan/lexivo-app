@@ -16,11 +16,9 @@ public class Word extends LanguageElement {
             String past1,
             String past2,
             Text translation,
-            String picture,
-            String audio,
             String comment
     ) {
-        super(dictionary, original, translation, picture, audio, comment);
+        super(dictionary, original, translation, comment);
         this.type = type;
         this.gender = gender;
         this.plural = plural;

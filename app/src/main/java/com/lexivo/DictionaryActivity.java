@@ -89,9 +89,7 @@ public class DictionaryActivity extends AppCompatActivity {
 
     private void handleExportDictionary() {
         btnExportDictionary.setOnClickListener(v -> exportDictionaryModal.setVisibility(View.VISIBLE));
-        exportDictionaryModal.setOnClickListener(v -> {
-            exportDictionaryModal.setVisibility(View.GONE);
-        });
+        exportDictionaryModal.setOnClickListener(v -> exportDictionaryModal.setVisibility(View.GONE));
         exportDictionaryModalContent.setOnClickListener(v->{});
         btnCopyId.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -101,7 +99,7 @@ public class DictionaryActivity extends AppCompatActivity {
             exportDictionaryModal.setVisibility(View.GONE);
         });
         btnExportJson.setOnClickListener(v -> {
-            //TODO
+            //TODO: handle export as json
         });
     }
 
@@ -112,10 +110,10 @@ public class DictionaryActivity extends AppCompatActivity {
             this.startActivity(intent);
         });
         btnExpressions.setOnClickListener(v -> {
-            //TODO
+            //TODO: redirect to expressions activity
         });
         btnRules.setOnClickListener(v -> {
-            //TODO
+            //TODO: redirect to rules activity
         });
     }
 
