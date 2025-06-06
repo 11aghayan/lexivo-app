@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout importDictionaryBtnExpanded;
     private RecyclerView myDictionariesRecView;
     private Spinner languageSelector;
-    private ConstraintLayout languageModal, importEditDictionaryModalBg;
+    private ConstraintLayout modalAddDictionary, modalImportDictionary;
     private String selectedLanguageInModal;
     private MyDictionariesAdapter myDictionariesAdapter;
+    private CardView modalAddDictionaryContent, modalImportDictionaryContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,21 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         languageSelector.setAdapter(adapter);
 
-        addDictionaryBtn.setOnClickListener(v -> languageModal.setVisibility(View.VISIBLE));
+        addDictionaryBtn.setOnClickListener(v -> {
+            modalAddDictionary.setVisibility(View.VISIBLE);
+            modalAddDictionaryContent.setScaleX(0);
+            modalAddDictionaryContent.setScaleY(0);
+            modalAddDictionaryContent.animate().setDuration(100).scaleX(1).scaleY(1);
+        });
 
-        dismissLanguageModalBtn.setOnClickListener(v -> languageModal.setVisibility(View.GONE));
+        dismissLanguageModalBtn.setOnClickListener(v -> {
+            modalAddDictionaryContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    modalAddDictionary.setVisibility(View.GONE);
+                }
+            });
+        });
 
         saveLanguageBtn.setOnClickListener(v -> {
             if (selectedLanguageInModal != null) {
@@ -71,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, getResources().getText(R.string.toast_dictionary_already_exists), Toast.LENGTH_SHORT).show();
                 }
             }
-            languageModal.setVisibility(View.GONE);
+            modalAddDictionary.setVisibility(View.GONE);
         });
 
         languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
         importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
         myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
         languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
-        languageModal = findViewById(R.id.deleteModal);
-        importEditDictionaryModalBg = findViewById(R.id.importEditDictionaryModalBg);
+        modalAddDictionary = findViewById(R.id.modalAddEditDictionary);
+        modalImportDictionary = findViewById(R.id.modalImportDictionary);
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
         addDictionaryBtn = findViewById(R.id.addDictionaryBtn);
         saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
@@ -99,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
         dismissDictionaryModalBtn = findViewById(R.id.dismissDictionaryModalBtn);
         importDictionaryModalBtn = findViewById(R.id.importDictionaryModalBtn);
         importDictionaryFromMemoryBtn = findViewById(R.id.importDictionaryFromMemoryBtn);
+        modalAddDictionaryContent = findViewById(R.id.modalAddEditDictionaryContent);
+        modalImportDictionaryContent = findViewById(R.id.modalImportDictionaryContent);
     }
 
     private void handleImportDictionary() {
@@ -107,9 +123,21 @@ public class MainActivity extends AppCompatActivity {
             importDictionaryBtnExpanded.setVisibility(View.VISIBLE);
         });
 
-        importDictionaryByIdBtn.setOnClickListener(v -> importEditDictionaryModalBg.setVisibility(View.VISIBLE));
+        importDictionaryByIdBtn.setOnClickListener(v -> {
+            modalImportDictionary.setVisibility(View.VISIBLE);
+            modalImportDictionaryContent.setScaleX(0);
+            modalImportDictionaryContent.setScaleY(0);
+            modalImportDictionaryContent.animate().setDuration(100).scaleX(1).scaleY(1);
+        });
 
-        dismissDictionaryModalBtn.setOnClickListener(v -> importEditDictionaryModalBg.setVisibility(View.GONE));
+        dismissDictionaryModalBtn.setOnClickListener(v -> {
+            modalImportDictionaryContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    modalImportDictionary.setVisibility(View.GONE);
+                }
+            });
+        });
 
         importDictionaryModalBtn.setOnClickListener(v -> {
             //TODO: implement import by id

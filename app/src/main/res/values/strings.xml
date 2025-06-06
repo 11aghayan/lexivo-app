@@ -45,7 +45,7 @@
     <string name="word_type_placeholder">noun</string>
     <string name="text_btn_delete_word">Delete</string>
     <string name="content_description_icon_sound">Play sound</string>
-    <string name="text_word_singular">der Weihnachtsmann</string>
+    <string name="placeholder_word_singular">der Weihnachtsmann</string>
     <string name="content_description_word_plural">plural</string>
     <string name="abbrv_plural">pl.</string>
     <string name="text_word_plural">die Weihnachtsmänner</string>
@@ -88,4 +88,6 @@
     <string name="text_btn_upload_audio">Upload</string>
     <string name="text_btn_record_audio">Record</string>
     <string name="text_header_edit_word">Edit Word</string>
+    <string name="label_modal_choose_word_dictionary">Choose category</string>
+    <string name="text_word_practice">Word Practice</string>
 </resources>

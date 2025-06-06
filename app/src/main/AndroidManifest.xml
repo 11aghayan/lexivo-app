@@ -13,8 +13,11 @@
         android:theme="@style/Theme.Lexivo"
         tools:targetApi="31">
         <activity
+            android:name=".PracticeWordsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddEditWordActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".AllWordsActivity"
             android:exported="false" />

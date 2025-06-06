@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#88000000"
-    android:id="@+id/deleteModal"
+    android:id="@+id/modalAddEditDictionary"
     android:translationZ="10dp"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/createEditDictionaryModal"
+        android:id="@+id/modalAddEditDictionaryContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/layout_margin"

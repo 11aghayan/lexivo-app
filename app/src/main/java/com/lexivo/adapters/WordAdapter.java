@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,15 +25,15 @@ import java.util.List;
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private final Dictionary dictionary;
     private final Context context;
-    private final ConstraintLayout deleteModal;
+    private final ConstraintLayout modalDelete;
     private List<Word> words;
     private final TextView textNoWords;
 
-    public WordAdapter(Dictionary dictionary, Context context, ConstraintLayout deleteModal, TextView textNoWords) {
+    public WordAdapter(Dictionary dictionary, Context context, ConstraintLayout modalDelete, TextView textNoWords) {
         this.dictionary = dictionary;
         this.words = dictionary.getAlWords();
         this.context = context;
-        this.deleteModal = deleteModal;
+        this.modalDelete = modalDelete;
         this.textNoWords = textNoWords;
     }
 
@@ -56,6 +57,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             Intent intent = new Intent(context, AddEditWordActivity.class);
             intent.putExtra("word_id", word.getId());
             intent.putExtra("dictionary_id", dictionary.getId());
+            intent.putExtra("activity", "activity_all_words");
             context.startActivity(intent);
         });
 
@@ -175,16 +177,29 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     private void handleDelete(@NonNull ViewHolder holder) {
         holder.btnDelete.setOnClickListener(v -> {
-            deleteModal.setVisibility(View.VISIBLE);
-            deleteModal.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
+            CardView modalDeleteContent = modalDelete.findViewById(R.id.modalDeleteContent);
+            modalDelete.setVisibility(View.VISIBLE);
+            modalDeleteContent.setScaleX(0);
+            modalDeleteContent.setScaleY(0);
+            modalDeleteContent.animate().setDuration(100).scaleX(1).scaleY(1);
+
+            modalDelete.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
                 dictionary.deleteWord(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
-                deleteModal.setVisibility(View.GONE);
+                modalDelete.findViewById(R.id.btnCancel).setOnClickListener(__v -> {
+                    modalDeleteContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(() -> {
+                        modalDelete.setVisibility(View.GONE);
+                    });
+                });
                 if (words.isEmpty()) {
                     textNoWords.setVisibility(View.VISIBLE);
                 }
             });
-            deleteModal.findViewById(R.id.btnCancel).setOnClickListener(_v -> deleteModal.setVisibility(View.GONE));
+            modalDelete.findViewById(R.id.btnCancel).setOnClickListener(_v -> {
+                modalDeleteContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(() -> {
+                    modalDelete.setVisibility(View.GONE);
+                });
+            });
         });
     }
 

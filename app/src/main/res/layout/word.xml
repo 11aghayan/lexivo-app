@@ -54,7 +54,7 @@
                 android:id="@+id/singular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_word_singular"
+                android:text="@string/placeholder_word_singular"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/main_text"
                 android:breakStrategy="simple"

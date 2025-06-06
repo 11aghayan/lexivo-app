@@ -8,6 +8,7 @@ import com.lexivo.util.HashUtil;
 import com.lexivo.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -49,6 +50,13 @@ public final class Dictionary implements ObjectContainingId {
 
     public List<Word> getAlWords() {
         return words;
+    }
+
+    public List<Word> getAllWordsShuffled() {
+        List<Word> copyOfWords = new ArrayList<>();
+        Collections.copy(copyOfWords, words);
+        Collections.shuffle(copyOfWords);
+        return copyOfWords;
     }
 
     public Word getWordById(String id) {

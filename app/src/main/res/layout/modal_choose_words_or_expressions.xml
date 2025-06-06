@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#88000000"
-    android:id="@+id/modalExportDictionary"
+    android:id="@+id/modalChooseWordsOrExpressions"
     android:translationZ="10dp"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/modalExportDictionaryContent"
+        android:id="@+id/modalChooseWordsOrExpressionsContent"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="@dimen/layout_margin"
         android:layout_height="wrap_content"
@@ -20,7 +20,6 @@
         app:cardCornerRadius="24dp">
 
         <LinearLayout
-            android:id="@+id/exportDictionaryModalContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -32,10 +31,10 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="@color/main_text"
                 android:textSize="14sp"
-                android:text="@string/textview_dictionary_text"/>
+                android:text="@string/label_modal_choose_word_dictionary"/>
 
             <Button
-                android:id="@+id/btnCopyId"
+                android:id="@+id/btnChooseWords"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -43,14 +42,14 @@
                 android:elevation="0.3dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:letterSpacing="0.02"
-                android:text="@string/btn_copyid_text"
+                android:text="@string/words_text"
                 android:textAllCaps="false"
                 android:textColor="@color/background"
                 android:textSize="14sp"
                 app:cornerRadius="24dp" />
 
             <Button
-                android:id="@+id/btnExportJson"
+                android:id="@+id/btnChooseExpressions"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -58,12 +57,12 @@
                 android:elevation="0.3dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:letterSpacing="0.02"
-                android:text="@string/btn_export_json_text"
+                android:text="@string/btn_expressions_text"
                 android:textAllCaps="false"
                 android:textColor="@color/background"
                 android:textSize="14sp"
-                app:cornerRadius="24dp" />
-            
+                app:cornerRadius="24dp"/>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

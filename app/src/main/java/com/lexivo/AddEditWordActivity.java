@@ -40,7 +40,7 @@ public class AddEditWordActivity extends AppCompatActivity {
     private ActivityAddEditWordBinding binding;
     private ArrayAdapter<String> adapterWordType;
     private ArrayAdapter<String> adapterWordGender;
-    private CardView languageFlag;
+    private CardView languageFlag, modalDeleteContent;
     private Spinner spinnerWordType, spinnerWordGender;
     private EditText inputWordOriginal, inputWordOriginalDetails, inputWordPlural, inputWordPast1, inputWordPast2, inputWordNative, inputWordNativeDetails, inputWordComment;
     private TextView headerText, btnOpenDeleteModal;
@@ -48,6 +48,7 @@ public class AddEditWordActivity extends AppCompatActivity {
     private Gender selectedGender;
     private Button btnSave;
     private ConstraintLayout modalDelete;
+    private String previousActivity;
 
     private final StringBuilder
             wordOriginal = new StringBuilder(),
@@ -76,7 +77,7 @@ public class AddEditWordActivity extends AppCompatActivity {
         initViews();
         handleSpinnerWordType();
         handleSpinnerWordGender();
-        populateStartingContent();
+        initStartingContent();
         manageFieldsDependingOnWordType();
         handleGender();
         handleInputsChanges();
@@ -102,11 +103,13 @@ public class AddEditWordActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         headerText = findViewById(R.id.headerText);
         btnOpenDeleteModal = findViewById(R.id.btnOpenDeleteModal);
-        modalDelete = findViewById(R.id.deleteModal);
+        modalDelete = findViewById(R.id.modalDelete);
+        modalDeleteContent = findViewById(R.id.modalDeleteContent);
     }
 
-    private void populateStartingContent() {
+    private void initStartingContent() {
         Intent intent = getIntent();
+        previousActivity = intent.getStringExtra("activity");
         String wordId = intent.getStringExtra("word_id");
         dictionary = Dictionary.getDictionaryById(intent.getStringExtra("dictionary_id"));
         if (wordId != null) {
@@ -236,12 +239,30 @@ public class AddEditWordActivity extends AppCompatActivity {
     private void handleDelete() {
         btnOpenDeleteModal.setOnClickListener(v -> {
             modalDelete.setVisibility(View.VISIBLE);
+            modalDeleteContent.setScaleX(0);
+            modalDeleteContent.setScaleY(0);
+            modalDeleteContent.animate().setDuration(100).scaleX(1).scaleY(1);
+
             findViewById(R.id.btnDelete).setOnClickListener(_v -> {
                 dictionary.deleteWord(word);
-                getOnBackPressedDispatcher().onBackPressed();
-                modalDelete.setVisibility(View.GONE);
+                Intent intent;
+                if ("activity_all_words".equals(previousActivity)) {
+                    intent = new Intent(this, AllWordsActivity.class);
+                }
+                else {
+                    intent = new Intent(this, DictionaryActivity.class);
+                }
+                intent.putExtra("dictionary_id", dictionary.getId());
+                startActivity(intent);
+                modalDeleteContent.animate().setDuration(100).scaleY(0).scaleX(0).withEndAction(() -> {
+                    modalDelete.setVisibility(View.GONE);
+                });
             });
-            findViewById(R.id.btnCancel).setOnClickListener(_v -> modalDelete.setVisibility(View.GONE));
+            findViewById(R.id.btnCancel).setOnClickListener(_v -> {
+                modalDeleteContent.animate().setDuration(100).scaleY(0).scaleX(0).withEndAction(() -> {
+                    modalDelete.setVisibility(View.GONE);
+                });
+            });
         });
     }
 

@@ -37,7 +37,7 @@ public class AllWordsActivity extends AppCompatActivity {
     private Intent intent;
     private Dictionary dictionary;
     private WordAdapter wordAdapter;
-    private ConstraintLayout deleteModal;
+    private ConstraintLayout modalDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class AllWordsActivity extends AppCompatActivity {
         allWordsRecView = findViewById(R.id.allWordsRecView);
         inputSearch = findViewById(R.id.inputSearch);
         btnAddWord = findViewById(R.id.btnAddWord);
-        deleteModal = findViewById(R.id.deleteModal);
+        modalDelete = findViewById(R.id.modalDelete);
         textNoWords = findViewById(R.id.textNoWords);
         languageFlag = findViewById(R.id.languageFlag);
     }
@@ -83,7 +83,7 @@ public class AllWordsActivity extends AppCompatActivity {
     }
 
     private void handleAllWordsRecView() {
-        wordAdapter = new WordAdapter(dictionary, this, deleteModal, textNoWords);
+        wordAdapter = new WordAdapter(dictionary, this, modalDelete, textNoWords);
         allWordsRecView.setAdapter(wordAdapter);
         allWordsRecView.setLayoutManager(new LinearLayoutManager(this));
         handleInputSearch(wordAdapter);
@@ -116,6 +116,7 @@ public class AllWordsActivity extends AppCompatActivity {
         btnAddWord.setOnClickListener(v -> {
             intent = new Intent(this, AddEditWordActivity.class);
             intent.putExtra("dictionary_id", dictionary.getId());
+            intent.putExtra("activity", "activity_all_words");
             startActivity(intent);
         });
     }
