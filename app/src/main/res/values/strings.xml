@@ -43,7 +43,7 @@
     <string name="btn_add_word_description">Forwards to add word activity</string>
     <string name="words_rec_view_description">All words list in dictionary</string>
     <string name="word_type_placeholder">noun</string>
-    <string name="text_btn_delete_word">Delete</string>
+    <string name="text_btn_delete">Delete</string>
     <string name="content_description_icon_sound">Play sound</string>
     <string name="placeholder_word_singular">der Weihnachtsmann</string>
     <string name="content_description_word_plural">plural</string>

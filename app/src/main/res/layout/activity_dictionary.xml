@@ -10,6 +10,7 @@
     <include layout="@layout/add_dictionary_modal"  android:visibility="gone"/>
     <include layout="@layout/export_dictionary_modal" android:visibility="gone" />
     <include layout="@layout/modal_choose_words_or_expressions" android:visibility="gone" />
+    <include layout="@layout/delete_modal" android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/accountBox"

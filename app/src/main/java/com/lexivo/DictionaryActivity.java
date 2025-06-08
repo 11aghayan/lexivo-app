@@ -38,10 +38,11 @@ public class DictionaryActivity extends AppCompatActivity {
     private Language currentLanguage, selectedLanguage;
     private CardView languageFlag, modalChooseWordsOrExpressionsContent;
     private TextView textLanguage;
-    private Button btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnPractice, btnQuiz, btnChooseWords, btnChooseExpressions;
+    private Button
+            btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnPractice, btnQuiz, btnChooseWords, btnChooseExpressions, btnDeleteDictionary;
     private RelativeLayout language, modalExportDictionary, modalChooseWordsOrExpressions;
     private LinearLayout exportDictionaryModalContent;
-    private ConstraintLayout modalEditDictionary;
+    private ConstraintLayout modalEditDictionary, modalDelete;
     private Spinner languageSelector;
     private boolean isQuiz = false;
 
@@ -62,6 +63,7 @@ public class DictionaryActivity extends AppCompatActivity {
         handleLanguageChange();
         handleExportDictionary();
         handleNavigation();
+        handleDelete();
         handleOnBackPressed();
     }
 
@@ -87,6 +89,8 @@ public class DictionaryActivity extends AppCompatActivity {
         modalChooseWordsOrExpressionsContent = findViewById(R.id.modalChooseWordsOrExpressionsContent);
         btnChooseWords = findViewById(R.id.btnChooseWords);
         btnChooseExpressions = findViewById(R.id.btnChooseExpressions);
+        btnDeleteDictionary = findViewById(R.id.btnDeleteDictionary);
+        modalDelete = findViewById(R.id.modalDelete);
     }
 
     private void handleContent() {
@@ -167,6 +171,7 @@ public class DictionaryActivity extends AppCompatActivity {
     }
 
     private void handleLanguageChange() {
+        btnDeleteDictionary.setVisibility(View.VISIBLE);
         saveLanguageBtn.setText(R.string.save);
         var adapter = ArrayAdapters.languagesAdapter(this);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -207,6 +212,16 @@ public class DictionaryActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(0, 0);
         });
+    }
+
+    private void handleDelete() {
+        btnDeleteDictionary.setOnClickListener(v -> ViewUtil.openModal(modalDelete));
+        findViewById(R.id.btnDelete).setOnClickListener(v -> {
+            Dictionary.deleteDictionary(dictionary);
+            ViewUtil.closeModal(modalDelete);
+            finish();
+        });
+        findViewById(R.id.btnCancel).setOnClickListener(v -> ViewUtil.closeModal(modalDelete));
     }
 
     private void handleOnBackPressed() {

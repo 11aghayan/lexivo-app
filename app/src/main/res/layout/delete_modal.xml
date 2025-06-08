@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
-        android:background="@color/background"
+        android:backgroundTint="@color/background"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/accent"
+                    android:backgroundTint="@color/btn_delete"
                     android:elevation="0.2dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:letterSpacing="0.02"
@@ -65,15 +65,17 @@
                     android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/primary"
-                    android:elevation="0.2dp"
+                    android:backgroundTint="@color/background"
+                    android:elevation="0dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:letterSpacing="0.02"
                     android:text="@string/btn_no_delete_modal"
                     android:textAllCaps="false"
-                    android:textColor="@color/background"
+                    android:textColor="@color/main_text"
                     android:textSize="16sp"
-                    app:cornerRadius="24dp" />
+                    app:cornerRadius="24dp"
+                    app:strokeWidth="0.5dp"
+                    app:strokeColor="@color/light_gray_medium"/>
 
 
             </LinearLayout>

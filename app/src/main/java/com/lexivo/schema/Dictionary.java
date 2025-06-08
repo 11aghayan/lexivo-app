@@ -146,6 +146,10 @@ public final class Dictionary implements ObjectContainingId {
         return null;
     }
 
+    public static void deleteDictionary(Dictionary d) {
+        dictionaries.remove(d);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

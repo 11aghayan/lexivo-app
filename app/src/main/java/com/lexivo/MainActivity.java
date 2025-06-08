@@ -29,7 +29,8 @@ import com.lexivo.util.ViewUtil;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Button importDictionaryBtn, addDictionaryBtn, dismissLanguageModalBtn, saveLanguageBtn, importDictionaryByIdBtn, dismissDictionaryModalBtn, importDictionaryModalBtn, importDictionaryFromMemoryBtn;
+    private Button
+            importDictionaryBtn, addDictionaryBtn, dismissLanguageModalBtn, saveLanguageBtn, importDictionaryByIdBtn, dismissDictionaryModalBtn, importDictionaryModalBtn, importDictionaryFromMemoryBtn, btnDeleteDictionary;
     private LinearLayout importDictionaryBtnExpanded;
     private RecyclerView myDictionariesRecView;
     private Spinner languageSelector;
@@ -58,7 +59,25 @@ public class MainActivity extends AppCompatActivity {
         handleOnBackPressed();
     }
 
+    private void initViews() {
+        importDictionaryBtn = findViewById(R.id.importDictionaryBtn);
+        importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
+        myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
+        languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
+        modalAddDictionary = findViewById(R.id.modalAddEditDictionary);
+        modalImportDictionary = findViewById(R.id.modalImportDictionary);
+        dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
+        addDictionaryBtn = findViewById(R.id.addDictionaryBtn);
+        saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
+        importDictionaryByIdBtn = findViewById(R.id.importDictionaryByIdBtn);
+        dismissDictionaryModalBtn = findViewById(R.id.dismissDictionaryModalBtn);
+        importDictionaryModalBtn = findViewById(R.id.importDictionaryModalBtn);
+        importDictionaryFromMemoryBtn = findViewById(R.id.importDictionaryFromMemoryBtn);
+        btnDeleteDictionary = findViewById(R.id.btnDeleteDictionary);
+    }
+
     private void handleAddDictionaryModal() {
+        btnDeleteDictionary.setVisibility(View.GONE);
         var adapter = ArrayAdapters.languagesAdapter(MainActivity.this);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         languageSelector.setAdapter(adapter);
@@ -88,22 +107,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-    }
-
-    private void initViews() {
-        importDictionaryBtn = findViewById(R.id.importDictionaryBtn);
-        importDictionaryBtnExpanded = findViewById(R.id.importDictionaryBtnExpanded);
-        myDictionariesRecView = findViewById(R.id.myDictionariesRecView);
-        languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
-        modalAddDictionary = findViewById(R.id.modalAddEditDictionary);
-        modalImportDictionary = findViewById(R.id.modalImportDictionary);
-        dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
-        addDictionaryBtn = findViewById(R.id.addDictionaryBtn);
-        saveLanguageBtn = findViewById(R.id.saveLanguageBtn);
-        importDictionaryByIdBtn = findViewById(R.id.importDictionaryByIdBtn);
-        dismissDictionaryModalBtn = findViewById(R.id.dismissDictionaryModalBtn);
-        importDictionaryModalBtn = findViewById(R.id.importDictionaryModalBtn);
-        importDictionaryFromMemoryBtn = findViewById(R.id.importDictionaryFromMemoryBtn);
     }
 
     private void handleImportDictionary() {
