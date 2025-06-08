@@ -14,7 +14,7 @@
         android:id="@+id/modalImportDictionaryContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/layout_margin"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
         android:background="@color/background"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,13 +25,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/layout_margin"
+            android:padding="@dimen/layout_margin_top_horizontal"
             android:id="@+id/importDictionaryModalButtonsLayout">
 
             <EditText
                 android:id="@+id/dictionaryIdInput"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="@dimen/input_height"
                 android:background="@drawable/outline_box"
                 android:hint="@string/enter_dictionary_id"
                 android:importantForAutofill="no"
@@ -58,7 +58,7 @@
                     android:id="@+id/dismissDictionaryModalBtn"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:backgroundTint="@color/accent"
                     android:elevation="0.2dp"
@@ -75,7 +75,7 @@
                     android:id="@+id/importDictionaryModalBtn"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:backgroundTint="@color/primary"
                     android:elevation="0.2dp"

@@ -13,17 +13,19 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.DictionaryActivity;
+import com.lexivo.MainActivity;
 import com.lexivo.R;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
+import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
 
-public class MyDictionariesAdapter extends RecyclerView.Adapter<MyDictionariesAdapter.ViewHolder> {
+public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
     private final View view;
     private final Context mainContext;
 
-    public MyDictionariesAdapter(View view, Context mainContext) {
+    public DictionaryAdapter(View view, Context mainContext) {
         this.view = view;
         this.mainContext = mainContext;
         toggleNoItemsText();
@@ -47,11 +49,11 @@ public class MyDictionariesAdapter extends RecyclerView.Adapter<MyDictionariesAd
         Language language = dictionary.getLanguage();
         holder.dictionaryButton.setForeground(ResourcesCompat.getDrawable(view.getResources(), language.getFlag(), null));
         holder.expressionCount.setText(String.valueOf(dictionary.getExpressionCount()));
-        holder.wordCount.setText(String.valueOf(dictionary.getWordCount()));
+        holder.wordCount.setText(String.valueOf(dictionary.getAllWordsCount()));
         holder.language.setText(StringUtil.capitalize(language.getLabel()));
         holder.dictionaryButton.setOnClickListener(v -> {
             Intent intent = new Intent(mainContext, DictionaryActivity.class);
-            intent.putExtra("dictionary_id", dictionary.getId());
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
             mainContext.startActivity(intent);
         });
     }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,14 +27,16 @@ import androidx.core.view.WindowInsetsCompat;
 import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
+import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
+import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ViewUtil;
 
 public class DictionaryActivity extends AppCompatActivity {
     private Dictionary dictionary;
     private Intent intent;
     private Language currentLanguage, selectedLanguage;
-    private CardView languageFlag, modalEditDictionaryContent, modalExportDictionaryContent, modalChooseWordsOrExpressionsContent;
+    private CardView languageFlag, modalChooseWordsOrExpressionsContent;
     private TextView textLanguage;
     private Button btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnPractice, btnQuiz, btnChooseWords, btnChooseExpressions;
     private RelativeLayout language, modalExportDictionary, modalChooseWordsOrExpressions;
@@ -52,12 +55,14 @@ public class DictionaryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        SystemUtil.hideSystemUi(getWindow());
+
         initViews();
         handleContent();
         handleLanguageChange();
         handleExportDictionary();
         handleNavigation();
-
+        handleOnBackPressed();
     }
 
     private void initViews() {
@@ -82,13 +87,11 @@ public class DictionaryActivity extends AppCompatActivity {
         modalChooseWordsOrExpressionsContent = findViewById(R.id.modalChooseWordsOrExpressionsContent);
         btnChooseWords = findViewById(R.id.btnChooseWords);
         btnChooseExpressions = findViewById(R.id.btnChooseExpressions);
-        modalEditDictionaryContent = findViewById(R.id.modalAddEditDictionaryContent);
-        modalExportDictionaryContent = findViewById(R.id.modalExportDictionaryContent);
     }
 
     private void handleContent() {
         intent  = getIntent();
-        String dictionaryId = intent.getStringExtra("dictionary_id");
+        String dictionaryId = intent.getStringExtra(IntentUtil.KEY_DICTIONARY_ID);
         dictionary = Dictionary.getDictionaryById(dictionaryId);
         assert dictionary != null;
         currentLanguage = dictionary.getLanguage();
@@ -97,20 +100,8 @@ public class DictionaryActivity extends AppCompatActivity {
     }
 
     private void handleExportDictionary() {
-        btnExportDictionary.setOnClickListener(v -> {
-            modalExportDictionary.setVisibility(View.VISIBLE);
-            modalEditDictionaryContent.setScaleX(0);
-            modalEditDictionaryContent.setScaleY(0);
-            modalExportDictionaryContent.animate().setDuration(100).scaleY(1).scaleX(1);
-        });
-        modalExportDictionary.setOnClickListener(v -> {
-            modalExportDictionaryContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    modalExportDictionary.setVisibility(View.GONE);
-                }
-            });
-        });
+        btnExportDictionary.setOnClickListener(v -> ViewUtil.openModal(modalExportDictionary));
+        modalExportDictionary.setOnClickListener(v -> ViewUtil.closeModal(modalExportDictionary));
         exportDictionaryModalContent.setOnClickListener(v->{});
         btnCopyId.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -127,10 +118,7 @@ public class DictionaryActivity extends AppCompatActivity {
     private void handleNavigation() {
         btnPractice.setOnClickListener(v -> {
             isQuiz = false;
-            modalChooseWordsOrExpressions.setVisibility(View.VISIBLE);
-            modalChooseWordsOrExpressionsContent.setScaleX(0);
-            modalChooseWordsOrExpressionsContent.setScaleY(0);
-            modalChooseWordsOrExpressionsContent.animate().setDuration(100).scaleX(1).scaleY(1);
+            ViewUtil.openModal(modalChooseWordsOrExpressions);
         });
         btnQuiz.setOnClickListener(v -> {
             isQuiz = true;
@@ -138,8 +126,8 @@ public class DictionaryActivity extends AppCompatActivity {
         });
         handleModalChooseWordsOrExpressions();
         btnWords.setOnClickListener(v -> {
-            intent = new Intent(this, AllWordsActivity.class);
-            intent.putExtra("dictionary_id", dictionary.getId());
+            Intent intent = new Intent(this, AllWordsActivity.class);
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
             this.startActivity(intent);
         });
         btnExpressions.setOnClickListener(v -> {
@@ -151,17 +139,13 @@ public class DictionaryActivity extends AppCompatActivity {
     }
 
     private void handleModalChooseWordsOrExpressions() {
-        modalChooseWordsOrExpressions.setOnClickListener(v -> {
-            modalChooseWordsOrExpressionsContent.animate().setDuration(100).scaleY(0).scaleX(0).withEndAction(() -> {
-                modalChooseWordsOrExpressions.setVisibility(View.GONE);
-            });
-        });
+        modalChooseWordsOrExpressions.setOnClickListener(v -> ViewUtil.closeModal(modalChooseWordsOrExpressions));
         modalChooseWordsOrExpressionsContent.setOnClickListener(v -> {});
 
         btnChooseWords.setOnClickListener(v -> {
             if (!isQuiz) {
                 Intent intent = new Intent(this, PracticeWordsActivity.class);
-                intent.putExtra("dictionary_id", dictionary.getId());
+                intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
                 startActivity(intent);
             }
             else {
@@ -211,32 +195,36 @@ public class DictionaryActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        language.setOnClickListener(v -> {
-            modalEditDictionary.setVisibility(View.VISIBLE);
-            modalEditDictionaryContent.setScaleX(0);
-            modalEditDictionaryContent.setScaleY(0);
-            modalEditDictionaryContent.animate().setDuration(100).scaleX(1).scaleY(1);
-        });
+        language.setOnClickListener(v -> ViewUtil.openModal(modalEditDictionary));
         dismissLanguageModalBtn.setOnClickListener(v -> {
             selectedLanguage = currentLanguage;
-            modalEditDictionaryContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    modalEditDictionary.setVisibility(View.GONE);
-                }
-            });
+            ViewUtil.closeModal(modalEditDictionary);
         });
         saveLanguageBtn.setOnClickListener(v -> {
             dictionary.setLanguage(selectedLanguage);
-            modalEditDictionaryContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    modalEditDictionary.setVisibility(View.GONE);
-                }
-            });
+            ViewUtil.closeModal(modalEditDictionary);
             finish();
             startActivity(intent);
             overridePendingTransition(0, 0);
+        });
+    }
+
+    private void handleOnBackPressed() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (modalExportDictionary.getVisibility() == View.VISIBLE){
+                    ViewUtil.closeModal(modalExportDictionary);
+                }
+                else if (modalChooseWordsOrExpressions.getVisibility() == View.VISIBLE) {
+                    ViewUtil.closeModal(modalChooseWordsOrExpressions);
+                }
+                else if (modalEditDictionary.getVisibility() == View.VISIBLE) {
+                    ViewUtil.closeModal(modalEditDictionary);
+                }
+                else
+                    finish();
+            }
         });
     }
 }

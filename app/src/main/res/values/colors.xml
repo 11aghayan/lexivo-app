@@ -22,4 +22,5 @@
     <color name="gender_personal">#6000AA</color>
     <color name="gender_plural">#AA9600</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="input_bg">#FFFFFFFF</color>
 </resources>

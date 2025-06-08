@@ -13,7 +13,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/modalExportDictionaryContent"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/layout_margin"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
         android:layout_height="wrap_content"
         android:background="@color/background"
         android:layout_centerInParent="true"
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/layout_margin">
+            android:padding="@dimen/layout_margin_top_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                 android:id="@+id/btnCopyId"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="@dimen/button_height"
                 android:backgroundTint="@color/accent"
                 android:elevation="0.3dp"
                 android:fontFamily="@font/poppins_semibold"
@@ -53,7 +53,7 @@
                 android:id="@+id/btnExportJson"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="@dimen/button_height"
                 android:backgroundTint="@color/primary"
                 android:elevation="0.3dp"
                 android:fontFamily="@font/poppins_semibold"

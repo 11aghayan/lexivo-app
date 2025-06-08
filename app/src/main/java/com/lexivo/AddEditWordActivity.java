@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,7 +32,9 @@ import com.lexivo.schema.Gender;
 import com.lexivo.schema.Text;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
+import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
+import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ViewUtil;
 import com.lexivo.databinding.ActivityAddEditWordBinding;
 
@@ -40,7 +43,7 @@ public class AddEditWordActivity extends AppCompatActivity {
     private ActivityAddEditWordBinding binding;
     private ArrayAdapter<String> adapterWordType;
     private ArrayAdapter<String> adapterWordGender;
-    private CardView languageFlag, modalDeleteContent;
+    private CardView languageFlag;
     private Spinner spinnerWordType, spinnerWordGender;
     private EditText inputWordOriginal, inputWordOriginalDetails, inputWordPlural, inputWordPast1, inputWordPast2, inputWordNative, inputWordNativeDetails, inputWordComment;
     private TextView headerText, btnOpenDeleteModal;
@@ -48,8 +51,6 @@ public class AddEditWordActivity extends AppCompatActivity {
     private Gender selectedGender;
     private Button btnSave;
     private ConstraintLayout modalDelete;
-    private String previousActivity;
-
     private final StringBuilder
             wordOriginal = new StringBuilder(),
             wordOriginalDetails = new StringBuilder(),
@@ -72,6 +73,7 @@ public class AddEditWordActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        SystemUtil.hideSystemUi(getWindow());
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_edit_word);
 
         initViews();
@@ -83,6 +85,7 @@ public class AddEditWordActivity extends AppCompatActivity {
         handleInputsChanges();
         handleSave();
         handleDelete();
+        handleOnBackPressed();
     }
 
     private void initViews() {
@@ -104,14 +107,12 @@ public class AddEditWordActivity extends AppCompatActivity {
         headerText = findViewById(R.id.headerText);
         btnOpenDeleteModal = findViewById(R.id.btnOpenDeleteModal);
         modalDelete = findViewById(R.id.modalDelete);
-        modalDeleteContent = findViewById(R.id.modalDeleteContent);
     }
 
     private void initStartingContent() {
         Intent intent = getIntent();
-        previousActivity = intent.getStringExtra("activity");
-        String wordId = intent.getStringExtra("word_id");
-        dictionary = Dictionary.getDictionaryById(intent.getStringExtra("dictionary_id"));
+        String wordId = intent.getStringExtra(IntentUtil.KEY_WORD_ID);
+        dictionary = Dictionary.getDictionaryById(intent.getStringExtra(IntentUtil.KEY_DICTIONARY_ID));
         if (wordId != null) {
             headerText.setText(getResources().getString(R.string.text_header_edit_word));
             assert dictionary != null;
@@ -231,38 +232,20 @@ public class AddEditWordActivity extends AppCompatActivity {
                     word.setTranslation(translation);
                     word.setComment(comment);
                 }
-                getOnBackPressedDispatcher().onBackPressed();
+                finish();
             }
         });
     }
 
     private void handleDelete() {
         btnOpenDeleteModal.setOnClickListener(v -> {
-            modalDelete.setVisibility(View.VISIBLE);
-            modalDeleteContent.setScaleX(0);
-            modalDeleteContent.setScaleY(0);
-            modalDeleteContent.animate().setDuration(100).scaleX(1).scaleY(1);
-
+            ViewUtil.openModal(modalDelete);
             findViewById(R.id.btnDelete).setOnClickListener(_v -> {
                 dictionary.deleteWord(word);
-                Intent intent;
-                if ("activity_all_words".equals(previousActivity)) {
-                    intent = new Intent(this, AllWordsActivity.class);
-                }
-                else {
-                    intent = new Intent(this, DictionaryActivity.class);
-                }
-                intent.putExtra("dictionary_id", dictionary.getId());
-                startActivity(intent);
-                modalDeleteContent.animate().setDuration(100).scaleY(0).scaleX(0).withEndAction(() -> {
-                    modalDelete.setVisibility(View.GONE);
-                });
+                ViewUtil.closeModal(modalDelete);
+                finish();
             });
-            findViewById(R.id.btnCancel).setOnClickListener(_v -> {
-                modalDeleteContent.animate().setDuration(100).scaleY(0).scaleX(0).withEndAction(() -> {
-                    modalDelete.setVisibility(View.GONE);
-                });
-            });
+            findViewById(R.id.btnCancel).setOnClickListener(_v -> ViewUtil.closeModal(modalDelete));
         });
     }
 
@@ -298,6 +281,21 @@ public class AddEditWordActivity extends AppCompatActivity {
 
         StringUtil.setStringBuilderValue(wordComment, word.getComment());
         inputWordComment.setText(StringUtil.getValueFromStringBuilder(wordComment));
+    }
+
+    private void handleOnBackPressed() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (modalDelete.getVisibility() == View.VISIBLE){
+                    ViewUtil.closeModal(modalDelete);
+                }
+                else
+                    finish();
+            }
+
+
+        });
     }
 
     private static class TextChangeListener implements TextWatcher {

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,19 +18,17 @@ import com.lexivo.R;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
-
-import java.util.List;
+import com.lexivo.util.IntentUtil;
+import com.lexivo.util.ViewUtil;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private final Dictionary dictionary;
     private final Context context;
     private final ConstraintLayout modalDelete;
-    private List<Word> words;
     private final TextView textNoWords;
 
     public WordAdapter(Dictionary dictionary, Context context, ConstraintLayout modalDelete, TextView textNoWords) {
         this.dictionary = dictionary;
-        this.words = dictionary.getAlWords();
         this.context = context;
         this.modalDelete = modalDelete;
         this.textNoWords = textNoWords;
@@ -51,13 +48,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Word word = words.get(position);
+        Word word = dictionary.getWordsFiltered().get(position);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddEditWordActivity.class);
-            intent.putExtra("word_id", word.getId());
-            intent.putExtra("dictionary_id", dictionary.getId());
-            intent.putExtra("activity", "activity_all_words");
+            intent.putExtra(IntentUtil.KEY_WORD_ID, word.getId());
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
             context.startActivity(intent);
         });
 
@@ -74,7 +70,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return words.size();
+        return dictionary.getFilteredWordsCount();
     }
 
     private String[] getGender(Gender gender) {
@@ -177,35 +173,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     private void handleDelete(@NonNull ViewHolder holder) {
         holder.btnDelete.setOnClickListener(v -> {
-            CardView modalDeleteContent = modalDelete.findViewById(R.id.modalDeleteContent);
-            modalDelete.setVisibility(View.VISIBLE);
-            modalDeleteContent.setScaleX(0);
-            modalDeleteContent.setScaleY(0);
-            modalDeleteContent.animate().setDuration(100).scaleX(1).scaleY(1);
+            ViewUtil.openModal(modalDelete);
 
             modalDelete.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
-                dictionary.deleteWord(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-                modalDelete.findViewById(R.id.btnCancel).setOnClickListener(__v -> {
-                    modalDeleteContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(() -> {
-                        modalDelete.setVisibility(View.GONE);
-                    });
-                });
-                if (words.isEmpty()) {
+                dictionary.deleteWord(holder.getLayoutPosition());
+                notifyItemRemoved(holder.getLayoutPosition());
+                ViewUtil.closeModal(modalDelete);
+                if (dictionary.getFilteredWordsCount() == 0) {
                     textNoWords.setVisibility(View.VISIBLE);
                 }
             });
-            modalDelete.findViewById(R.id.btnCancel).setOnClickListener(_v -> {
-                modalDeleteContent.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(() -> {
-                    modalDelete.setVisibility(View.GONE);
-                });
-            });
+            modalDelete.findViewById(R.id.btnCancel).setOnClickListener(_v -> ViewUtil.closeModal(modalDelete));
         });
-    }
-
-    public void setWords(List<Word> words) {
-
-        this.words = words;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

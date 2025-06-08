@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,7 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lexivo.adapters.WordAdapter;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Word;
+import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
+import com.lexivo.util.SystemUtil;
+import com.lexivo.util.ViewUtil;
 
 import java.util.List;
 
@@ -49,11 +53,14 @@ public class AllWordsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        SystemUtil.hideSystemUi(getWindow());
+
         initViews();
         initData();
         handleAllWordsRecView();
-        handleTextNoWords(dictionary.getWordCount());
+        handleTextNoWords(dictionary.getAllWordsCount());
         handleAddWord();
+        handleOnBackPressed();
     }
 
     private void initViews() {
@@ -68,7 +75,7 @@ public class AllWordsActivity extends AppCompatActivity {
 
     private void initData() {
         intent = getIntent();
-        dictionary = Dictionary.getDictionaryById(intent.getStringExtra("dictionary_id"));
+        dictionary = Dictionary.getDictionaryById(intent.getStringExtra(IntentUtil.KEY_DICTIONARY_ID));
         assert dictionary != null;
         textLanguage.setText(StringUtil.capitalize(dictionary.getLanguage().getLabel()));
         languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), dictionary.getLanguage().getFlag(), null));
@@ -89,7 +96,7 @@ public class AllWordsActivity extends AppCompatActivity {
         handleInputSearch(wordAdapter);
     }
 
-    private void handleInputSearch(WordAdapter allWordsAdapter) {
+    private void handleInputSearch(WordAdapter wordAdapter) {
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,9 +107,9 @@ public class AllWordsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 List<Word> words = dictionary.searchWords(s);
-                allWordsAdapter.setWords(words);
+                dictionary.setWordsFiltered(words);
                 handleTextNoWords(words.size());
-                allWordsAdapter.notifyDataSetChanged();
+                wordAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -115,9 +122,21 @@ public class AllWordsActivity extends AppCompatActivity {
     private void handleAddWord() {
         btnAddWord.setOnClickListener(v -> {
             intent = new Intent(this, AddEditWordActivity.class);
-            intent.putExtra("dictionary_id", dictionary.getId());
-            intent.putExtra("activity", "activity_all_words");
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
             startActivity(intent);
+        });
+    }
+
+    private void handleOnBackPressed() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (modalDelete.getVisibility() == View.VISIBLE){
+                    ViewUtil.closeModal(modalDelete);
+                }
+                else
+                    finish();
+            }
         });
     }
 
@@ -126,6 +145,7 @@ public class AllWordsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         wordAdapter.notifyDataSetChanged();
-        handleTextNoWords(dictionary.getWordCount());
+        handleTextNoWords(dictionary.getFilteredWordsCount());
+        inputSearch.setText(null);
     }
 }

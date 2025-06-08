@@ -2,6 +2,7 @@ package com.lexivo.util;
 
 import com.lexivo.schema.ObjectContainingId;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -25,5 +26,11 @@ public abstract class ListUtil {
             }
         }
         return result.toString();
+    }
+
+    public static <T> List<T> copyOfList(List<T> list) {
+        List<T> copyOfList = new ArrayList<>(list.size());
+        copyOfList.addAll(list);
+        return copyOfList;
     }
 }

@@ -17,8 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingHorizontal="@dimen/layout_margin"
-        android:layout_marginTop="@dimen/layout_margin">
+        android:layout_marginTop="@dimen/layout_margin_top_horizontal"
+        android:paddingHorizontal="@dimen/layout_margin_top_horizontal">
         <include layout="@layout/user_info_box" />
     </LinearLayout>
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:paddingHorizontal="@dimen/layout_margin"
+        android:paddingHorizontal="@dimen/layout_margin_top_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/accountBox"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/language"
         android:layout_marginTop="16dp"
-        android:paddingHorizontal="@dimen/layout_margin">
+        android:paddingHorizontal="@dimen/layout_margin_top_horizontal">
 
         <include layout="@layout/input_search" />
 
@@ -80,7 +80,7 @@
         android:id="@+id/allWordsRecView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/layout_margin"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
         android:background="@color/background"
         android:contentDescription="@string/words_rec_view_description"
         android:layout_marginTop="16dp"
@@ -106,18 +106,18 @@
         android:id="@+id/btnAddWord"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/button_height"
         android:backgroundTint="@color/primary"
         android:contentDescription="@string/btn_add_word_description"
         android:elevation="0.3dp"
         app:cornerRadius="24dp"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="@dimen/layout_margin"
+        android:layout_marginBottom="@dimen/layout_margin_bottom"
         android:foreground="@drawable/icon_plus"
         android:foregroundGravity="center"
         android:foregroundTint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="@dimen/layout_margin"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
         tools:ignore="VisualLintButtonSize" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

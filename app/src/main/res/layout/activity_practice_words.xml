@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/layout_margin"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".PracticeWordsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".PracticeWordsActivity">
+        android:layout_marginTop="@dimen/layout_margin_top_horizontal"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
+        android:layout_marginBottom="@dimen/layout_margin_bottom">
 
         <!--    Header  -->
         <RelativeLayout
@@ -42,76 +44,23 @@
 
         </RelativeLayout>
 
-        <!--    Card  -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/wordCard"
+<!--        Cards container  -->
+        <LinearLayout
+            android:id="@+id/cardsContainer"
             android:layout_width="match_parent"
-            android:layout_height="420dp"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/lightest_gray"
-            app:cardCornerRadius="32dp"
-            app:cardElevation="0dp"
+            android:maxWidth="530dp"
+            android:layout_height="wrap_content"
+            android:minHeight="420dp"
+            android:backgroundTint="@color/gender_male"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            app:strokeColor="@color/light_gray_medium"
-            app:strokeWidth="0.5dp"
-            app:rippleColor="@color/transparent">
+            app:layout_constraintTop_toBottomOf="@+id/header">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp">
+            <!--    Card  -->
+            <include layout="@layout/card_word" />
 
-                <!--            Word type  -->
-                <TextView
-                    android:id="@+id/wordType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:breakStrategy="simple"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/word_type_placeholder"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@id/wordGender"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <!--            Word gender  -->
-                <TextView
-                    android:id="@+id/wordGender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/text_gender_masculine"
-                    android:textColor="@color/primary"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!--            Word singular central  -->
-                <TextView
-                    android:id="@+id/wordSingularCentral"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/placeholder_word_singular"
-                    android:textColor="@color/main_text"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/wordType"
-                    app:layout_constraintVertical_bias="0.45" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

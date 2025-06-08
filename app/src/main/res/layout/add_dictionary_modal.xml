@@ -14,7 +14,7 @@
         android:id="@+id/modalAddEditDictionaryContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/layout_margin"
+        android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
         android:background="@color/background"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/modalButtonsLayout"
-            android:padding="@dimen/layout_margin">
+            android:padding="@dimen/layout_margin_top_horizontal">
 
             <TextView
                 android:id="@+id/addLanguageSpinnerLabel"
@@ -61,7 +61,7 @@
                     android:id="@+id/dismissLanguageModalBtn"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:backgroundTint="@color/accent"
                     android:elevation="0.2dp"
@@ -76,7 +76,7 @@
                     android:id="@+id/saveLanguageBtn"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:backgroundTint="@color/primary"
                     android:elevation="0.2dp"

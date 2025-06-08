@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="layout_margin" type="dimen">32dp</item>
+    <item name="layout_margin_top_horizontal" type="dimen">32dp</item>
 </resources>

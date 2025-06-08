@@ -10,7 +10,6 @@ import com.lexivo.util.ListUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 public final class Dictionary implements ObjectContainingId {
     private static final List<Dictionary> dictionaries = new ArrayList<>();
     private final List<Word> words = new ArrayList<>();
+    private List<Word> wordsFiltered;
     private final List<Expression> expressions = new ArrayList<>();
     private final String id;
     private Language language;
@@ -26,6 +26,7 @@ public final class Dictionary implements ObjectContainingId {
         UUID uuid = UUID.randomUUID();
         this.id = uuid.toString();
         this.language = language;
+        this.wordsFiltered = ListUtil.copyOfList(words);
     }
 
     public String getId() {
@@ -40,9 +41,11 @@ public final class Dictionary implements ObjectContainingId {
         this.language = language;
     }
 
-    public int getWordCount() {
+    public int getAllWordsCount() {
         return words.size();
     }
+
+    public int getFilteredWordsCount() { return wordsFiltered.size(); }
 
     public int getExpressionCount() {
         return expressions.size();
@@ -52,9 +55,10 @@ public final class Dictionary implements ObjectContainingId {
         return words;
     }
 
+    public List<Word> getWordsFiltered() { return wordsFiltered; }
+
     public List<Word> getAllWordsShuffled() {
-        List<Word> copyOfWords = new ArrayList<>();
-        Collections.copy(copyOfWords, words);
+        List<Word> copyOfWords = ListUtil.copyOfList(words);
         Collections.shuffle(copyOfWords);
         return copyOfWords;
     }
@@ -84,21 +88,22 @@ public final class Dictionary implements ObjectContainingId {
         if (HashUtil.isHashInList(words, w.getHash())) {
             throw new DuplicateHashException();
         }
+        wordsFiltered.add(w);
         words.add(w);
-    }
-
-    public void updateWord(Word w) throws NoSuchElementException {
-        int index = ListUtil.getIndexById(words, w.getId());
-        words.set(index, w);
     }
 
     public void deleteWord(Word w) {
         words.remove(w);
+        wordsFiltered.remove(w);
     }
 
     public void deleteWord(int pos) {
-        words.remove(pos);
+        Word w = wordsFiltered.get(pos);
+        words.remove(w);
+        wordsFiltered.remove(w);
     }
+
+    public void setWordsFiltered(List<Word> wordsFiltered) { this.wordsFiltered = wordsFiltered; }
 
     public List<Expression> getAllExpressions() {
         return expressions;
@@ -114,11 +119,6 @@ public final class Dictionary implements ObjectContainingId {
 
     public void deleteExpression(Expression e) {
         expressions.remove(e);
-    }
-
-    public void updateExpression(Expression e) throws NoSuchElementException {
-        int index = ListUtil.getIndexById(expressions, e.getId());
-        expressions.set(index, e);
     }
 
     public static void addDictionary(Dictionary dictionary) throws DuplicateValueException {
@@ -162,8 +162,7 @@ public final class Dictionary implements ObjectContainingId {
     @Override
     public String toString() {
         return "Dictionary{" +
-                "id='" + id + '\'' +
-                ", language='" + language.getLabel() + '\'' +
+                "language='" + language.getLabel() + '\'' +
                 '}';
     }
 }
