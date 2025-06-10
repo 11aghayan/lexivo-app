@@ -150,6 +150,7 @@ public class DictionaryActivity extends AppCompatActivity {
             if (!isQuiz) {
                 Intent intent = new Intent(this, PracticeWordsActivity.class);
                 intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
+                ViewUtil.closeModal(modalChooseWordsOrExpressions);
                 startActivity(intent);
             }
             else {
@@ -162,6 +163,7 @@ public class DictionaryActivity extends AppCompatActivity {
 //                TODO: uncomment the code below
 //                Intent intent = new Intent(this, PracticeExpressionsActivity.class);
 //                intent.putExtra("dictionary_id", dictionary.getId());
+//                ViewUtil.closeModal(modalChooseWordsOrExpressions);
 //                startActivity(intent);
             }
             else {

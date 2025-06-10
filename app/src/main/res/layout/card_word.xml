@@ -47,7 +47,7 @@
 
         <!--            Word singular central  -->
         <TextView
-            android:id="@+id/wordSingularCentral"
+            android:id="@+id/wordOriginalFront"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
@@ -59,6 +59,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wordType"
             app:layout_constraintVertical_bias="0.45" />
+
+<!--        Word singular - addition  -->
+        <TextView
+            android:id="@+id/wordOriginalAdditionFront"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/text_word_addition"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wordOriginalFront" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

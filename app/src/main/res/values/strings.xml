@@ -90,4 +90,6 @@
     <string name="text_header_edit_word">Edit Word</string>
     <string name="label_modal_choose_word_dictionary">Choose category</string>
     <string name="text_word_practice">Word Practice</string>
+    <string name="text_no_more_words">No more words</string>
+    <string name="text_btn_shuffle_and_start_again">Shuffle and start again</string>
 </resources>

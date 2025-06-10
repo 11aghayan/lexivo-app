@@ -1,12 +1,8 @@
 package com.lexivo.util;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
-
-import androidx.activity.ComponentActivity;
-import androidx.activity.OnBackPressedCallback;
 
 import com.google.android.material.card.MaterialCardView;
 
@@ -25,7 +21,7 @@ public abstract class ViewUtil {
     }
 
     public static void closeModal(ViewGroup modal) {
-        View content = modal.getChildAt(0);
-        content.animate().setDuration(100).scaleX(0).scaleY(0).withEndAction(() -> modal.setVisibility(View.GONE));
+        modal.setVisibility(View.GONE);
     }
+
 }
