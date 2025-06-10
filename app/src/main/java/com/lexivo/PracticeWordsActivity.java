@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,17 +22,20 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.lexivo.schema.Dictionary;
+import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
+import com.lexivo.schema.WordType;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.OnSwipeTouchListener;
 import com.lexivo.util.SystemUtil;
+import com.lexivo.util.ViewUtil;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public class PracticeWordsActivity extends AppCompatActivity {
     private final float NEXT_CARD_INITIAL_SCALE = 0.4f;
     private Dictionary dictionary;
-    private List<Word> words;
+    private LinkedList<Word> words;
     private CardView languageFlag, cardOnTop, cardNext;
     private RelativeLayout cardsContainer;
     private ConstraintLayout layoutNoMoreWords;
@@ -40,6 +44,9 @@ public class PracticeWordsActivity extends AppCompatActivity {
     private int nextWordIndex = 0;
     private int screenWidth;
     private boolean flipped = false;
+    private int editedWordIndex = -1;
+
+//    TODO: Add past forms in the layout file
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +88,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void addTouchListeners(View card) {
+    private void addTouchListeners(CardView card, Word word) {
         card.setOnTouchListener(new OnSwipeTouchListener(this){
             @Override
             public void onSwipeRight() {
@@ -95,12 +102,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
 
             @Override
             public void onClick() {
-                    if (flipped) return;
-                    card.animate().setDuration(130).scaleX(0.2f).rotationYBy(-90).withEndAction(() -> {
-                    card.setRotationY(90);
-                    card.animate().setDuration(130).scaleX(1).rotationYBy(-90);
-                    flipped = true;
-                });
+                flipCard(card, word);
             }
 
             private void animateAndUpdate(char direction) {
@@ -114,7 +116,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
             private void updateLogic() {
                 cardsContainer.removeView(cardOnTop);
                 if (cardNext != null) {
-                    cardNext.animate().setDuration(100).scaleX(1).scaleY(1).withEndAction(() -> updateCardStackByOne());
+                    cardNext.animate().setDuration(100).scaleX(1).scaleY(1).withEndAction(() -> shiftActiveCards());
                 }
             }
 
@@ -123,9 +125,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
                     addCardToCardsContainer(cardNext, 1);
                 }
                 else {
-                    layoutNoMoreWords.setVisibility(View.VISIBLE);
-                    if (!btnShuffleAndStartAgain.hasOnClickListeners())
-                        btnShuffleAndStartAgain.setOnClickListener(v -> shuffleAndStartAgain());
+                    showNoMoreWordsLayout();
                 }
                 cardsContainer.bringChildToFront(cardOnTop);
             }
@@ -146,7 +146,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
         }
     }
 
-    private void updateCardStackByOne() {
+    private void shiftActiveCards() {
         cardOnTop = cardNext;
         try {
             cardNext = generateCard(words.get(nextWordIndex++));
@@ -166,6 +166,95 @@ public class PracticeWordsActivity extends AppCompatActivity {
         populateCards();
     }
 
+    private void flipCard(CardView card, Word word) {
+        if (flipped) return;
+        flipped = true;
+        card.animate().setDuration(130).scaleX(0.2f).rotationYBy(-90).withEndAction(() -> {
+            card.setRotationY(90);
+            expandAllData(card, word);
+            card.animate().setDuration(130).scaleX(1).rotationYBy(-90);
+        });
+    }
+
+    private void setCardData(CardView card, Word word) {
+        ConstraintLayout innerLayout = (ConstraintLayout) card.getChildAt(0);
+        TextView textType = innerLayout.findViewById(R.id.wordType);
+        TextView textGender = innerLayout.findViewById(R.id.wordGender);
+        TextView wordSingular = innerLayout.findViewById(R.id.wordSingular);
+        TextView wordSingularAddition = innerLayout.findViewById(R.id.wordSingularAddition);
+        TextView wordPlural = innerLayout.findViewById(R.id.wordPlural);
+        TextView wordTranslation = innerLayout.findViewById(R.id.wordTranslation);
+        TextView wordTranslationAddition = innerLayout.findViewById(R.id.wordTranslationAddition);
+        TextView comment = innerLayout.findViewById(R.id.comment);
+        Button btnEditWord = innerLayout.findViewById(R.id.btnEditWord);
+
+        textType.setText(word.getType().toString());
+        if (word.getType().equals(WordType.NOUN) && word.getGender() != null) {
+            String[] genderData = ViewUtil.getGenderStringAndColorArray(this, word.getGender());
+            textGender.setText(genderData[0]);
+            textGender.setTextColor(Integer.parseInt(genderData[1]));
+            textGender.setVisibility(View.VISIBLE);
+        }
+        else
+            textGender.setVisibility(View.GONE);
+
+        if (word.getOriginal().getValue() != null && !word.getGender().equals(Gender.PLURAL))
+            setTextMain(wordSingular, word.getOriginal().getValue());
+        else
+            setTextMain(wordSingular, word.getPlural());
+
+        if (word.getOriginal().getDetails() != null) {
+            setTextAddition(wordSingularAddition, word.getOriginal().getDetails());
+            wordSingularAddition.setVisibility(View.VISIBLE);
+        }
+        else
+            wordSingularAddition.setVisibility(View.GONE);
+
+        setTextMain(wordPlural, word.getPlural());
+        setTextMain(wordTranslation, word.getTranslation().getValue());
+        setTextAddition(wordTranslationAddition, word.getTranslation().getDetails());
+        comment.setText(word.getComment());
+
+        btnEditWord.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddEditWordActivity.class);
+            intent.putExtra(IntentUtil.KEY_WORD_ID, word.getId());
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
+            editedWordIndex = words.indexOf(word);
+            startActivity(intent);
+        });
+    }
+
+    private void expandAllData(CardView card, Word word) {
+        ConstraintLayout innerLayout = (ConstraintLayout) card.getChildAt(0);
+        LinearLayout wordTranslationContainer = innerLayout.findViewById(R.id.wordTranslationContainer);
+        LinearLayout commentContainer = innerLayout.findViewById(R.id.commentContainer);
+        TextView wordPlural = innerLayout.findViewById(R.id.wordPlural);
+        TextView wordTranslationAddition = innerLayout.findViewById(R.id.wordTranslationAddition);
+        Button btnEditWord = innerLayout.findViewById(R.id.btnEditWord);
+
+        if (word.getTranslation().getValue() != null) {
+            wordTranslationContainer.setVisibility(View.VISIBLE);
+            if (word.getTranslation().getDetails() != null) {
+                wordTranslationAddition.setVisibility(View.VISIBLE);
+            }
+            else
+        wordTranslationAddition.setVisibility(View.GONE);}
+        else
+            wordTranslationContainer.setVisibility(View.GONE);
+
+        if (word.getComment() != null)
+            commentContainer.setVisibility(View.VISIBLE);
+        else
+            commentContainer.setVisibility(View.GONE);
+
+        if (word.getType().equals(WordType.NOUN) && word.getPlural() != null && word.getOriginal().getValue() != null)
+            wordPlural.setVisibility(View.VISIBLE);
+        else
+            wordPlural.setVisibility(View.GONE);
+
+        btnEditWord.setVisibility(View.VISIBLE);
+    }
+
     private void addCardToCardsContainer(CardView card, int index) {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         cardsContainer.addView(card, index, lp);
@@ -174,27 +263,20 @@ public class PracticeWordsActivity extends AppCompatActivity {
     private CardView generateCard(Word word) {
         if (word == null) return null;
 
-//        TODO: Properly style the card
-
         @SuppressLint("InflateParams")
         CardView card = (CardView) LayoutInflater.from(this).inflate(R.layout.card_word, null);
-        ConstraintLayout innerLayout = (ConstraintLayout) card.getChildAt(0);
-        TextView textType = innerLayout.findViewById(R.id.wordType);
-        TextView textGender = innerLayout.findViewById(R.id.wordGender);
-        TextView wordOriginalFront = innerLayout.findViewById(R.id.wordOriginalFront);
-        TextView wordOriginalAdditionFront = innerLayout.findViewById(R.id.wordOriginalAdditionFront);
-        textType.setText(word.getType().toString());
-        textGender.setText(word.getGender() == null ? null : word.getGender().toString().toLowerCase());
-        setWordOriginalFront(wordOriginalFront, word.getOriginal().getValue());
-        setWordOriginalAdditionFront(wordOriginalAdditionFront, word.getOriginal().getDetails());
-        addTouchListeners(card);
+        setCardData(card, word);
+        addTouchListeners(card, word);
         return card;
     }
 
-    private void setWordOriginalFront(TextView textView, String text) {
-        textView.setText(text);
+    private void setTextMain(TextView textView, String text) {
+        if (text == null) {
+            textView.setText(null);
+            return;
+        }
 
-        if (text == null) return;
+        textView.setText(text);
 
         if (text.length() > 30) {
             textView.setTextSize(8);
@@ -213,10 +295,13 @@ public class PracticeWordsActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    private void setWordOriginalAdditionFront(TextView textView, String text) {
-        textView.setText("(" + text + ")");
+    private void setTextAddition(TextView textView, String text) {
+        if (text == null) {
+            textView.setText(null);
+            return;
+        }
 
-        if (text == null) return;
+        textView.setText("(" + text + ")");
 
         if (text.length() > 26) {
             textView.setTextSize(8);
@@ -228,6 +313,42 @@ public class PracticeWordsActivity extends AppCompatActivity {
             textView.setTextSize(16);
         } else {
             textView.setTextSize(30);
+        }
+    }
+
+    private void showNoMoreWordsLayout() {
+        layoutNoMoreWords.setVisibility(View.VISIBLE);
+        if (!btnShuffleAndStartAgain.hasOnClickListeners())
+            btnShuffleAndStartAgain.setOnClickListener(v -> shuffleAndStartAgain());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (editedWordIndex == -1) return;
+        try {
+            Word word = dictionary.getWordById(words.get(editedWordIndex).getId());
+            System.out.println(word.toString());
+            words.set(editedWordIndex, word);
+            setCardData(cardOnTop, word);
+            expandAllData(cardOnTop, word);
+        }
+        catch (IndexOutOfBoundsException obe) {
+            words.remove(editedWordIndex);
+            cardsContainer.removeAllViewsInLayout();
+            if (cardNext != null) {
+                shiftActiveCards();
+                cardOnTop.setScaleX(1);
+                cardOnTop.setScaleY(1);
+                addCardToCardsContainer(cardOnTop, 0);
+            }
+            else
+                showNoMoreWordsLayout();
+
+            flipped = false;
+        }
+        finally {
+            editedWordIndex = -1;
         }
     }
 }

@@ -63,6 +63,9 @@ public class AddEditWordActivity extends AppCompatActivity {
     private LinearLayout spinnerWordGenderSection, inputWordPluralSection, pastTenseSection;
     private Dictionary dictionary;
 
+//    TODO: Remove singular input when gender is plural
+//    TODO: Make the gap between past inputs more
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +123,8 @@ public class AddEditWordActivity extends AppCompatActivity {
             dictionary = word.getDictionary();
             initFieldsWithWordData(word);
             btnOpenDeleteModal.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             headerText.setText(getResources().getString(R.string.text_header_add_word));
             btnOpenDeleteModal.setVisibility(View.GONE);
         }

@@ -116,7 +116,7 @@
             app:layout_constraintTop_toBottomOf="@+id/header">
 
             <!--    Card  -->
-<!--            <include layout="@layout/card_word"/>-->
+            <include layout="@layout/card_word"/>
 
         </RelativeLayout>
 

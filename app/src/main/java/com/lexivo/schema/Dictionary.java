@@ -9,6 +9,7 @@ import com.lexivo.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -57,13 +58,13 @@ public final class Dictionary implements ObjectContainingId {
 
     public List<Word> getWordsFiltered() { return wordsFiltered; }
 
-    public List<Word> getAllWordsShuffled() {
-        List<Word> copyOfWords = ListUtil.copyOfList(words);
+    public LinkedList<Word> getAllWordsShuffled() {
+        LinkedList<Word> copyOfWords = new LinkedList<>(words);
         Collections.shuffle(copyOfWords);
         return copyOfWords;
     }
 
-    public Word getWordById(String id) {
+    public Word getWordById(String id) throws IndexOutOfBoundsException {
         return getAlWords().stream().filter(w -> w.getId().equals(id)).collect(Collectors.toList()).get(0);
     }
 

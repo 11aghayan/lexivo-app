@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lexivo.AddEditWordActivity;
 import com.lexivo.R;
 import com.lexivo.schema.Dictionary;
-import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.ViewUtil;
@@ -73,20 +72,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         return dictionary.getFilteredWordsCount();
     }
 
-    private String[] getGender(Gender gender) {
-        switch(gender) {
-            case MASCULINE:
-                return new String[]{context.getString(R.string.text_gender_masculine), String.valueOf(context.getColor(R.color.gender_male))};
-            case FEMININE:
-                return new String[]{context.getString(R.string.text_gender_feminine), String.valueOf(context.getColor(R.color.gender_female))};
-            case NEUTRAL:
-                return new String[]{context.getString(R.string.text_gender_neutral), String.valueOf(context.getColor(R.color.gender_neutral))};
-            case PERSONAL:
-                return new String[]{context.getString(R.string.text_gender_personal), String.valueOf(context.getColor(R.color.gender_personal))};
-            default:
-                return new String[]{context.getString(R.string.text_gender_plural), String.valueOf(context.getColor(R.color.gender_plural))};
-        }
-    }
+
 
     private void handleType(@NonNull ViewHolder holder, Word word) {
         holder.type.setText(word.getType().toString());
@@ -94,9 +80,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     private void handleGender(@NonNull ViewHolder holder, Word word) {
         if (word.getGender() != null) {
-            String[] genderData = getGender(word.getGender());
+            String[] genderData = ViewUtil.getGenderStringAndColorArray(context, word.getGender());
             holder.gender.setVisibility(View.VISIBLE);
-            holder.gender.setText(String.valueOf(genderData[0]));
+            holder.gender.setText(genderData[0]);
             holder.gender.setTextColor(Integer.parseInt(genderData[1]));
         } else {
             holder.gender.setVisibility(View.GONE);
