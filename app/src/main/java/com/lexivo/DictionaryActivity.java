@@ -46,6 +46,8 @@ public class DictionaryActivity extends AppCompatActivity {
     private Spinner languageSelector;
     private boolean isQuiz = false;
 
+//    TODO: ask to enter the word 'delete dictionary' to confirm deletion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

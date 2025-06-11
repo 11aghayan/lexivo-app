@@ -46,8 +46,6 @@ public class PracticeWordsActivity extends AppCompatActivity {
     private boolean flipped = false;
     private int editedWordIndex = -1;
 
-//    TODO: Add past forms in the layout file
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,13 +181,15 @@ public class PracticeWordsActivity extends AppCompatActivity {
         TextView wordSingular = innerLayout.findViewById(R.id.wordSingular);
         TextView wordSingularAddition = innerLayout.findViewById(R.id.wordSingularAddition);
         TextView wordPlural = innerLayout.findViewById(R.id.wordPlural);
+        TextView wordPast1 = innerLayout.findViewById(R.id.wordPast1);
+        TextView wordPast2 = innerLayout.findViewById(R.id.wordPast2);
         TextView wordTranslation = innerLayout.findViewById(R.id.wordTranslation);
         TextView wordTranslationAddition = innerLayout.findViewById(R.id.wordTranslationAddition);
         TextView comment = innerLayout.findViewById(R.id.comment);
         Button btnEditWord = innerLayout.findViewById(R.id.btnEditWord);
 
         textType.setText(word.getType().toString());
-        if (word.getType().equals(WordType.NOUN) && word.getGender() != null) {
+        if (WordType.NOUN.equals(word.getType()) && word.getGender() != null) {
             String[] genderData = ViewUtil.getGenderStringAndColorArray(this, word.getGender());
             textGender.setText(genderData[0]);
             textGender.setTextColor(Integer.parseInt(genderData[1]));
@@ -198,7 +198,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
         else
             textGender.setVisibility(View.GONE);
 
-        if (word.getOriginal().getValue() != null && !word.getGender().equals(Gender.PLURAL))
+        if (word.getOriginal().getValue() != null && !(Gender.PLURAL.equals(word.getGender())))
             setTextMain(wordSingular, word.getOriginal().getValue());
         else
             setTextMain(wordSingular, word.getPlural());
@@ -211,6 +211,8 @@ public class PracticeWordsActivity extends AppCompatActivity {
             wordSingularAddition.setVisibility(View.GONE);
 
         setTextMain(wordPlural, word.getPlural());
+        setTextMain(wordPast1, word.getPast1());
+        setTextMain(wordPast2, word.getPast2());
         setTextMain(wordTranslation, word.getTranslation().getValue());
         setTextAddition(wordTranslationAddition, word.getTranslation().getDetails());
         comment.setText(word.getComment());
@@ -229,6 +231,8 @@ public class PracticeWordsActivity extends AppCompatActivity {
         LinearLayout wordTranslationContainer = innerLayout.findViewById(R.id.wordTranslationContainer);
         LinearLayout commentContainer = innerLayout.findViewById(R.id.commentContainer);
         TextView wordPlural = innerLayout.findViewById(R.id.wordPlural);
+        TextView wordPast1 = innerLayout.findViewById(R.id.wordPast1);
+        TextView wordPast2 = innerLayout.findViewById(R.id.wordPast2);
         TextView wordTranslationAddition = innerLayout.findViewById(R.id.wordTranslationAddition);
         Button btnEditWord = innerLayout.findViewById(R.id.btnEditWord);
 
@@ -238,7 +242,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
                 wordTranslationAddition.setVisibility(View.VISIBLE);
             }
             else
-        wordTranslationAddition.setVisibility(View.GONE);}
+                wordTranslationAddition.setVisibility(View.GONE);}
         else
             wordTranslationContainer.setVisibility(View.GONE);
 
@@ -247,10 +251,20 @@ public class PracticeWordsActivity extends AppCompatActivity {
         else
             commentContainer.setVisibility(View.GONE);
 
-        if (word.getType().equals(WordType.NOUN) && word.getPlural() != null && word.getOriginal().getValue() != null)
+        if (WordType.NOUN.equals(word.getType()) && word.getPlural() != null && word.getOriginal().getValue() != null)
             wordPlural.setVisibility(View.VISIBLE);
         else
             wordPlural.setVisibility(View.GONE);
+
+        if (WordType.VERB.equals(word.getType()) && word.getPast1() != null)
+            wordPast1.setVisibility(View.VISIBLE);
+        else
+            wordPast1.setVisibility(View.GONE);
+
+        if (WordType.VERB.equals(word.getType()) && word.getPast2() != null)
+            wordPast2.setVisibility(View.VISIBLE);
+        else
+            wordPast2.setVisibility(View.GONE);
 
         btnEditWord.setVisibility(View.VISIBLE);
     }

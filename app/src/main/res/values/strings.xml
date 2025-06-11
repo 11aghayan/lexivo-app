@@ -76,11 +76,9 @@
     <string name="text_label_static_input_word_native_addition">Details - Word in Native</string>
     <string name="text_label_dynamic_input_word_original">Language</string>
     <string name="placeholder_label">Label</string>
-    <string name="text_label_input_word_plural_static_left">Word in</string>
-    <string name="text_label_input_word_plural_static_right">- Plural</string>
-    <string name="text_label_input_word_past_static_left">Word in</string>
-    <string name="text_label_input_word_past1_static_right">- Past 1</string>
-    <string name="text_label_input_word_past2_static_right">- Past 2</string>
+    <string name="text_label_input_word_plural_static">Plural - Word in </string>
+    <string name="text_label_input_word_past_1_static">Past 1 - Word in </string>
+    <string name="text_label_input_word_past_2_static">Past 2 - Word in </string>
     <string name="text_label_input_word_comment">Comment</string>
     <string name="text_label_section_add_photo">Photo</string>
     <string name="content_description_button_add_photo">add photo</string>

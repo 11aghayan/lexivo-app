@@ -60,11 +60,8 @@ public class AddEditWordActivity extends AppCompatActivity {
             wordNative = new StringBuilder(),
             wordNativeDetails = new StringBuilder(),
             wordComment = new StringBuilder();
-    private LinearLayout spinnerWordGenderSection, inputWordPluralSection, pastTenseSection;
+    private LinearLayout spinnerWordGenderSection, inputWordPluralSection, pastTenseSection, inputWordOriginalLabelContainer;
     private Dictionary dictionary;
-
-//    TODO: Remove singular input when gender is plural
-//    TODO: Make the gap between past inputs more
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +80,6 @@ public class AddEditWordActivity extends AppCompatActivity {
         handleSpinnerWordType();
         handleSpinnerWordGender();
         initStartingContent();
-        manageFieldsDependingOnWordType();
-        handleGender();
         handleInputsChanges();
         handleSave();
         handleDelete();
@@ -110,6 +105,7 @@ public class AddEditWordActivity extends AppCompatActivity {
         headerText = findViewById(R.id.headerText);
         btnOpenDeleteModal = findViewById(R.id.btnOpenDeleteModal);
         modalDelete = findViewById(R.id.modalDelete);
+        inputWordOriginalLabelContainer = findViewById(R.id.inputWordOriginalLabelContainer);
     }
 
     private void initStartingContent() {
@@ -137,23 +133,16 @@ public class AddEditWordActivity extends AppCompatActivity {
         adapterWordType = ArrayAdapters.wordTypeAdapter(this);
         adapterWordType.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerWordType.setAdapter(adapterWordType);
-    }
 
-    private void handleSpinnerWordGender() {
-        adapterWordGender = ArrayAdapters.wordGenderAdapter(this);
-        adapterWordGender.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinnerWordGender.setAdapter(adapterWordGender);
-    }
-
-    private void manageFieldsDependingOnWordType() {
         spinnerWordType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedWordType = WordType.fromString(((String)parent.getSelectedItem()).toLowerCase());
-                if (selectedWordType.equals(WordType.NOUN)) {
+                if (WordType.NOUN.equals(selectedWordType)) {
                     spinnerWordGenderSection.setVisibility(View.VISIBLE);
                     inputWordPluralSection.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else {
                     spinnerWordGenderSection.setVisibility(View.GONE);
                     inputWordPluralSection.setVisibility(View.GONE);
                     selectedGender = null;
@@ -161,9 +150,10 @@ public class AddEditWordActivity extends AppCompatActivity {
                     inputWordPlural.setText(null);
                 }
 
-                if (selectedWordType.equals(WordType.VERB)) {
+                if (WordType.VERB.equals(selectedWordType)) {
                     pastTenseSection.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else {
                     pastTenseSection.setVisibility(View.GONE);
                     StringUtil.setStringBuilderValue(wordPast1, "");
                     StringUtil.setStringBuilderValue(wordPast2, "");
@@ -179,12 +169,26 @@ public class AddEditWordActivity extends AppCompatActivity {
         });
     }
 
-    private void handleGender() {
+    private void handleSpinnerWordGender() {
+        adapterWordGender = ArrayAdapters.wordGenderAdapter(this);
+        adapterWordGender.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerWordGender.setAdapter(adapterWordGender);
+
         spinnerWordGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String genderString = (String)parent.getSelectedItem();
                 selectedGender = Gender.valueOf(genderString.toUpperCase());
+
+                if (Gender.PLURAL.equals(selectedGender)) {
+                    inputWordOriginal.setVisibility(View.GONE);
+                    inputWordOriginalLabelContainer.setVisibility(View.GONE);
+                    StringUtil.setStringBuilderValue(wordOriginal, "null");
+                }
+                else {
+                    inputWordOriginal.setVisibility(View.VISIBLE);
+                    inputWordOriginalLabelContainer.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
