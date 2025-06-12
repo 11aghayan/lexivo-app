@@ -5,9 +5,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -42,11 +45,9 @@ public class DictionaryActivity extends AppCompatActivity {
             btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnPractice, btnQuiz, btnChooseWords, btnChooseExpressions, btnDeleteDictionary;
     private RelativeLayout language, modalExportDictionary, modalChooseWordsOrExpressions;
     private LinearLayout exportDictionaryModalContent;
-    private ConstraintLayout modalEditDictionary, modalDelete;
+    private ConstraintLayout modalEditDictionary, modalDelete, modalConfirmDeleteDictionary;
     private Spinner languageSelector;
     private boolean isQuiz = false;
-
-//    TODO: ask to enter the word 'delete dictionary' to confirm deletion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class DictionaryActivity extends AppCompatActivity {
         btnChooseExpressions = findViewById(R.id.btnChooseExpressions);
         btnDeleteDictionary = findViewById(R.id.btnDeleteDictionary);
         modalDelete = findViewById(R.id.modalDelete);
+        modalConfirmDeleteDictionary = findViewById(R.id.modalConfirmDeleteDictionary);
     }
 
     private void handleContent() {
@@ -220,12 +222,45 @@ public class DictionaryActivity extends AppCompatActivity {
 
     private void handleDelete() {
         btnDeleteDictionary.setOnClickListener(v -> ViewUtil.openModal(modalDelete));
-        findViewById(R.id.btnDelete).setOnClickListener(v -> {
+        modalDelete.findViewById(R.id.btnDelete).setOnClickListener(v -> {
+            ViewUtil.closeModal(modalDelete);
+            ViewUtil.openModal(modalConfirmDeleteDictionary);
+        });
+        modalDelete.findViewById(R.id.btnCancel).setOnClickListener(v -> ViewUtil.closeModal(modalDelete));
+
+        Button btnConfirmDelete = modalConfirmDeleteDictionary.findViewById(R.id.btnConfirmDelete);
+
+        ((EditText) modalConfirmDeleteDictionary.findViewById(R.id.input)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ("delete dictionary".equals(s.toString().trim())) {
+                    btnConfirmDelete.setEnabled(true);
+                    btnConfirmDelete.setBackgroundColor(getColor(R.color.btn_delete));
+                }
+                else {
+                    btnConfirmDelete.setEnabled(false);
+                    btnConfirmDelete.setBackgroundColor(getColor(R.color.light_gray_low));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        btnConfirmDelete.setOnClickListener(v -> {
             Dictionary.deleteDictionary(dictionary);
             ViewUtil.closeModal(modalDelete);
             finish();
         });
-        findViewById(R.id.btnCancel).setOnClickListener(v -> ViewUtil.closeModal(modalDelete));
+
+        modalConfirmDeleteDictionary.findViewById(R.id.btnDismissDelete).setOnClickListener(v-> ViewUtil.closeModal(modalConfirmDeleteDictionary));
     }
 
     private void handleOnBackPressed() {

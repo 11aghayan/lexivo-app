@@ -93,4 +93,5 @@
     <string name="placeholder_word_plural">die Weihnachtsmänner</string>
     <string name="placeholder_word_translation">Santa Claus</string>
     <string name="btn_edit_word_description">Edit word</string>
+    <string name="modal_confirm_dictionary_delete_label">Type \"delete dictionary\" to confirm</string>
 </resources>
