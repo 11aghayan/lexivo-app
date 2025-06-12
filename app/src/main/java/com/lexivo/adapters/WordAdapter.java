@@ -81,12 +81,15 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private void handleGender(@NonNull ViewHolder holder, Word word) {
         if (word.getGender() != null) {
             String[] genderData = ViewUtil.getGenderStringAndColorArray(context, word.getGender());
-            holder.gender.setVisibility(View.VISIBLE);
-            holder.gender.setText(genderData[0]);
-            holder.gender.setTextColor(Integer.parseInt(genderData[1]));
-        } else {
+            if (genderData[0] != null && genderData[1] != null) {
+                holder.gender.setVisibility(View.VISIBLE);
+                holder.gender.setText(genderData[0]);
+                holder.gender.setTextColor(Integer.parseInt(genderData[1]));
+            }
+            else
+                holder.gender.setVisibility(View.GONE);
+        } else
             holder.gender.setVisibility(View.GONE);
-        }
     }
 
     @SuppressLint("SetTextI18n")

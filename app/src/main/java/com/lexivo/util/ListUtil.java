@@ -3,8 +3,10 @@ package com.lexivo.util;
 import com.lexivo.schema.ObjectContainingId;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public abstract class ListUtil {
     public static int getIndexById(List<? extends ObjectContainingId> list, String id) throws NoSuchElementException {
@@ -26,6 +28,10 @@ public abstract class ListUtil {
             }
         }
         return result.toString();
+    }
+
+    public static String joinElementsIntoString(String[] list, String concatenator) {
+        return joinElementsIntoString(Arrays.stream(list).collect(Collectors.toList()), concatenator);
     }
 
     public static <T> List<T> copyOfList(List<T> list) {

@@ -191,9 +191,13 @@ public class PracticeWordsActivity extends AppCompatActivity {
         textType.setText(word.getType().toString());
         if (WordType.NOUN.equals(word.getType()) && word.getGender() != null) {
             String[] genderData = ViewUtil.getGenderStringAndColorArray(this, word.getGender());
-            textGender.setText(genderData[0]);
-            textGender.setTextColor(Integer.parseInt(genderData[1]));
-            textGender.setVisibility(View.VISIBLE);
+            if (genderData[0] != null && genderData[1] != null) {
+                textGender.setText(genderData[0]);
+                textGender.setTextColor(Integer.parseInt(genderData[1]));
+                textGender.setVisibility(View.VISIBLE);
+            }
+            else
+                textGender.setVisibility(View.GONE);
         }
         else
             textGender.setVisibility(View.GONE);

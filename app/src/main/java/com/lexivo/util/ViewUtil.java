@@ -39,6 +39,8 @@ public abstract class ViewUtil {
                 return new String[]{context.getString(R.string.text_gender_neutral), String.valueOf(context.getColor(R.color.gender_neutral))};
             case PERSONAL:
                 return new String[]{context.getString(R.string.text_gender_personal), String.valueOf(context.getColor(R.color.gender_personal))};
+            case NO_GENDER:
+                return new String[]{null, null};
             default:
                 return new String[]{context.getString(R.string.text_gender_plural), String.valueOf(context.getColor(R.color.gender_plural))};
         }

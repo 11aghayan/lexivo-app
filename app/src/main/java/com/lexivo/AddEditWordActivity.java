@@ -33,6 +33,7 @@ import com.lexivo.schema.Text;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
 import com.lexivo.util.IntentUtil;
+import com.lexivo.util.ListUtil;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ViewUtil;
@@ -178,12 +179,12 @@ public class AddEditWordActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String genderString = (String)parent.getSelectedItem();
-                selectedGender = Gender.valueOf(genderString.toUpperCase());
+                selectedGender = Gender.valueOf(ListUtil.joinElementsIntoString(genderString.split(" "), "_").toUpperCase());
 
                 if (Gender.PLURAL.equals(selectedGender)) {
                     inputWordOriginal.setVisibility(View.GONE);
                     inputWordOriginalLabelContainer.setVisibility(View.GONE);
-                    StringUtil.setStringBuilderValue(wordOriginal, "null");
+                    StringUtil.setStringBuilderValue(wordOriginal, "");
                 }
                 else {
                     inputWordOriginal.setVisibility(View.VISIBLE);

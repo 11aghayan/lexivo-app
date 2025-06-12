@@ -255,6 +255,7 @@ public class DictionaryActivity extends AppCompatActivity {
         });
 
         btnConfirmDelete.setOnClickListener(v -> {
+            Toast.makeText(DictionaryActivity.this, StringUtil.capitalize(dictionary.getLanguage().getLabel()) + " dictionary deleted", Toast.LENGTH_SHORT).show();
             Dictionary.deleteDictionary(dictionary);
             ViewUtil.closeModal(modalDelete);
             finish();
