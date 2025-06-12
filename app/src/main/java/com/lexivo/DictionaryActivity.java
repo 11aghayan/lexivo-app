@@ -28,11 +28,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.lexivo.adapters.ArrayAdapters;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
+import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 
 public class DictionaryActivity extends AppCompatActivity {
@@ -256,9 +258,13 @@ public class DictionaryActivity extends AppCompatActivity {
 
         btnConfirmDelete.setOnClickListener(v -> {
             Toast.makeText(DictionaryActivity.this, StringUtil.capitalize(dictionary.getLanguage().getLabel()) + " dictionary deleted", Toast.LENGTH_SHORT).show();
-            Dictionary.deleteDictionary(dictionary);
-            ViewUtil.closeModal(modalDelete);
-            finish();
+            try {
+                Dictionary.deleteDictionary(dictionary, this);
+                ViewUtil.closeModal(modalDelete);
+                finish();
+            } catch (UnableToSaveException utse) {
+                ToastUtil.unableToSave(this);
+            }
         });
 
         modalConfirmDeleteDictionary.findViewById(R.id.btnDismissDelete).setOnClickListener(v-> ViewUtil.closeModal(modalConfirmDeleteDictionary));

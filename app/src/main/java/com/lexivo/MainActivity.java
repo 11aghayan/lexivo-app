@@ -21,10 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.adapters.DictionaryAdapter;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
+import com.lexivo.util.Memory;
 import com.lexivo.util.SystemUtil;
+import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 
 
@@ -50,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         });
         SystemUtil.hideSystemUi(getWindow());
 
-
         Language.init();
+        Dictionary.setDictionaries(Memory.retrieveData(this));
+
         initViews();
         handleMyDictionaries();
         handleImportDictionary();
@@ -91,8 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Dictionary dict = new Dictionary(Language.get(selectedLanguageInModal));
                     myDictionariesAdapter.addDictionary(dict);
-                } catch (DuplicateValueException dve) {
+                    toggleNoItemsText();
+                }
+                catch (DuplicateValueException dve) {
                     Toast.makeText(MainActivity.this, getResources().getText(R.string.toast_dictionary_already_exists), Toast.LENGTH_SHORT).show();
+                }
+                catch (UnableToSaveException use) {
+                    ToastUtil.unableToSave(this);
                 }
             }
             modalAddDictionary.setVisibility(View.GONE);
@@ -134,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
         myDictionariesRecView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    private void toggleNoItemsText() {
+        findViewById(R.id.noDictionariesText).setVisibility(
+                Dictionary.getDictionaries().isEmpty() ? View.VISIBLE : View.GONE
+        );
+    }
+
     private void handleOnBackPressed() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -158,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        toggleNoItemsText();
         myDictionariesAdapter.notifyDataSetChanged();
     }
 }

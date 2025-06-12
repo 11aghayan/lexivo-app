@@ -27,6 +27,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.exception.DuplicateHashException;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Gender;
 import com.lexivo.schema.Text;
@@ -34,8 +35,10 @@ import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.ListUtil;
+import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
+import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 import com.lexivo.databinding.ActivityAddEditWordBinding;
 
@@ -117,7 +120,6 @@ public class AddEditWordActivity extends AppCompatActivity {
             headerText.setText(getResources().getString(R.string.text_header_edit_word));
             assert dictionary != null;
             word = dictionary.getWordById(wordId);
-            dictionary = word.getDictionary();
             initFieldsWithWordData(word);
             btnOpenDeleteModal.setVisibility(View.VISIBLE);
         }
@@ -219,16 +221,17 @@ public class AddEditWordActivity extends AppCompatActivity {
                 Text original = new Text(StringUtil.getValueFromStringBuilder(wordOriginal), StringUtil.getValueFromStringBuilder(wordOriginalDetails));
                 Text translation = new Text(StringUtil.getValueFromStringBuilder(wordNative), StringUtil.getValueFromStringBuilder(wordNativeDetails));
                 String plural = StringUtil.getValueFromStringBuilder(wordPlural);
-                String past1 =  StringUtil.getValueFromStringBuilder(wordPast1);
+                String past1 = StringUtil.getValueFromStringBuilder(wordPast1);
                 String past2 = StringUtil.getValueFromStringBuilder(wordPast2);
                 String comment = StringUtil.getValueFromStringBuilder(wordComment);
 
                 if (word == null) {
                     try {
-                        dictionary.addWord(new Word(dictionary, selectedWordType, selectedGender, original, plural, past1, past2, translation, comment));
-                    }
-                    catch (DuplicateHashException e) {
+                        dictionary.addWord(new Word(selectedWordType, selectedGender, original, plural, past1, past2, translation, comment), this);
+                    } catch (DuplicateHashException e) {
                         Toast.makeText(this, "The word already is in the dictionary", Toast.LENGTH_SHORT).show();
+                    } catch (UnableToSaveException utse) {
+                        ToastUtil.unableToSave(this);
                     }
                 }
                 else {
@@ -240,9 +243,14 @@ public class AddEditWordActivity extends AppCompatActivity {
                     word.setPast2(past2);
                     word.setTranslation(translation);
                     word.setComment(comment);
+
+                    if (!Memory.saveData(this)) {
+                        ToastUtil.unableToSave(this);
+                        return;
+                    }
                 }
-                finish();
             }
+            finish();
         });
     }
 
@@ -250,9 +258,16 @@ public class AddEditWordActivity extends AppCompatActivity {
         btnOpenDeleteModal.setOnClickListener(v -> {
             ViewUtil.openModal(modalDelete);
             findViewById(R.id.btnDelete).setOnClickListener(_v -> {
-                dictionary.deleteWord(word);
-                ViewUtil.closeModal(modalDelete);
-                finish();
+                try {
+                    dictionary.deleteWord(word, this);
+                    finish();
+                }
+                catch (UnableToSaveException utse) {
+                    ToastUtil.unableToSave(this);
+                }
+                finally {
+                    ViewUtil.closeModal(modalDelete);
+                }
             });
             findViewById(R.id.btnCancel).setOnClickListener(_v -> ViewUtil.closeModal(modalDelete));
         });

@@ -8,7 +8,6 @@ public class Word extends LanguageElement {
     private String plural;
 
     public Word(
-            Dictionary dictionary,
             WordType type,
             Gender gender,
             Text original,
@@ -18,7 +17,7 @@ public class Word extends LanguageElement {
             Text translation,
             String comment
     ) {
-        super(dictionary, original, translation, comment);
+        super(original, translation, comment);
         this.type = type;
         this.gender = gender;
         this.plural = plural;

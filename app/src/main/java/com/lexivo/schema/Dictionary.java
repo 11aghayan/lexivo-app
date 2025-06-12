@@ -1,11 +1,17 @@
 package com.lexivo.schema;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
+import com.lexivo.MainActivity;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.exception.DuplicateHashException;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.util.HashUtil;
 import com.lexivo.util.ListUtil;
+import com.lexivo.util.Memory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class Dictionary implements ObjectContainingId {
-    private static final List<Dictionary> dictionaries = new ArrayList<>();
+    private static List<Dictionary> dictionaries = new ArrayList<>();
     private final List<Word> words = new ArrayList<>();
     private List<Word> wordsFiltered;
     private final List<Expression> expressions = new ArrayList<>();
@@ -85,23 +91,33 @@ public final class Dictionary implements ObjectContainingId {
         return result;
     }
 
-    public void addWord(Word w) throws DuplicateHashException {
+    public void addWord(Word w, Context context) throws DuplicateHashException, UnableToSaveException {
         if (HashUtil.isHashInList(words, w.getHash())) {
             throw new DuplicateHashException();
         }
         wordsFiltered.add(w);
         words.add(w);
+
+        if (!Memory.saveData(context)) {
+            words.remove(w);
+            wordsFiltered.remove(w);
+            throw new UnableToSaveException();
+        }
     }
 
-    public void deleteWord(Word w) {
+    public void deleteWord(Word w, Context context) throws UnableToSaveException {
         words.remove(w);
         wordsFiltered.remove(w);
+        if (!Memory.saveData(context)) {
+            words.add(w);
+            wordsFiltered.add(w);
+            throw new UnableToSaveException();
+        }
     }
 
-    public void deleteWord(int pos) {
+    public void deleteWord(int pos, Context context) throws UnableToSaveException {
         Word w = wordsFiltered.get(pos);
-        words.remove(w);
-        wordsFiltered.remove(w);
+        deleteWord(w, context);
     }
 
     public void setWordsFiltered(List<Word> wordsFiltered) { this.wordsFiltered = wordsFiltered; }
@@ -122,7 +138,7 @@ public final class Dictionary implements ObjectContainingId {
         expressions.remove(e);
     }
 
-    public static void addDictionary(Dictionary dictionary) throws DuplicateValueException {
+    public static void addDictionary(Dictionary dictionary, Context context) throws DuplicateValueException, UnableToSaveException {
         boolean isDuplicate = false;
         for (var d : dictionaries) {
             isDuplicate = Objects.equals(dictionary, d);
@@ -131,6 +147,10 @@ public final class Dictionary implements ObjectContainingId {
             throw new DuplicateValueException();
         }
         dictionaries.add(dictionary);
+        if (!Memory.saveData(context)) {
+            dictionaries.remove(dictionary);
+            throw new UnableToSaveException();
+        }
     }
 
     public static List<Dictionary> getDictionaries() {
@@ -147,8 +167,16 @@ public final class Dictionary implements ObjectContainingId {
         return null;
     }
 
-    public static void deleteDictionary(Dictionary d) {
-        dictionaries.remove(d);
+    public static void deleteDictionary(Dictionary dictionary, Context context) throws UnableToSaveException {
+        dictionaries.remove(dictionary);
+        if (!Memory.saveData(context)) {
+            dictionaries.add(dictionary);
+            throw new UnableToSaveException();
+        }
+    }
+
+    public static void setDictionaries(List<Dictionary> d) {
+        dictionaries = d;
     }
 
     @Override
@@ -167,7 +195,8 @@ public final class Dictionary implements ObjectContainingId {
     @Override
     public String toString() {
         return "Dictionary{" +
-                "language='" + language.getLabel() + '\'' +
+                "id='" + id + '\'' +
+                ", language=" + language +
                 '}';
     }
 }

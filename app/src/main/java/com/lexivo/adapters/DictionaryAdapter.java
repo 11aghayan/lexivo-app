@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -15,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lexivo.DictionaryActivity;
 import com.lexivo.MainActivity;
 import com.lexivo.R;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.util.IntentUtil;
+import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
 
 public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
@@ -28,7 +31,6 @@ public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.Vi
     public DictionaryAdapter(View view, Context mainContext) {
         this.view = view;
         this.mainContext = mainContext;
-        toggleNoItemsText();
     }
 
     @NonNull
@@ -63,15 +65,9 @@ public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.Vi
         return Dictionary.getDictionaries().size();
     }
 
-    public void addDictionary(Dictionary dictionary) throws DuplicateValueException {
-        Dictionary.addDictionary(dictionary);
+    public void addDictionary(Dictionary dictionary) throws DuplicateValueException, UnableToSaveException {
+        Dictionary.addDictionary(dictionary, mainContext);
         notifyItemInserted(Dictionary.getDictionaries().size() - 1);
-    }
-
-    private void toggleNoItemsText() {
-        view.findViewById(R.id.noDictionariesText).setVisibility(
-            Dictionary.getDictionaries().isEmpty() ? View.VISIBLE : View.GONE
-        );
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

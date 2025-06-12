@@ -8,7 +8,7 @@ public class Expression extends LanguageElement {
     private boolean isQuestion;
 
     public Expression(Dictionary dictionary, Text original, Text translation, List<Integer> nounIndexes, Tense tense, boolean isQuestion, String comment) {
-        super(dictionary, original, translation, comment);
+        super(original, translation, comment);
         this.nounIndexes = nounIndexes;
         this.tense = tense;
         this.isQuestion = isQuestion;

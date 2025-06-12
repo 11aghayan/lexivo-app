@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.AddEditWordActivity;
 import com.lexivo.R;
+import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Word;
 import com.lexivo.util.IntentUtil;
+import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
@@ -165,11 +167,18 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             ViewUtil.openModal(modalDelete);
 
             modalDelete.findViewById(R.id.btnDelete).setOnClickListener(_v -> {
-                dictionary.deleteWord(holder.getLayoutPosition());
-                notifyItemRemoved(holder.getLayoutPosition());
-                ViewUtil.closeModal(modalDelete);
-                if (dictionary.getFilteredWordsCount() == 0) {
-                    textNoWords.setVisibility(View.VISIBLE);
+                try {
+                    dictionary.deleteWord(holder.getLayoutPosition(), context);
+                    notifyItemRemoved(holder.getLayoutPosition());
+                    if (dictionary.getFilteredWordsCount() == 0) {
+                        textNoWords.setVisibility(View.VISIBLE);
+                    }
+                }
+                catch (UnableToSaveException utse) {
+                    ToastUtil.unableToSave(context);
+                }
+                finally {
+                    ViewUtil.closeModal(modalDelete);
                 }
             });
             modalDelete.findViewById(R.id.btnCancel).setOnClickListener(_v -> ViewUtil.closeModal(modalDelete));
