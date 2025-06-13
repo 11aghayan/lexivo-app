@@ -2,6 +2,7 @@ package com.lexivo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lexivo.adapters.WordAdapter;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Word;
+import com.lexivo.util.BitmapUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
@@ -78,7 +79,7 @@ public class AllWordsActivity extends AppCompatActivity {
         dictionary = Dictionary.getDictionaryById(intent.getStringExtra(IntentUtil.KEY_DICTIONARY_ID));
         assert dictionary != null;
         textLanguage.setText(StringUtil.capitalize(dictionary.getLanguage().getLabel()));
-        languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), dictionary.getLanguage().getFlag(), null));
+        languageFlag.setForeground(dictionary.getLanguage().getFlag(this));
     }
 
     private void handleTextNoWords(int wordCount) {

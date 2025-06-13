@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,6 +36,7 @@ import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
+import com.lexivo.util.BitmapUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
@@ -117,7 +118,7 @@ public class DictionaryActivity extends AppCompatActivity {
         dictionary = Dictionary.getDictionaryById(dictionaryId);
         assert dictionary != null;
         currentLanguage = dictionary.getLanguage();
-        languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), currentLanguage.getFlag(), null));
+        languageFlag.setForeground(dictionary.getLanguage().getFlag(this));
         textLanguage.setText(StringUtil.capitalize(currentLanguage.getLabel()));
     }
 
@@ -132,9 +133,7 @@ public class DictionaryActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getText(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
             modalExportDictionary.setVisibility(View.GONE);
         });
-        btnExportJson.setOnClickListener(v -> {
-            Memory.exportDictionary(this, dictionary.getLanguage().getLabel());
-        });
+        btnExportJson.setOnClickListener(v -> Memory.exportDictionary(this, dictionary.getLanguage().getLabel()));
     }
 
     private void handleNavigation() {

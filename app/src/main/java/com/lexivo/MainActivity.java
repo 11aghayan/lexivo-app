@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         });
         SystemUtil.hideSystemUi(getWindow());
 
-        Language.init();
+        Language.init(this);
         Dictionary.setDictionaries(Memory.retrieveData(this));
 
         initViews();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleMyDictionaries() {
-        myDictionariesAdapter = new DictionaryAdapter(findViewById(R.id.main), MainActivity.this);
+        myDictionariesAdapter = new DictionaryAdapter(MainActivity.this);
         myDictionariesRecView.setAdapter(myDictionariesAdapter);
         myDictionariesRecView.setLayoutManager(new LinearLayoutManager(this));
     }

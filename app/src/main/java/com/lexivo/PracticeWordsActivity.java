@@ -16,7 +16,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,6 +24,7 @@ import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
+import com.lexivo.util.BitmapUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.OnSwipeTouchListener;
 import com.lexivo.util.SystemUtil;
@@ -78,7 +78,8 @@ public class PracticeWordsActivity extends AppCompatActivity {
     private void initStartingContent() {
         Intent intent = getIntent();
         dictionary = Dictionary.getDictionaryById(intent.getStringExtra(IntentUtil.KEY_DICTIONARY_ID));
-        languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), dictionary.getLanguage().getFlag(), null));
+        assert dictionary != null;
+        languageFlag.setForeground(dictionary.getLanguage().getFlag(this));
         if (dictionary.getAllWordsCount() == 0)
             textNoWordsInDictionary.setVisibility(View.VISIBLE);
 

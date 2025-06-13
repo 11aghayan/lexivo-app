@@ -1,6 +1,7 @@
 package com.lexivo;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,7 +20,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,6 +33,7 @@ import com.lexivo.schema.Gender;
 import com.lexivo.schema.Text;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
+import com.lexivo.util.BitmapUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.ListUtil;
 import com.lexivo.util.Memory;
@@ -129,7 +130,7 @@ public class AddEditWordActivity extends AppCompatActivity {
         }
         assert dictionary != null;
         binding.setLanguage(StringUtil.capitalize(dictionary.getLanguage().getLabel()));
-        languageFlag.setForeground(ResourcesCompat.getDrawable(getResources(), dictionary.getLanguage().getFlag(), null));
+        languageFlag.setForeground(dictionary.getLanguage().getFlag(this));
     }
 
     private void handleSpinnerWordType() {

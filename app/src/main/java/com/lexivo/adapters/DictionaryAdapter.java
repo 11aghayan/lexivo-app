@@ -2,34 +2,30 @@ package com.lexivo.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lexivo.DictionaryActivity;
-import com.lexivo.MainActivity;
 import com.lexivo.R;
 import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.util.IntentUtil;
-import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
 
 public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
-    private final View view;
     private final Context mainContext;
 
-    public DictionaryAdapter(View view, Context mainContext) {
-        this.view = view;
+    public DictionaryAdapter(Context mainContext) {
         this.mainContext = mainContext;
     }
 
@@ -49,7 +45,8 @@ public class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dictionary dictionary = Dictionary.getDictionaries().get(position);
         Language language = dictionary.getLanguage();
-        holder.dictionaryButton.setForeground(ResourcesCompat.getDrawable(view.getResources(), language.getFlag(), null));
+        holder.dictionaryButton.setForeground(dictionary.getLanguage().getFlag(mainContext));
+        holder.dictionaryButton.setForegroundGravity(Gravity.FILL);
         holder.expressionCount.setText(String.valueOf(dictionary.getExpressionCount()));
         holder.wordCount.setText(String.valueOf(dictionary.getAllWordsCount()));
         holder.language.setText(StringUtil.capitalize(language.getLabel()));
