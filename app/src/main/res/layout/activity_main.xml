@@ -67,7 +67,7 @@
             android:textColor="@color/light_gray_medium"
             android:textSize="20sp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/addDictionaryBtn"
+            app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -82,94 +82,105 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/my_dictionaries_rec_view_description"
-            app:layout_constraintBottom_toTopOf="@+id/addDictionaryBtn"
+            app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.0"/>
 
-        <Button
-            android:id="@+id/addDictionaryBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            style="?android:attr/buttonBarButtonStyle"
-            android:elevation="0.3dp"
-            android:backgroundTint="@color/lightest_gray"
-            android:contentDescription="@string/btn_add_dictionary_description"
-            android:foreground="@drawable/icon_plus"
-            android:foregroundGravity="center_vertical|center_horizontal"
-            app:cornerRadius="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/importDictionaryBtn"
-            app:layout_constraintTop_toBottomOf="@+id/myDictionariesRecView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="VisualLintButtonSize" />
-
-
-        <Button
-            android:id="@+id/importDictionaryBtn"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:backgroundTint="@color/primary"
-            android:elevation="0.3dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/import_dictionary"
-            android:textAllCaps="false"
-            android:textColor="@color/background"
-            android:textSize="16sp"
-            android:visibility="visible"
-            app:cornerRadius="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addDictionaryBtn"
-            tools:ignore="TextContrastCheck,VisualLintButtonSize" />
-
         <LinearLayout
-            android:id="@+id/importDictionaryBtnExpanded"
-            style="?android:attr/buttonBarStyle"
+            android:id="@+id/buttonContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/addDictionaryBtn"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/importDictionaryFromMemoryBtn"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+                android:id="@+id/addDictionaryBtn"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginEnd="2dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/accent"
-                android:elevation="1dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/btn_from_memory"
-                android:textAllCaps="false"
-                android:textColor="@color/background"
-                android:textSize="14sp"
+                style="?android:attr/buttonBarButtonStyle"
+                android:elevation="0.3dp"
+                android:backgroundTint="@color/lightest_gray"
+                android:contentDescription="@string/btn_add_dictionary_description"
+                android:foreground="@drawable/icon_plus"
+                android:foregroundGravity="center_vertical|center_horizontal"
                 app:cornerRadius="24dp"
-                tools:ignore="VisualLintBounds" />
+                app:layout_constraintBottom_toTopOf="@+id/importDictionaryBtn"
+                app:layout_constraintTop_toBottomOf="@+id/myDictionariesRecView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="VisualLintButtonSize" />
+
 
             <Button
-                android:id="@+id/importDictionaryByIdBtn"
+                android:id="@+id/importDictionaryBtn"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
                 android:backgroundTint="@color/primary"
-                android:elevation="1dp"
+                android:elevation="0.3dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="@string/btn_by_id"
+                android:text="@string/import_dictionary"
                 android:textAllCaps="false"
                 android:textColor="@color/background"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                android:visibility="visible"
                 app:cornerRadius="24dp"
-                tools:ignore="VisualLintBounds" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addDictionaryBtn"
+                tools:ignore="TextContrastCheck,VisualLintButtonSize" />
+
+            <LinearLayout
+                android:id="@+id/importDictionaryBtnExpanded"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/addDictionaryBtn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/importDictionaryFromMemoryBtn"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/accent"
+                    android:elevation="1dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/btn_from_memory"
+                    android:textAllCaps="false"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    app:cornerRadius="24dp"
+                    tools:ignore="VisualLintBounds" />
+
+                <Button
+                    android:id="@+id/importDictionaryByIdBtn"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginStart="2dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/primary"
+                    android:elevation="1dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/btn_by_id"
+                    android:textAllCaps="false"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    app:cornerRadius="24dp"
+                    tools:ignore="VisualLintBounds" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

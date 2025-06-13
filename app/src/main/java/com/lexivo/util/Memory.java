@@ -5,7 +5,6 @@ import static androidx.core.app.ActivityCompat.startActivityForResult;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 
 import com.google.gson.Gson;
@@ -64,11 +63,11 @@ public abstract class Memory {
         }
     }
 
-    public static void exportDictionary(Activity activity) {
+    public static void exportDictionary(Activity activity, String language) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/json");
-        intent.putExtra(Intent.EXTRA_TITLE, "dictionary.json");
+        intent.putExtra(Intent.EXTRA_TITLE, "lexivo-dictionary_" + language + ".json");
 
         startActivityForResult(activity, intent, CREATE_FILE, null);
     }

@@ -1,11 +1,9 @@
 package com.lexivo.schema;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.lexivo.MainActivity;
 import com.lexivo.exception.DuplicateValueException;
 import com.lexivo.exception.DuplicateHashException;
 import com.lexivo.exception.UnableToSaveException;
@@ -139,12 +137,9 @@ public final class Dictionary implements ObjectContainingId {
     }
 
     public static void addDictionary(Dictionary dictionary, Context context) throws DuplicateValueException, UnableToSaveException {
-        boolean isDuplicate = false;
         for (var d : dictionaries) {
-            isDuplicate = Objects.equals(dictionary, d);
-        }
-        if (isDuplicate) {
-            throw new DuplicateValueException();
+            if (Objects.equals(dictionary, d))
+                throw new DuplicateValueException();
         }
         dictionaries.add(dictionary);
         if (!Memory.saveData(context)) {

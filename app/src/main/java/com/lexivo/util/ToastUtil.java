@@ -9,10 +9,25 @@ public abstract class ToastUtil {
     }
 
     public static void dictionaryExported(Context context) {
-        Toast.makeText(context, "Dictionary is exported", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Dictionary exported", Toast.LENGTH_SHORT).show();
     }
 
     public static void dictionaryNotExported(Context context) {
-        Toast.makeText(context, "Dictionary could not be exported", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Unable to import dictionary", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void dictionaryImported(Context context) {
+        Toast.makeText(context, "Dictionary imported", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void dictionaryNotImported(Context context) {
+        Toast.makeText(context, "Unable to import dictionary", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void dictionaryNotImported(Context context, boolean isDuplicate) {
+        if (isDuplicate)
+            Toast.makeText(context, "Dictionary already exists", Toast.LENGTH_SHORT).show();
+        else
+            dictionaryImported(context);
     }
 }

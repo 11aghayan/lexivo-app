@@ -1,7 +1,11 @@
 package com.lexivo;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
@@ -19,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.adapters.DictionaryAdapter;
 import com.lexivo.exception.UnableToSaveException;
@@ -30,8 +36,14 @@ import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "ACTIVITY_MAIN";
     private Button
             importDictionaryBtn, addDictionaryBtn, dismissLanguageModalBtn, saveLanguageBtn, importDictionaryByIdBtn, dismissDictionaryModalBtn, importDictionaryModalBtn, importDictionaryFromMemoryBtn, btnDeleteDictionary;
     private LinearLayout importDictionaryBtnExpanded;
@@ -104,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     ToastUtil.unableToSave(this);
                 }
             }
-            modalAddDictionary.setVisibility(View.GONE);
+            ViewUtil.closeModal(modalAddDictionary);
         });
 
         languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -120,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleImportDictionary() {
         importDictionaryBtn.setOnClickListener(v -> {
-            importDictionaryBtn.setVisibility(View.GONE);
             importDictionaryBtnExpanded.setVisibility(View.VISIBLE);
+            importDictionaryBtn.setVisibility(View.GONE);
         });
 
         importDictionaryByIdBtn.setOnClickListener(v -> ViewUtil.openModal(modalImportDictionary));
@@ -132,9 +144,7 @@ public class MainActivity extends AppCompatActivity {
             //TODO: implement import by id
         });
 
-        importDictionaryFromMemoryBtn.setOnClickListener(v -> {
-            //TODO: implement import from memory
-        });
+        importDictionaryFromMemoryBtn.setOnClickListener(v -> Memory.importDictionary(this));
     }
 
     private void handleMyDictionaries() {
@@ -147,6 +157,39 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.noDictionariesText).setVisibility(
                 Dictionary.getDictionaries().isEmpty() ? View.VISIBLE : View.GONE
         );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            try {
+                if (uri == null) return;
+                try(InputStream inputStream = getContentResolver().openInputStream(uri);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))
+                ) {
+                    Gson gson = new Gson();
+                    String dataJson = br.lines().reduce("", (acc, val) -> acc + val);
+                    Dictionary dictionary = gson.fromJson(dataJson, Dictionary.class);
+                    Dictionary.addDictionary(dictionary, this);
+                    ToastUtil.dictionaryImported(this);
+                }
+            }
+            catch (IOException ioe) {
+                ToastUtil.dictionaryNotImported(this);
+                Log.e(TAG, "onActivityResult: " + ioe.getMessage());
+            }
+            catch (DuplicateValueException dve) {
+                ToastUtil.dictionaryNotImported(this, true);
+            }
+            catch (UnableToSaveException utse) {
+                ToastUtil.unableToSave(this);
+            }
+            finally {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        }
     }
 
     private void handleOnBackPressed() {

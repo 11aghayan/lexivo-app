@@ -133,7 +133,7 @@ public class DictionaryActivity extends AppCompatActivity {
             modalExportDictionary.setVisibility(View.GONE);
         });
         btnExportJson.setOnClickListener(v -> {
-            Memory.exportDictionary(this);
+            Memory.exportDictionary(this, dictionary.getLanguage().getLabel());
         });
     }
 
