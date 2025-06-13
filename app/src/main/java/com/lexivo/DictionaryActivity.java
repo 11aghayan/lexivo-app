@@ -1,12 +1,15 @@
 package com.lexivo;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,17 +31,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.gson.Gson;
 import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.util.IntentUtil;
+import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ToastUtil;
 import com.lexivo.util.ViewUtil;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 public class DictionaryActivity extends AppCompatActivity {
+    private static final String TAG = "ACTIVITY_DICTIONARY";
     private Dictionary dictionary;
     private Intent intent;
     private Language currentLanguage, selectedLanguage;
@@ -121,7 +133,7 @@ public class DictionaryActivity extends AppCompatActivity {
             modalExportDictionary.setVisibility(View.GONE);
         });
         btnExportJson.setOnClickListener(v -> {
-            //TODO: handle export as json
+            Memory.exportDictionary(this);
         });
     }
 
@@ -287,5 +299,31 @@ public class DictionaryActivity extends AppCompatActivity {
                     finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            try {
+                if (uri == null) return;
+                try(OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream))
+                ) {
+                    Gson gson = new Gson();
+                    String dataJson = gson.toJson(dictionary);
+                    bw.write(dataJson);
+                    ToastUtil.dictionaryExported(this);
+                }
+            }
+            catch (IOException ioe) {
+                ToastUtil.dictionaryNotExported(this);
+                Log.e(TAG, "onActivityResult: " + ioe.getMessage());
+            }
+            finally {
+                ViewUtil.closeModal(modalExportDictionary);
+            }
+        }
     }
 }
