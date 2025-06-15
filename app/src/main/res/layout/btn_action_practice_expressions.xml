@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:outlineProvider="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/primary_35"
+            android:fontFamily="@font/poppins_semibold"
+            android:letterSpacing="0.02"
+            android:textAllCaps="false"
+            android:textColor="@color/main_text_70"
+            android:textSize="24sp"
+            app:cornerRadius="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/lightest_gray"
+            app:strokeWidth="0.7dp"
+            tools:ignore="VisualLintOverlap,SpeakableTextPresentCheck,VisualLintButtonSize" />
+
+        <TextView
+            android:id="@+id/_btnTextStatic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_practice_expressions_static"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_medium"
+            app:strokeColor="@color/lightest_gray"
+            android:letterSpacing="0.02"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/main_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/btnPracticeLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_action_practice_dynamic"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_bold"
+            android:letterSpacing="0.02"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/main_text"
+            app:layout_constraintTop_toBottomOf="@+id/_btnTextStatic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

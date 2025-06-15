@@ -24,9 +24,8 @@ import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Gender;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
-import com.lexivo.util.BitmapUtil;
 import com.lexivo.util.IntentUtil;
-import com.lexivo.util.OnSwipeTouchListener;
+import com.lexivo.util.OnSwipeTouchListenerPracticeCard;
 import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ViewUtil;
 
@@ -88,7 +87,7 @@ public class PracticeWordsActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void addTouchListeners(CardView card, Word word) {
-        card.setOnTouchListener(new OnSwipeTouchListener(this){
+        card.setOnTouchListener(new OnSwipeTouchListenerPracticeCard(this){
             @Override
             public void onSwipeRight() {
                 animateAndUpdate('r');

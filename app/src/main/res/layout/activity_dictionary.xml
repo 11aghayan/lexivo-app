@@ -9,22 +9,22 @@
 
     <include layout="@layout/add_dictionary_modal"  android:visibility="gone"/>
     <include layout="@layout/export_dictionary_modal" android:visibility="gone" />
-    <include layout="@layout/modal_choose_words_or_expressions" android:visibility="gone" />
     <include layout="@layout/delete_modal" android:visibility="gone" />
     <include layout="@layout/modal_confirm_delete_dictionary" android:visibility="gone" />
+    <include layout="@layout/toast" />
 
+<!--    Account box  -->
     <LinearLayout
         android:id="@+id/accountBox"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="@dimen/layout_margin_top_horizontal"
-        android:paddingHorizontal="@dimen/layout_margin_top_horizontal">
+        app:layout_constraintStart_toStartOf="parent">
         <include layout="@layout/user_info_box" />
     </LinearLayout>
 
+<!--    Language box  -->
     <RelativeLayout
         android:id="@+id/languageBox"
         android:layout_width="match_parent"
@@ -33,6 +33,7 @@
         android:paddingHorizontal="@dimen/layout_margin_top_horizontal"
         android:layout_marginTop="32dp">
 
+<!--        Flag and Language  -->
         <RelativeLayout
             android:id="@+id/language"
             android:layout_width="wrap_content"
@@ -62,6 +63,7 @@
 
         </RelativeLayout>
 
+<!--        Export button  -->
         <Button
             android:id="@+id/btnExportDictionary"
             style="@style/Widget.AppCompat.Button"
@@ -77,80 +79,84 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/contentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/languageBox"
-        app:layout_constraintVertical_bias="1.0">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/languageBox"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
-                android:id="@+id/quizPracticeButtonsContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
+            <!--            Action Buttons container  -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:fillViewport="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/navigationButtonsContainer">
 
-                <Button
-                    android:id="@+id/btnPractice"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:backgroundTint="@color/accent_35"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:letterSpacing="0.02"
-                    android:text="@string/btn_practice_text"
-                    android:textAllCaps="false"
-                    android:textColor="@color/main_text_70"
-                    android:textSize="24sp"
-                    app:cornerRadius="32dp"
-                    app:strokeColor="@color/lightest_gray"
-                    app:strokeWidth="0.7dp" />
+                <GridLayout
+                    android:id="@+id/actionButtonsGridLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:useDefaultMargins="true"
+                    android:columnCount="2"
+                    android:layout_gravity="center_horizontal"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_marginHorizontal="@dimen/layout_margin_top_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/navigationButtonsContainer">
 
-                <Button
-                    android:id="@+id/btnQuiz"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:backgroundTint="@color/primary_35"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:letterSpacing="0.02"
-                    android:text="@string/btn_quiz_text"
-                    android:textAllCaps="false"
-                    android:textColor="@color/main_text_70"
-                    android:textSize="24sp"
-                    app:cornerRadius="32dp"
-                    app:strokeColor="@color/lightest_gray"
-                    app:strokeWidth="0.7dp"/>
+                    <!--                Button practice words - Lang -->
+                    <include
+                        android:id="@+id/btnPracticeWordsLang"
+                        android:layout_width="@dimen/action_button_size"
+                        android:layout_height="@dimen/action_button_size"
+                        layout="@layout/btn_action_practice_words" />
 
-            </LinearLayout>
+                    <!--                Button practice words - English  -->
+                    <include
+                        android:id="@+id/btnPracticeWordsEnglish"
+                        android:layout_width="@dimen/action_button_size"
+                        android:layout_height="@dimen/action_button_size"
+                        layout="@layout/btn_action_practice_words" />
 
+                    <!--                Button practice - Lang  -->
+                    <include
+                        android:id="@+id/btnPracticeExpressionsLang"
+                        android:layout_width="@dimen/action_button_size"
+                        android:layout_height="@dimen/action_button_size"
+                        layout="@layout/btn_action_practice_expressions" />
+
+                    <!--                Button practice - English  -->
+                    <include
+                        android:id="@+id/btnPracticeExpressionsEnglish"
+                        android:layout_width="@dimen/action_button_size"
+                        android:layout_height="@dimen/action_button_size"
+                        layout="@layout/btn_action_practice_expressions" />
+
+                </GridLayout>
+
+            </ScrollView>
+
+<!--           Bottom buttons   -->
             <LinearLayout
                 android:id="@+id/navigationButtonsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/quizPracticeButtonsContainer"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="32dp"
                 android:layout_marginBottom="@dimen/layout_margin_bottom"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/layout_margin_top_horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/quizPracticeButtonsContainer"
-                app:layout_constraintVertical_bias="1.0">
+                app:layout_constraintVertical_bias="0.0">
 
+<!--                Words and expressions buttons container  -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -192,6 +198,7 @@
 
                 </LinearLayout>
 
+<!--               Grammar button  -->
                 <Button
                     android:id="@+id/btnRules"
                     style="?android:attr/buttonBarButtonStyle"
@@ -211,7 +218,5 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

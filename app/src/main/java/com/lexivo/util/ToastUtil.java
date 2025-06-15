@@ -3,6 +3,8 @@ package com.lexivo.util;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.lexivo.R;
+
 public abstract class ToastUtil {
     public static void unableToSave(Context context) {
         Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -29,5 +31,13 @@ public abstract class ToastUtil {
             Toast.makeText(context, "Dictionary already exists", Toast.LENGTH_SHORT).show();
         else
             dictionaryImported(context);
+    }
+
+    public static void copiedToClipboard(Context context) {
+        Toast.makeText(context, context.getResources().getText(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

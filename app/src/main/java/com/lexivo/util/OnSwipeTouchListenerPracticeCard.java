@@ -9,10 +9,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class OnSwipeTouchListener implements View.OnTouchListener {
+public class OnSwipeTouchListenerPracticeCard implements View.OnTouchListener {
     private final GestureDetector gestureDetector;
 
-    public OnSwipeTouchListener(Context context) {
+    public OnSwipeTouchListenerPracticeCard(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 

@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -36,7 +36,7 @@ import com.lexivo.adapters.ArrayAdapters;
 import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
-import com.lexivo.util.BitmapUtil;
+import com.lexivo.util.ActivityUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.Memory;
 import com.lexivo.util.StringUtil;
@@ -54,15 +54,14 @@ public class DictionaryActivity extends AppCompatActivity {
     private Dictionary dictionary;
     private Intent intent;
     private Language currentLanguage, selectedLanguage;
-    private CardView languageFlag, modalChooseWordsOrExpressionsContent;
+    private CardView languageFlag, btnPracticeWordsLang, btnPracticeWordsEnglish, btnPracticeExpressionsLang, btnPracticeExpressionsEnglish;
     private TextView textLanguage;
-    private Button
-            btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnPractice, btnQuiz, btnChooseWords, btnChooseExpressions, btnDeleteDictionary;
-    private RelativeLayout language, modalExportDictionary, modalChooseWordsOrExpressions;
+    private Button btnExportDictionary, dismissLanguageModalBtn, saveLanguageBtn, btnCopyId, btnExportJson, btnWords, btnExpressions, btnRules, btnDeleteDictionary;
+    private RelativeLayout languageRelativeLayout, modalExportDictionary;
     private LinearLayout exportDictionaryModalContent;
     private ConstraintLayout modalEditDictionary, modalDelete, modalConfirmDeleteDictionary;
+    private GridLayout actionButtonsGridLayout;
     private Spinner languageSelector;
-    private boolean isQuiz = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +75,24 @@ public class DictionaryActivity extends AppCompatActivity {
         });
         SystemUtil.hideSystemUi(getWindow());
 
+        ActivityUtil.handleBackBtn(this);
+
         initViews();
         handleContent();
         handleLanguageChange();
         handleExportDictionary();
+        setActionLabels();
         handleNavigation();
         handleDelete();
         handleOnBackPressed();
+        handleActionButtonsGridLayout();
     }
 
     private void initViews() {
         languageFlag = findViewById(R.id.languageFlag);
         textLanguage = findViewById(R.id.textLanguage);
         btnExportDictionary = findViewById(R.id.btnExportDictionary);
-        language = findViewById(R.id.language);
+        languageRelativeLayout = findViewById(R.id.language);
         modalEditDictionary = findViewById(R.id.modalAddEditDictionary);
         languageSelector = ViewUtil.getSpinner(findViewById(R.id.languageSelector));
         dismissLanguageModalBtn = findViewById(R.id.dismissLanguageModalBtn);
@@ -101,15 +104,14 @@ public class DictionaryActivity extends AppCompatActivity {
         btnWords = findViewById(R.id.btnWords);
         btnExpressions = findViewById(R.id.btnExpressions);
         btnRules = findViewById(R.id.btnRules);
-        btnPractice = findViewById(R.id.btnPractice);
-        btnQuiz = findViewById(R.id.btnQuiz);
-        modalChooseWordsOrExpressions = findViewById(R.id.modalChooseWordsOrExpressions);
-        modalChooseWordsOrExpressionsContent = findViewById(R.id.modalChooseWordsOrExpressionsContent);
-        btnChooseWords = findViewById(R.id.btnChooseWords);
-        btnChooseExpressions = findViewById(R.id.btnChooseExpressions);
         btnDeleteDictionary = findViewById(R.id.btnDeleteDictionary);
         modalDelete = findViewById(R.id.modalDelete);
         modalConfirmDeleteDictionary = findViewById(R.id.modalConfirmDeleteDictionary);
+        actionButtonsGridLayout = findViewById(R.id.actionButtonsGridLayout);
+        btnPracticeWordsLang = findViewById(R.id.btnPracticeWordsLang);
+        btnPracticeWordsEnglish = findViewById(R.id.btnPracticeWordsEnglish);
+        btnPracticeExpressionsLang = findViewById(R.id.btnPracticeExpressionsLang);
+        btnPracticeExpressionsEnglish = findViewById(R.id.btnPracticeExpressionsEnglish);
     }
 
     private void handleContent() {
@@ -130,22 +132,20 @@ public class DictionaryActivity extends AppCompatActivity {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("dictionary_id", dictionary.getId());
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, getResources().getText(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
-            modalExportDictionary.setVisibility(View.GONE);
+            ToastUtil.copiedToClipboard(this);
+            ViewUtil.closeModal(modalExportDictionary);
         });
         btnExportJson.setOnClickListener(v -> Memory.exportDictionary(this, dictionary.getLanguage().getLabel()));
     }
 
+    private void setActionLabels() {
+        ((TextView)(btnPracticeWordsLang.findViewById(R.id.btnPracticeLang))).setText(StringUtil.capitalize(currentLanguage.getLabel()));
+        ((TextView)(btnPracticeWordsEnglish.findViewById(R.id.btnPracticeLang))).setText(StringUtil.capitalize("english"));
+        ((TextView)(btnPracticeExpressionsLang.findViewById(R.id.btnPracticeLang))).setText(StringUtil.capitalize(currentLanguage.getLabel()));
+        ((TextView)(btnPracticeExpressionsEnglish.findViewById(R.id.btnPracticeLang))).setText(StringUtil.capitalize("english"));
+    }
+
     private void handleNavigation() {
-        btnPractice.setOnClickListener(v -> {
-            isQuiz = false;
-            ViewUtil.openModal(modalChooseWordsOrExpressions);
-        });
-        btnQuiz.setOnClickListener(v -> {
-            isQuiz = true;
-            modalChooseWordsOrExpressions.setVisibility(View.VISIBLE);
-        });
-        handleModalChooseWordsOrExpressions();
         btnWords.setOnClickListener(v -> {
             Intent intent = new Intent(this, AllWordsActivity.class);
             intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
@@ -157,35 +157,24 @@ public class DictionaryActivity extends AppCompatActivity {
         btnRules.setOnClickListener(v -> {
             //TODO: redirect to rules activity
         });
-    }
-
-    private void handleModalChooseWordsOrExpressions() {
-        modalChooseWordsOrExpressions.setOnClickListener(v -> ViewUtil.closeModal(modalChooseWordsOrExpressions));
-        modalChooseWordsOrExpressionsContent.setOnClickListener(v -> {});
-
-        btnChooseWords.setOnClickListener(v -> {
-            if (!isQuiz) {
-                Intent intent = new Intent(this, PracticeWordsActivity.class);
-                intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
-                ViewUtil.closeModal(modalChooseWordsOrExpressions);
-                startActivity(intent);
-            }
-            else {
-//                TODO: handle quiz
-            }
+        btnPracticeWordsLang.findViewById(R.id.button).setOnClickListener(v -> {
+            Intent intent = new Intent(this, PracticeWordsActivity.class);
+            intent.putExtra(IntentUtil.KEY_DICTIONARY_ID, dictionary.getId());
+            intent.putExtra(IntentUtil.KEY_PRACTICE_TYPE, IntentUtil.VALUE_PRACTICE_TYPE_LANG);
+            startActivity(intent);
         });
 
-        btnChooseExpressions.setOnClickListener(v -> {
-            if (!isQuiz) {
-//                TODO: uncomment the code below
-//                Intent intent = new Intent(this, PracticeExpressionsActivity.class);
-//                intent.putExtra("dictionary_id", dictionary.getId());
-//                ViewUtil.closeModal(modalChooseWordsOrExpressions);
-//                startActivity(intent);
-            }
-            else {
-//                TODO: handle quiz
-            }
+        btnPracticeWordsEnglish.findViewById(R.id.button).setOnClickListener(v -> {
+            com.lexivo.util.Toast.success(this, "Practice Words English Clicked");
+//            TODO: Navigate to activity
+        });
+        btnPracticeExpressionsLang.findViewById(R.id.button).setOnClickListener(v -> {
+            com.lexivo.util.Toast.warning(this, "Practice Expressions Lang Clicked");
+//            TODO: Navigate to activity
+        });
+        btnPracticeExpressionsEnglish.findViewById(R.id.button).setOnClickListener(v -> {
+            com.lexivo.util.Toast.error(this, "Practice Expressions English Clicked");
+//            TODO: Navigate to activity
         });
     }
 
@@ -219,7 +208,7 @@ public class DictionaryActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        language.setOnClickListener(v -> ViewUtil.openModal(modalEditDictionary));
+        languageRelativeLayout.setOnClickListener(v -> ViewUtil.openModal(modalEditDictionary));
         dismissLanguageModalBtn.setOnClickListener(v -> {
             selectedLanguage = currentLanguage;
             ViewUtil.closeModal(modalEditDictionary);
@@ -281,15 +270,25 @@ public class DictionaryActivity extends AppCompatActivity {
         modalConfirmDeleteDictionary.findViewById(R.id.btnDismissDelete).setOnClickListener(v-> ViewUtil.closeModal(modalConfirmDeleteDictionary));
     }
 
+    private void handleActionButtonsGridLayout() {
+        actionButtonsGridLayout.post(() -> {
+            int currentColumnCount = 5;
+            float buttonSize = getResources().getDimension(R.dimen.action_button_size) + 10;
+            float buttonsWidth = currentColumnCount * buttonSize;
+            actionButtonsGridLayout.setColumnCount(currentColumnCount);
+            while((actionButtonsGridLayout.getWidth() < buttonsWidth) && (currentColumnCount > 1)) {
+                actionButtonsGridLayout.setColumnCount(--currentColumnCount);
+                buttonsWidth = currentColumnCount * buttonSize;
+            }
+        });
+    }
+
     private void handleOnBackPressed() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (modalExportDictionary.getVisibility() == View.VISIBLE){
                     ViewUtil.closeModal(modalExportDictionary);
-                }
-                else if (modalChooseWordsOrExpressions.getVisibility() == View.VISIBLE) {
-                    ViewUtil.closeModal(modalChooseWordsOrExpressions);
                 }
                 else if (modalEditDictionary.getVisibility() == View.VISIBLE) {
                     ViewUtil.closeModal(modalEditDictionary);

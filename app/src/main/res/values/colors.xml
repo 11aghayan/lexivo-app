@@ -23,4 +23,7 @@
     <color name="gender_plural">#AA9600</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="input_bg">#FFFFFFFF</color>
+    <color name="bg_toast_success">#206D4C</color>
+    <color name="bg_toast_warning">#EF6C00</color>
+    <color name="bg_toast_error">#650011</color>
 </resources>

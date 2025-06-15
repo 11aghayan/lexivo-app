@@ -1,7 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Lexivo" parent="Theme.MaterialComponents.Light.NoActionBar">
-    </style>
-
+<resources>
+    <style name="Base.Theme.Lexivo" parent="Theme.MaterialComponents.Light.NoActionBar" />
     <style name="Theme.Lexivo" parent="Base.Theme.Lexivo" />
 </resources>

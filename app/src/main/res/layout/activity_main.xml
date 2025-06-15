@@ -10,21 +10,20 @@
 
     <include layout="@layout/add_dictionary_modal" android:visibility="gone" />
     <include layout="@layout/import_dictionary_modal" android:visibility="gone" />
+    <include layout="@layout/toast" />
 
+<!--    Account box  -->
         <LinearLayout
             android:id="@+id/accountBox"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/layout_margin_top_horizontal"
-            android:layout_marginTop="@dimen/layout_margin_top_horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
             <include layout="@layout/user_info_box" />
-
         </LinearLayout>
 
+    <!--    My dictionaries header line -->
         <include
             android:layout_width="match_parent"
             android:layout_height="@dimen/separator_height"
@@ -33,6 +32,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/accountBox"/>
+
+<!--    My dictionaries header  -->
         <TextView
             android:id="@+id/myDictionariesHeader"
             android:layout_width="wrap_content"
@@ -47,6 +48,7 @@
             app:layout_constraintTop_toBottomOf="@+id/accountBox"
             app:layout_constraintStart_toStartOf="parent"/>
 
+<!--    Main content constraint layout  -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -57,6 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+<!--        Text No dictionaries  -->
         <TextView
             android:id="@+id/noDictionariesText"
             android:layout_width="wrap_content"
@@ -74,7 +77,7 @@
             app:layout_constraintVertical_bias="0.0"
             tools:ignore="TextContrastCheck,VisualLintOverlap" />
 
-
+<!--        My dictionaries rec view  -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myDictionariesRecView"
             android:layout_width="match_parent"
@@ -88,6 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.0"/>
 
+<!--        Buttons container  -->
         <LinearLayout
             android:id="@+id/buttonContainer"
             android:layout_width="match_parent"
@@ -97,6 +101,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:orientation="vertical">
 
+<!--           Add dictionary button   -->
             <Button
                 android:id="@+id/addDictionaryBtn"
                 android:layout_width="match_parent"
@@ -114,7 +119,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="VisualLintButtonSize" />
 
-
+<!--            import dictionary button  -->
             <Button
                 android:id="@+id/importDictionaryBtn"
                 style="?android:attr/buttonBarButtonStyle"
@@ -135,6 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@id/addDictionaryBtn"
                 tools:ignore="TextContrastCheck,VisualLintButtonSize" />
 
+<!--            import dictionary button expanded  -->
             <LinearLayout
                 android:id="@+id/importDictionaryBtnExpanded"
                 style="?android:attr/buttonBarStyle"
@@ -146,6 +152,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
+<!--                import from memory button -->
                 <Button
                     android:id="@+id/importDictionaryFromMemoryBtn"
                     style="?android:attr/buttonBarButtonStyle"
@@ -163,6 +170,7 @@
                     app:cornerRadius="24dp"
                     tools:ignore="VisualLintBounds" />
 
+<!--                import bby id button  -->
                 <Button
                     android:id="@+id/importDictionaryByIdBtn"
                     style="?android:attr/buttonBarButtonStyle"

@@ -2,7 +2,6 @@ package com.lexivo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lexivo.adapters.WordAdapter;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Word;
-import com.lexivo.util.BitmapUtil;
+import com.lexivo.util.ActivityUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.StringUtil;
 import com.lexivo.util.SystemUtil;
@@ -55,6 +54,8 @@ public class AllWordsActivity extends AppCompatActivity {
             return insets;
         });
         SystemUtil.hideSystemUi(getWindow());
+
+        ActivityUtil.handleBackBtn(this);
 
         initViews();
         initData();

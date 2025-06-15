@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public enum Gender {
     MASCULINE,
     FEMININE,
-    NEUTRAL,
+    NEUTER,
     PERSONAL,
     PLURAL,
     NO_GENDER;

@@ -1,7 +1,6 @@
 package com.lexivo;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,7 +32,7 @@ import com.lexivo.schema.Gender;
 import com.lexivo.schema.Text;
 import com.lexivo.schema.Word;
 import com.lexivo.schema.WordType;
-import com.lexivo.util.BitmapUtil;
+import com.lexivo.util.ActivityUtil;
 import com.lexivo.util.IntentUtil;
 import com.lexivo.util.ListUtil;
 import com.lexivo.util.Memory;
@@ -80,6 +79,8 @@ public class AddEditWordActivity extends AppCompatActivity {
         });
         SystemUtil.hideSystemUi(getWindow());
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_edit_word);
+
+        ActivityUtil.handleBackBtn(this);
 
         initViews();
         handleSpinnerWordType();

@@ -31,6 +31,7 @@ import com.lexivo.exception.UnableToSaveException;
 import com.lexivo.schema.Dictionary;
 import com.lexivo.schema.Language;
 import com.lexivo.exception.DuplicateValueException;
+import com.lexivo.util.ActivityUtil;
 import com.lexivo.util.Memory;
 import com.lexivo.util.SystemUtil;
 import com.lexivo.util.ToastUtil;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         Language.init(this);
         Dictionary.setDictionaries(Memory.retrieveData(this));
+
+        ActivityUtil.handleBackBtn(this);
 
         initViews();
         handleMyDictionaries();
